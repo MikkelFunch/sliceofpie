@@ -9,6 +9,7 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
+            //Remember dem comments!
             Console.Out.WriteLine("Works bitches");
         }
     }
