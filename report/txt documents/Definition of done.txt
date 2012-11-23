@@ -1,0 +1,8 @@
+Definition of done
+
+- Implement code
+- Document code
+	- Method summary + return params
+	- Properties + fields
+- Blackbox tested via unit tests
+- Textual artifacts confirmed by other group members

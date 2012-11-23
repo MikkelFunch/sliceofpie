@@ -1,0 +1,16 @@
+Definition of conflict
+
+A conflict occurs when:
+
+User 1 downloads document A
+User 2 downloads document A
+
+User 1 edits document A
+User 1 syncs document A
+
+User 2 edits document A
+User 2 syncs document A <- ConflicT!
+
+Definition of conflict that the user shall resolve
+
+Attention Requiring Conflict - ARC

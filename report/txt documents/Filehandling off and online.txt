@@ -1,0 +1,3 @@
+Filehandling regarding offline and online use of the client as well as the web interface.
+
+When using the client, the user doesn't need to be online. When offline you can still create documents, but, of obvious reasons, can't sync them. When online, it's possible for the user to sync files and folders.
