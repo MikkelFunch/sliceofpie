@@ -1,0 +1,6 @@
+Vision
+
+Fundamental features
+Reliable
+Simple, intuitive and easy to use
+Easy maintainability and extentability. 
