@@ -1,3 +1,6 @@
+2012-11-27 UI:
+When we had to choose the UI framework, we had two contestants which is Winforms and XAML. We chose XAML due to several reasons. Firstly it seemed more dynamic and easier to make a web-interface and a standalone client from roughly the same code. Secondly XAML seemed to fit our vision about making our program easy to maintain, since XAML is more dynamic and newer.
+
 2012-11-29 Images:
 When it comes to downloading the images in the document, we talked about two possible ways of doing it.
 One was to store all the URL's in a database table, with a reference to the document. When downloading all documents, one would go through the database table and find all URL's with reference to one of the downloaded documents.
