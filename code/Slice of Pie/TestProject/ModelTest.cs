@@ -8,72 +8,78 @@ namespace TestProject
     
     /// <summary>
     ///This is a test class for ModelTest and is intended
-    ///to contain all ModelTest Unit Tests
+    ///to contain all Unit tests for Model
     ///</summary>
     [TestClass()]
     public class ModelTest
     {
-
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
-        /// <summary>
-        ///A test for MergeDocuments
-        ///</summary>
         [TestMethod()]
-        public void MergeDocumentsTest()
+        public void MergeDocumentsTestAppend()
         {
             Model_Accessor target = new Model_Accessor();
             string[] original = {"A", "B", "C", "D"};
             string[] latest = {"A", "B", "C", "D", "E"};
             string[] expected = {"A", "B", "C", "D", "E"};
+            string[] actual;
+            actual = target.MergeDocuments(original, latest);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void MergeDocumentsTestDeleteAtEnd()
+        {
+            Model_Accessor target = new Model_Accessor();
+            string[] original = { "A", "B", "C", "D" };
+            string[] latest = { "A", "B", "C" };
+            string[] expected = { "A", "B", "C"};
+            string[] actual;
+            actual = target.MergeDocuments(original, latest);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void MergeDocumentsTestDelete()
+        {
+            Model_Accessor target = new Model_Accessor();
+            string[] original = { "A", "B", "C", "D" };
+            string[] latest = { "A", "C", "D" };
+            string[] expected = { "A", "B", "C" };
+            string[] actual;
+            actual = target.MergeDocuments(original, latest);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void MergeDocumentsTestInsert()
+        {
+            Model_Accessor target = new Model_Accessor();
+            string[] original = { "A", "B", "D", "E" };
+            string[] latest = { "A", "B", "C", "D", "E" };
+            string[] expected = { "A", "B", "C", "D", "E" };
+            string[] actual;
+            actual = target.MergeDocuments(original, latest);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void MergeDocumentsTestMultipleEdits1()
+        {
+            Model_Accessor target = new Model_Accessor();
+            string[] original = { "A", "B", "D", "E", "F"};
+            string[] latest = { "A", "B", "C", "D", "E" };
+            string[] expected = { "A", "B", "C", "D", "E" };
+            string[] actual;
+            actual = target.MergeDocuments(original, latest);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
+        }
+
+        [TestMethod()]
+        public void MergeDocumentsTestMultipleEdits2()
+        {
+            Model_Accessor target = new Model_Accessor();
+            string[] original = { "A", "B", "D", "E", "F" };
+            string[] latest = { "A", "B", "C", "C", "C", "C", "D", "E" };
+            string[] expected = { "A", "B", "C", "C", "C", "C", "D", "E" };
             string[] actual;
             actual = target.MergeDocuments(original, latest);
             Assert.AreEqual(expected.ToString(), actual.ToString());
