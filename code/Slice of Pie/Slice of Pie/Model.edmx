@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSet" EntityType="Model1.User" />
+          <EntitySet Name="FolderSet" EntityType="Model1.Folder" />
+          <AssociationSet Name="UserFolder" Association="Model1.UserFolder">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Folder" EntitySet="FolderSet" />
+          </AssociationSet>
+          <AssociationSet Name="FolderFolder" Association="Model1.FolderFolder">
+            <End Role="Folder" EntitySet="FolderSet" />
+            <End Role="Folder1" EntitySet="FolderSet" />
+          </AssociationSet>
+          <EntitySet Name="DocumentSet" EntityType="Model1.Document" />
+          <AssociationSet Name="UserDocument" Association="Model1.UserDocument">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Document" EntitySet="DocumentSet" />
+          </AssociationSet>
+          <AssociationSet Name="FolderDocument" Association="Model1.FolderDocument">
+            <End Role="Folder" EntitySet="FolderSet" />
+            <End Role="Document" EntitySet="DocumentSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" />
+          <NavigationProperty Name="RootFolder" Relationship="Model1.UserFolder" FromRole="User" ToRole="Folder" />
+          <NavigationProperty Name="Document" Relationship="Model1.UserDocument" FromRole="User" ToRole="Document" />
+        </EntityType>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="ParentFolder" Relationship="Model1.FolderFolder" FromRole="Folder" ToRole="Folder1" />
+          <Property Type="Int32" Name="FolderId" Nullable="false" />
+        </EntityType>
+        <Association Name="UserFolder">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.Folder" Role="Folder" Multiplicity="1" />
+        </Association>
+        <Association Name="FolderFolder">
+          <End Type="Model1.Folder" Role="Folder" Multiplicity="1" />
+          <End Type="Model1.Folder" Role="Folder1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Folder1">
+              <PropertyRef Name="FolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Path" Nullable="false" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="Int32" Name="DocumentId" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Model1.UserDocument" FromRole="Document" ToRole="User" />
+          <NavigationProperty Name="Folder" Relationship="Model1.FolderDocument" FromRole="Document" ToRole="Folder" />
+          <Property Type="Int32" Name="FolderId" Nullable="false" />
+        </EntityType>
+        <Association Name="UserDocument">
+          <End Type="Model1.User" Role="User" Multiplicity="*" />
+          <End Type="Model1.Document" Role="Document" Multiplicity="*" />
+        </Association>
+        <Association Name="FolderDocument">
+          <End Type="Model1.Folder" Role="Folder" Multiplicity="1" />
+          <End Type="Model1.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="FolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Model1" >
+        <EntityTypeShape EntityType="Model1.User" Width="1.5" PointX="1.125" PointY="0.5" Height="1.787985026041667" />
+        <EntityTypeShape EntityType="Model1.Folder" Width="1.5" PointX="4.625" PointY="0.625" Height="1.4033821614583331" />
+        <AssociationConnector Association="Model1.UserFolder">
+          <ConnectorPoint PointX="2.625" PointY="1.3266910807291665" />
+          <ConnectorPoint PointX="4.625" PointY="1.3266910807291665" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.FolderFolder">
+          <ConnectorPoint PointX="5.1569230769230767" PointY="2.412985026041667" />
+          <ConnectorPoint PointX="5.1569230769230767" PointY="2.662985026041667" />
+          <ConnectorPoint PointX="5.6034615384615378" PointY="2.662985026041667" />
+          <ConnectorPoint PointX="5.6034615384615378" PointY="2.412985026041667" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Model1.Document" Width="1.5" PointX="7.75" PointY="0.75" Height="1.9802864583333331" />
+        <AssociationConnector Association="Model1.UserDocument">
+          <ConnectorPoint PointX="1.875" PointY="2.4802864583333335" />
+          <ConnectorPoint PointX="1.875" PointY="2.7927864583333335" />
+          <ConnectorPoint PointX="7.75" PointY="2.7927864583333335" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.FolderDocument">
+          <ConnectorPoint PointX="6.125" PointY="1.5814925130208337" />
+          <ConnectorPoint PointX="7.75" PointY="1.5814925130208337" />
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
