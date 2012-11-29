@@ -23,5 +23,15 @@ namespace WpfApplication1
         {
             InitializeComponent();
         }
+
+        private void listView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
