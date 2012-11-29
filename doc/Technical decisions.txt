@@ -1,0 +1,7 @@
+2012-11-29 Images:
+When it comes to downloading the images in the document, we talked about two possible ways of doing it.
+One was to store all the URL's in a database table, with a reference to the document. When downloading all documents, one would go through the database table and find all URL's with reference to one of the downloaded documents.
+The other is to store the URL's in the document, and then loop through every document finding every URL.
+Either way, we would download the images and store them in a local folder.
+
+We've chosen to keep the URL's in the document.
