@@ -1,0 +1,31 @@
+Name: Manage document
+Scope: Client and website.
+Level: User goal
+Stakeholders and Interests:
+	User wants to create, read, edit or delete and be able to observe the outcome.
+Preconditions:
+	If user uses the website, he must be online.
+	If user uses the client he must have a registered user.
+Main success scenario:
+	User creates or changes a document and is able to observe the resulting state of his repository.
+Extensions:
+	a. At any time system fails:
+	1. Rollback any changes that was made while the system failed.
+	2. Restart the system and change the state to before the failure was detected.
+
+Name: Sync document
+Scope: Client and website.
+Level: User goal
+Stakeholders and Interests:
+	User wants to sync his document and be notified about conflicts or fast-forward merge.
+Preconditions:
+	If user uses the website, he must be online.
+	He must have a registered user.
+Main success scenario:
+	User syncs a document and has the opportunity to deal with conflicts and observe the resulting document and its state.
+Extensions:
+	a. At any time system fails:
+	1. Rollback any changes that was made while the system failed.
+	2. Restart the system and change the state to before the failure was detected.
+
+	
