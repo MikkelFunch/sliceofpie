@@ -11,6 +11,17 @@ namespace Slice_of_Pie
         {
             //Remember dem comments!
             Console.Out.WriteLine("Works bitches");
+            string[] original = { "A", "B", "C", "D" };
+            string[] latest = { "A", "B", "C", "D", "E" };
+            string[] actual = Model.GetInstance().MergeDocuments(original, latest);
+
+            foreach (string s in actual)
+            {
+                Console.Out.WriteLine(s);
+            }
+
+            Console.In.ReadLine();
+
         }
     }
 }
