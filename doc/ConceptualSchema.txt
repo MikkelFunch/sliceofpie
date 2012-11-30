@@ -1,5 +1,10 @@
 User(Id: int, Email: VARCHAR(255), Password: VARCHAR(32), RootFolderId: int)
 Folder(Id: int, Name: VARCHAR(64), ParentFolderId: int)
+<<<<<<< HEAD
+Document(Id: int, Name: VARCHAR(64), Path: VARCHAR(255), CreationTime: Timestamp, CreatorId: int)
+UserDocument(UserId: int, DocumentId: int, FolderLocationId: int)
+DocumentRevision(Id: int, DocumentId: int, Path: VARCHAR(255), CreationTime: Timestamp, EditorId: int)
+=======
 Document(Id: int, Name: VARCHAR(64), Path: VARCHAR(255), CreationTime: Timestamp, CreatorId: int, DocumentId: int)
 UserDocument(UserId: int, DocumentId: int)
 
@@ -49,3 +54,4 @@ primary key (id),
 foreign key (documentId) references document(id),
 foreign key (editorId) references user(id))
 engine = innodb;
+>>>>>>> 02810a6212e873c7795cd2fa8dbc02c3f2db470d
