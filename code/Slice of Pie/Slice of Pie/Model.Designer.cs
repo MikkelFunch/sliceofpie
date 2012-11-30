@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -122,6 +123,7 @@ namespace Slice_of_Pie
         private ObjectSet<Document> _DocumentSet;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -149,11 +151,11 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -188,6 +190,7 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -338,6 +341,7 @@ namespace Slice_of_Pie
         partial void OnFolderIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -402,6 +406,7 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -430,6 +435,7 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -508,6 +514,7 @@ namespace Slice_of_Pie
         partial void OnFolderIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -534,6 +541,7 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -562,6 +570,7 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -640,6 +649,7 @@ namespace Slice_of_Pie
         partial void OnPasswordChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -704,8 +714,10 @@ namespace Slice_of_Pie
         }
 
         #endregion
+
     }
 
     #endregion
+
     
 }
