@@ -33,17 +33,10 @@ engine = innodb;
 create table userdocument (
 userId integer not null,
 documentId integer not null,
-primary key(userId, documentId),
-foreign key (userId) references user(id),
-foreign key (documentId) references document(id))
-engine = innodb;
-
-create table documentlocation (
 folderId integer not null,
-documentId integer not null,
-primary key (folderId, documentId),
-foreign key (folderId) references folder(id),
-foreign key (documentId) references documentId))
+foreign key (userId) references user(id),
+foreign key (documentId) references document(id)
+foreign key (folderId) references folder(id) on delete cascade)
 engine = innodb;
 
 create table documentrevision (
