@@ -1,0 +1,44 @@
+﻿<Window x:Class="WpfApplication2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="clr-namespace:WpfApplication2"
+        Title="MainWindow" Height="400" Width="960">
+    
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Grid Name="GridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="700" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <app:Document Grid.Column="1" Grid.Row="0"/>
+        </Grid>
+        
+        
+        <Grid HorizontalAlignment="Stretch" Name="GridLeft" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+        </Grid>
+
+        <app:ButtonMenuView Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Menu IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" Name="topMenu" VerticalAlignment="Stretch" Grid.ColumnSpan="2" >
+            <MenuItem Header="_File ">
+                <MenuItem Header="Test"/>
+            </MenuItem>
+            <MenuItem Header="_Edit " />
+            <MenuItem Header="_View " />
+            <MenuItem Header="_Help " />
+        </Menu>
+    </Grid>
+</Window>
