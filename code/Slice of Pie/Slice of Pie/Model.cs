@@ -80,8 +80,8 @@ namespace Slice_of_Pie
                         }
                         else
                         {
-                            AppendLines(merged, latest, n + 1, (int)i - 1);
-                            n = (int)i + 1;
+                            AppendLines(merged, latest, n, (int)i - 1);
+                            n = (int)i;
                             o++;
                         }
                     }
