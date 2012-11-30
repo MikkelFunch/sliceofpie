@@ -36,7 +36,7 @@ userId integer not null,
 documentId integer not null,
 folderId integer not null,
 foreign key (userId) references user(id),
-foreign key (documentId) references document(id)
+foreign key (documentId) references document(id),
 foreign key (folderId) references folder(id) on delete cascade)
 engine = innodb;
 
