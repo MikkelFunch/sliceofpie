@@ -8,3 +8,8 @@ The other is to store the URL's in the document, and then loop through every doc
 Either way, we would download the images and store them in a local folder.
 
 We've chosen to keep the URL's in the document.
+
+2012-11-30 Database design
+We decided to let folder be an object restricted to a single user, which means that one document can be stored differently for each user sharing the document.
+This makes deletion and syncing of documents easier to handle. It also limites the conflicts that can happen around folder names.
+The table which handles the many-to-many relationship between user and document also stores the folder location.

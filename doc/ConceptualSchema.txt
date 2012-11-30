@@ -1,64 +1,6 @@
 User(Id: int, Email: VARCHAR(255), Password: VARCHAR(32), RootFolderId: int)
 Folder(Id: int, Name: VARCHAR(64), ParentFolderId: int)
-<<<<<<< HEAD
 Document(Id: int, Name: VARCHAR(64), Path: VARCHAR(255), CreationTime: Timestamp, CreatorId: int)
 UserDocument(UserId: int, DocumentId: int, FolderLocationId: int)
 DocumentRevision(Id: int, DocumentId: int, Path: VARCHAR(255), CreationTime: Timestamp, EditorId: int)
-=======
-Document(Id: int, Name: VARCHAR(64), Path: VARCHAR(255), CreationTime: Timestamp, CreatorId: int, DocumentId: int)
-UserDocument(UserId: int, DocumentId: int)
 
-create table folder (
-id integer not null,
-name varchar(64) not null,
-parentFolderId integer not null,
-primary key(id),
-foreign key(parentFolderId) references folder(id))
-engine = innodb;
-
-create table user (
-id integer not null,
-email varchar(255) not null,
-password varchar(32) not null,
-rootFolderId integer not null,
-primary key(id),
-foreign key(rootFolderId) references folder(id))
-engine = innodb;
-
-create table document (
-id integer not null,
-name varchar(64) not null,
-path varchar(255) not null,
-creationTime timestamp not null,
-creatorId integer not null,
-primary key(id),
-foreign key(creatorId) references user(id))
-engine = innodb;
-
-create table userdocument (
-userId integer not null,
-documentId integer not null,
-primary key(userId, documentId),
-foreign key (userId) references user(id),
-foreign key (documentId) references document(id))
-engine = innodb;
-
-create table documentlocation (
-folderId integer not null,
-documentId integer not null,
-primary key (folderId, documentId),
-foreign key (folderId) references folder(id),
-foreign key (documentId) references documentId))
-engine = innodb;
-
-create table documentrevision (
-id integer not null,
-documentId integer not null,
-creationTime timestamp not null,
-path varchar(255) not null,
-editorId integer not null,
-primary key (id),
-foreign key (documentId) references document(id),
-foreign key (editorId) references user(id))
-engine = innodb;
->>>>>>> 02810a6212e873c7795cd2fa8dbc02c3f2db470d
