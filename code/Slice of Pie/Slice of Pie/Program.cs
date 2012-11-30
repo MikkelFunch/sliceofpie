@@ -9,19 +9,15 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
-            //Remember dem comments!
-            Console.Out.WriteLine("Works bitches");
-            string[] original = { "A", "B", "D", "E" };
-            string[] latest = { "A", "B", "C", "D", "E" };
-            string[] actual = Model.GetInstance().MergeDocuments(original, latest);
-
-            foreach (string s in actual)
+            using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                Console.Out.WriteLine(s);
+                Folder folder = new Folder();
+                //folder.id = 1;
+                folder.name = "FolderNameMikkel";
+                //folder.parentFolderId = 1;
+                context.Folders.AddObject(folder);
+                context.SaveChanges();
             }
-
-            Console.In.ReadLine();
-
         }
     }
 }
