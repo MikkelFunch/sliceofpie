@@ -3,4 +3,3 @@ Folder(Id: int, Name: VARCHAR(64), ParentFolderId: int)
 Document(Id: int, Name: VARCHAR(64), Path: VARCHAR(255), CreationTime: Timestamp, CreatorId: int)
 UserDocument(UserId: int, DocumentId: int, FolderLocationId: int)
 DocumentRevision(Id: int, DocumentId: int, Path: VARCHAR(255), CreationTime: Timestamp, EditorId: int)
-
