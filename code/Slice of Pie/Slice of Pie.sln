@@ -6,21 +6,23 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{80357EEC-FCE4-4293-AA8D-D2AA09185E5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A34059E4-90BF-4496-AE99-B12F89AD04DE}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceLibrary", "WebServiceLibrary\WebServiceLibrary.csproj", "{A9E3D69B-2F99-402B-BA5D-5E7034FF4767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{31F38ADB-7B43-40C4-B8FB-081CC9191A97}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCE9DEC6-50FB-4367-95B7-5466DF013BB7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items (2)", "Solution Items (2)", "{DCE9DEC6-50FB-4367-95B7-5466DF013BB7}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		Slice of Pie.vsmdi = Slice of Pie.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceOfPieWeb", "SliceOfPieWeb\SliceOfPieWeb.csproj", "{58DACB2D-F76F-4AC2-A93C-689F37E7BC48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{6FC9D9E8-8B5F-45B1-8650-678A8380684E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{5E3D0AFF-6615-41A5-98FF-9081F8BA7C67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceApplication", "WebServiceApplication\WebServiceApplication.csproj", "{15C278E0-E52D-4DBA-B25A-174FAE0A8354}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -65,16 +67,6 @@ Global
 		{A9E3D69B-2F99-402B-BA5D-5E7034FF4767}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A9E3D69B-2F99-402B-BA5D-5E7034FF4767}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A9E3D69B-2F99-402B-BA5D-5E7034FF4767}.Release|x86.ActiveCfg = Release|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{31F38ADB-7B43-40C4-B8FB-081CC9191A97}.Release|x86.ActiveCfg = Release|Any CPU
 		{58DACB2D-F76F-4AC2-A93C-689F37E7BC48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58DACB2D-F76F-4AC2-A93C-689F37E7BC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58DACB2D-F76F-4AC2-A93C-689F37E7BC48}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -105,6 +97,16 @@ Global
 		{5E3D0AFF-6615-41A5-98FF-9081F8BA7C67}.Release|Mixed Platforms.Build.0 = Release|x86
 		{5E3D0AFF-6615-41A5-98FF-9081F8BA7C67}.Release|x86.ActiveCfg = Release|x86
 		{5E3D0AFF-6615-41A5-98FF-9081F8BA7C67}.Release|x86.Build.0 = Release|x86
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{15C278E0-E52D-4DBA-B25A-174FAE0A8354}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
