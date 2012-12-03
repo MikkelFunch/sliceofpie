@@ -22,7 +22,7 @@ namespace WebServiceApplication
             Console.WriteLine("tester mester");
         }
 
-        public void addDocument(String name, int userId)
+        public void AddDocument(String name, int userId)
         {
             Document document = new Document();
             document.name = name;
@@ -30,7 +30,7 @@ namespace WebServiceApplication
             DAO.AddDocument(document);
         }
 
-        public void addFolder(String name, int parentFolderId)
+        public void AddFolder(String name, int parentFolderId)
         {
             Folder folder = new Folder();
             folder.name = name;
