@@ -7,14 +7,36 @@ namespace Slice_of_Pie
 {
     public class DAO
     {
+        //Singleton instance of DAO
+        private static DAO instance;
+        /// <summary>
+        /// Private constructor to insure that DAO is not created outside this class.
+        /// </summary>
+        private DAO()
+        {
+        }
+
+        public static DAO GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new DAO();
+            }
+            return instance;
+        }
+
+
         /// <summary>
         /// Adds a user to the database
         /// </summary>
         /// <param name="user">The user to add</param>
-        public static void AddUser(User user)
+        public void AddUser(String email, String password)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
+                User user = new User();
+                user.email = email;
+                user.password = password;
                 Folder folder = new Folder();
                 folder.name = "Root Folder";
                 user.Folder = folder;
@@ -27,10 +49,13 @@ namespace Slice_of_Pie
         /// Add a folder to the database
         /// </summary>
         /// <param name="folder">The folder to add</param>
-        public static void AddFolder(Folder folder)
+        public void AddFolder(String name, int parentFolderId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
+                Folder folder = new Folder();
+                folder.name = name;
+                folder.parentFolderId = parentFolderId;
                 context.Folders.AddObject(folder);
                 context.SaveChanges();
             }
@@ -40,10 +65,13 @@ namespace Slice_of_Pie
         /// Add a document to the database
         /// </summary>
         /// <param name="document">The document to add</param>
-        public static void AddDocument(Document document)
+        public void AddDocument(String name, int userId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
+                Document document = new Document();
+                document.name = name;
+                document.creatorId = userId;
                 document.creationTime = DateTime.UtcNow;
                 context.Documents.AddObject(document);
                 context.SaveChanges();
@@ -55,7 +83,7 @@ namespace Slice_of_Pie
         /// </summary>
         /// <param name="userId">The id of the user</param>
         /// <returns>The user with the given id. Null if no user has that id</returns>
-        public static User GetUser(int userId)
+        public User GetUser(int userId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -76,7 +104,7 @@ namespace Slice_of_Pie
         /// </summary>
         /// <param name="documentId">The id of the document</param>
         /// <returns>The document with the given id. Null if no document has that id</returns>
-        public static Document GetDocument(int documentId)
+        public Document GetDocument(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -97,7 +125,7 @@ namespace Slice_of_Pie
         /// </summary>
         /// <param name="folderId">The id of the folder</param>
         /// <returns>The folder with the given id. Null if no folder has that id</returns>
-        public static Folder GetFolder(int folderId)
+        public Folder GetFolder(int folderId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -117,7 +145,7 @@ namespace Slice_of_Pie
         /// Delete a folder from the database
         /// </summary>
         /// <param name="folderId">The id of the folder to delete</param>
-        public static void DeleteFolder(int folderId)
+        public void DeleteFolder(int folderId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -138,7 +166,7 @@ namespace Slice_of_Pie
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="documentId"></param>
-        public static void DeleteDocumentReference(int userId, int documentId)
+        public void DeleteDocumentReference(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -158,7 +186,7 @@ namespace Slice_of_Pie
         /// Delete a document from the database
         /// </summary>
         /// <param name="documentId">The id of the document to delete</param>
-        public static void DeleteDocument(int documentId)
+        public void DeleteDocument(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {

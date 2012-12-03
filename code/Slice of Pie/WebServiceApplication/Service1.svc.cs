@@ -14,28 +14,17 @@ namespace WebServiceApplication
     {
         public void AddUser(String email, String password)
         {
-            User user = new User();
-            user.email = email;
-            user.password = password;
-            DAO.AddUser(user);
-            Console.WriteLine("hey you");
-            Console.WriteLine("tester mester");
+            Controller.GetInstance().AddUser(email, password);
         }
 
         public void AddDocument(String name, int userId)
         {
-            Document document = new Document();
-            document.name = name;
-            document.creatorId = userId;
-            DAO.AddDocument(document);
+            Controller.GetInstance().AddDocument(name, userId);
         }
 
         public void AddFolder(String name, int parentFolderId)
         {
-            Folder folder = new Folder();
-            folder.name = name;
-            folder.parentFolderId = parentFolderId;
-            DAO.AddFolder(folder);
+            Controller.GetInstance().AddFolder(name, parentFolderId);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace Slice_of_Pie
             }
             return instance;
         }
+
         /// <summary>
         /// Merges two documents while prioritizing the latest.
         /// </summary>
