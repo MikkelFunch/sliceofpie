@@ -18,6 +18,8 @@ namespace WebServiceApplication
             user.email = email;
             user.password = password;
             DAO.AddUser(user);
+            Console.WriteLine("hey you");
+            Console.WriteLine("tester mester");
         }
     }
 }
