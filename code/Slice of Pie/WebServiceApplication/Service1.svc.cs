@@ -21,5 +21,21 @@ namespace WebServiceApplication
             Console.WriteLine("hey you");
             Console.WriteLine("tester mester");
         }
+
+        public void addDocument(String name, int userId)
+        {
+            Document document = new Document();
+            document.name = name;
+            document.creatorId = userId;
+            DAO.AddDocument(document);
+        }
+
+        public void addFolder(String name, int parentFolderId)
+        {
+            Folder folder = new Folder();
+            folder.name = name;
+            folder.parentFolderId = parentFolderId;
+            DAO.AddFolder(folder);
+        }
     }
 }
