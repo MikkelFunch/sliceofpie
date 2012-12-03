@@ -15,15 +15,13 @@ using System.Windows.Shapes;
 namespace WpfApplication2
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for DocumentView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DocumentView : UserControl
     {
-        public MainWindow()
+        public DocumentView()
         {
             InitializeComponent();
-
-            Model m = new Model();
         }
     }
 }
