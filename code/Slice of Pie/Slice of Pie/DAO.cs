@@ -44,6 +44,7 @@ namespace Slice_of_Pie
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
+                document.creationTime = DateTime.UtcNow;
                 context.Documents.AddObject(document);
                 context.SaveChanges();
             }

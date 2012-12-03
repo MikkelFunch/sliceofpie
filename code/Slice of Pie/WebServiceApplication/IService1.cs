@@ -16,7 +16,10 @@ namespace WebServiceApplication
         [OperationContract]
         void AddUser(String email, String password);
 
-        //[OperationContract]
-        //void AddDocument();
+        [OperationContract]
+        void AddDocument(String name, int userId);
+
+        [OperationContract]
+        void AddFolder(String name, int parentFolderId);
     }
 }
