@@ -3,13 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignHeight="30" d:DesignWidth="160">
+             mc:Ignorable="d" d:DesignHeight="30" d:DesignWidth="248" >
     <Grid>
+        <!-- Border -->
+        <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+        
         <!-- Buttons to the left side-->
         <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" Width="45" />
 
 
         <!-- Buttons to the right side -->
-        <Button Content="Button" HorizontalAlignment="Right" Margin="0,2,4,2" Name="button2" VerticalAlignment="Stretch" Width="45" />
+        <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
+        <Button Content="Insert image" HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" />
     </Grid>
 </UserControl>
