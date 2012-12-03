@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Slice_of_Pie
 {
-    class DAO
+    public class DAO
     {
         /// <summary>
         /// Adds a user to the database
@@ -15,7 +15,36 @@ namespace Slice_of_Pie
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
+                Folder folder = new Folder();
+                folder.name = "Root Folder";
+                user.Folder = folder;
                 context.Users.AddObject(user);
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Add a folder to the database
+        /// </summary>
+        /// <param name="folder">The folder to add</param>
+        public static void AddFolder(Folder folder)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                context.Folders.AddObject(folder);
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Add a document to the database
+        /// </summary>
+        /// <param name="document">The document to add</param>
+        public static void AddDocument(Document document)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                context.Documents.AddObject(document);
                 context.SaveChanges();
             }
         }
@@ -42,36 +71,23 @@ namespace Slice_of_Pie
         }
 
         /// <summary>
-        /// Delete a user from the database
+        /// Get a document from the database
         /// </summary>
-        /// <param name="userId">The id of the user to delete</param>
-        public static void DeleteUser(int userId)
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The document with the given id. Null if no document has that id</returns>
+        public static Document GetDocument(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                var users = from u in context.Users
-                            where u.id == userId
-                            select u;
-                User user = users.First<User>();
-                if (user != null)
+                var documents = from d in context.Documents
+                                where d.id == documentId
+                                select d;
+                Document document = null;
+                if (documents.Count<Document>() > 0)
                 {
-                    context.Users.DeleteObject(user);
-                    context.SaveChanges();
+                    document = documents.First<Document>();
                 }
-
-            }
-        }
-
-        /// <summary>
-        /// Add a folder to the database
-        /// </summary>
-        /// <param name="folder">The folder to add</param>
-        public static void AddFolder(Folder folder)
-        {
-            using (PieFactoryEntities context = new PieFactoryEntities())
-            {
-                context.Folders.AddObject(folder);
-                context.SaveChanges();
+                return document;
             }
         }
 
@@ -117,36 +133,23 @@ namespace Slice_of_Pie
         }
 
         /// <summary>
-        /// Add a document to the database
+        /// Delete a users reference to a document
         /// </summary>
-        /// <param name="document">The document to add</param>
-        public static void AddDocument(Document document)
+        /// <param name="userId"></param>
+        /// <param name="documentId"></param>
+        public static void DeleteDocumentReference(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                context.Documents.AddObject(document);
-                context.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Get a document from the database
-        /// </summary>
-        /// <param name="documentId">The id of the document</param>
-        /// <returns>The document with the given id. Null if no document has that id</returns>
-        public static Document GetDocument(int documentId)
-        {
-            using (PieFactoryEntities context = new PieFactoryEntities())
-            {
-                var documents = from d in context.Documents
-                                where d.id == documentId
-                                select d;
-                Document document = null;
-                if (documents.Count<Document>() > 0)
+                var userDocuments = from dr in context.Userdocuments
+                                    where dr.documentId == documentId & dr.userId == userId
+                                    select dr;
+                if (userDocuments.Count<Userdocument>() > 0)
                 {
-                    document = documents.First<Document>();
+                    Userdocument userDocument = userDocuments.First<Userdocument>();
+                    context.Userdocuments.DeleteObject(userDocument);
+                    context.SaveChanges();
                 }
-                return document;
             }
         }
 

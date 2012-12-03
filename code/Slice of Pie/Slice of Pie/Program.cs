@@ -9,10 +9,10 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
-            Folder folder = new Folder();
-            folder.name = "TestFolder";
-            DAO.AddFolder(folder);
-            DAO.DeleteFolder(5);
+            User user = new User();
+            user.password = "Password";
+            user.email = "Email";
+            DAO.AddUser(user);
         }
     }
 }
