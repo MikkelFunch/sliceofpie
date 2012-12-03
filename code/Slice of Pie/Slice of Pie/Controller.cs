@@ -37,10 +37,7 @@ namespace Slice_of_Pie
         /// <param name="userId">The id of the user that creates the document</param>
         public void AddDocument(String name, int userId)
         {
-            Document document = new Document();
-            document.name = name;
-            document.creatorId = userId;
-            DAO.AddDocument(document);
+            DAO.GetInstance().AddDocument(name, userId);
         }
 
         /// <summary>
@@ -50,10 +47,8 @@ namespace Slice_of_Pie
         /// <param name="parentFolderId">The id of the parent folder. Null if it is a root folder.</param>
         public void AddFolder(String name, int parentFolderId)
         {
-            Folder folder = new Folder();
-            folder.name = name;
-            folder.parentFolderId = parentFolderId;
-            DAO.AddFolder(folder);
+
+            DAO.GetInstance().AddFolder(name, parentFolderId);
         }
 
         /// <summary>
@@ -63,10 +58,7 @@ namespace Slice_of_Pie
         /// <param name="password">The non-encrypted password of the user</param>
         public void AddUser(String email, String password)
         {
-            User user = new User();
-            user.email = email;
-            user.password = password;
-            DAO.AddUser(user);
+            DAO.GetInstance().AddUser(email, password);
         }
     }
 }
