@@ -12,7 +12,7 @@ namespace WcfServiceClient
         {
             using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
             {
-                proxy.AddUser("markt", "oajiq3");
+                proxy.AddUser("markasdasdt", "oajiq3");
             }
         }
     }
