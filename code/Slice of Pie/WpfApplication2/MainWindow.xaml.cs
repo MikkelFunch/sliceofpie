@@ -56,8 +56,6 @@ namespace WpfApplication2
         {
             RegisterUserDialog userdialog = new RegisterUserDialog();
             userdialog.ShowDialog();
-
-
         }
     }
 }
