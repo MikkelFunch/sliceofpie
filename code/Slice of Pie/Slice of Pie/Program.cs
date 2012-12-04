@@ -11,6 +11,7 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
+
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 //Delete all folders
@@ -23,8 +24,12 @@ namespace Slice_of_Pie
 
                 //Delete all users
                 var users = context.Users;
-                foreach()
+
             }
-        }
+            String email = "Email";
+            String password = "Password";
+            Controller.GetInstance().AddUser(email, password);
+
+
     }
 }

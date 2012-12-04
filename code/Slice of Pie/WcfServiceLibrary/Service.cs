@@ -14,10 +14,14 @@ namespace WcfServiceLibrary
     {
         public void AddUser(String email, String password)
         {
+<<<<<<< HEAD
             User user = new User();
             user.email = email;
             user.password = password;
             Controller.GetInstance();
+=======
+            Controller.GetInstance().AddUser(email, password);
+>>>>>>> d8861aed014c9d0834d26b636bdb3c928e5be09a
         }
     }
 }
