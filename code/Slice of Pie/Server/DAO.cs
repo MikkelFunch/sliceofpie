@@ -100,6 +100,27 @@ namespace Server
         }
 
         /// <summary>
+        /// Get a user from the database
+        /// </summary>
+        /// <param name="userId">The email of the user</param>
+        /// <returns>The user with the given id. Null if no user has that id</returns>
+        public User GetUser(String email)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var users = from u in context.Users
+                            where u.email == email
+                            select u;
+                User user = null;
+                if (users.Count<User>() > 0)
+                {
+                    user = users.First<User>();
+                }
+                return user;
+            }
+        }
+
+        /// <summary>
         /// Get a document from the database
         /// </summary>
         /// <param name="documentId">The id of the document</param>
