@@ -14,7 +14,6 @@ namespace WcfServiceLibrary
     {
         public void AddUser(String email, String password)
         {
-
             Controller.GetInstance().AddUser(email, password);
         }
     }

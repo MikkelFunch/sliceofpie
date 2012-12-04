@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceLibrary", "WcfSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceClient", "WcfServiceClient\WcfServiceClient.csproj", "{27316F2F-B714-4C47-A6A1-919B6DAA9A77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication2", "WpfApplication2\WpfApplication2.csproj", "{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Slice of Pie.vsmdi
@@ -119,6 +121,16 @@ Global
 		{27316F2F-B714-4C47-A6A1-919B6DAA9A77}.Release|Mixed Platforms.Build.0 = Release|x86
 		{27316F2F-B714-4C47-A6A1-919B6DAA9A77}.Release|x86.ActiveCfg = Release|x86
 		{27316F2F-B714-4C47-A6A1-919B6DAA9A77}.Release|x86.Build.0 = Release|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Debug|x86.ActiveCfg = Debug|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Debug|x86.Build.0 = Debug|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Release|Any CPU.ActiveCfg = Release|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Release|x86.ActiveCfg = Release|x86
+		{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

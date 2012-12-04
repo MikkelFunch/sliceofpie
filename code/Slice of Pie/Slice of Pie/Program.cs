@@ -16,7 +16,6 @@ namespace Slice_of_Pie
             String email = "Email";
             String password = "Password";
             Controller.GetInstance().AddUser(email, password);
-
         }
     }
 }

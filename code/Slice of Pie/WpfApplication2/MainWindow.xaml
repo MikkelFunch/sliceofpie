@@ -53,13 +53,31 @@
         <Menu Name="topMenu" IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,0">
             <!-- Menu items -->
             <MenuItem Header="_File ">
-                <MenuItem Header="Test"/>
+                <MenuItem Header="Register new _user" Click="MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit " />
             <MenuItem Header="_View " />
             <MenuItem Header="_Help " />
         </Menu>
-        <app:ButtonMenuView Grid.ColumnSpan="2" Grid.Row="1"/>
+        
+        <!-- Button menu -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <!-- Border -->
+        <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+
+        <!-- Buttons to the left side-->
+        <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
+
+
+        <!-- Buttons to the right side -->
+        <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
+        <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
+            <Image Source="Resources/img_icon.gif" />
+                <!-- <Image Source="http://multimedia.ekstrabladet.dk/archive/00593/rep-borgen-sidse_12_593720m.jpg"/> -->
+        </Button>
+        </Grid>
+        <!-- Button menu end -->
+
         <!-- Main grid components end -->
     </Grid>
     <!-- Main grid end -->
