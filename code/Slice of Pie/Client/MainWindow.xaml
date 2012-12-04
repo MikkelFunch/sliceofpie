@@ -1,0 +1,84 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="clr-namespace:Client"
+        Title="MainWindow" Height="500" Width="960" >
+    
+    <!-- Main grid -->
+    <Grid Name="mainGrid">
+        <!-- Main grid definitions -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+        
+        
+        <!-- Explorer grid -->
+        <Grid Name="gridExplorer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Row="2" Margin="0,0,0,0">
+            <!-- Explorer grid definitions -->
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+
+            <!-- Explorer grid components -->
+
+
+
+            <!-- Explorer grid components end -->
+            <app:ExplorerView x:Name="explorerView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" />
+        </Grid>
+        <!-- Explorer grid end -->
+        
+        
+        <!-- Center grid -->
+        <Grid Name="gridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
+            <!-- Center grid definitions-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="700" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Center grid components -->
+            <app:DocumentView x:Name="documentView" Grid.Column="1" Grid.Row="0"/>
+        </Grid>
+        <!-- Center grid end-->
+
+        <!-- Main grid components -->
+        <!-- Top menu component -->
+        <Menu Name="topMenu" IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,0">
+            <!-- Menu items -->
+            <MenuItem Header="_File ">
+                <MenuItem Header="Register new _user" Click="MenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Edit " />
+            <MenuItem Header="_View " />
+            <MenuItem Header="_Help " />
+        </Menu>
+        
+        <!-- Button menu -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <!-- Border -->
+        <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+
+        <!-- Buttons to the left side-->
+        <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
+
+
+        <!-- Buttons to the right side -->
+        <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
+        <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
+            <Image Source="Resources/img_icon.gif" />
+                <!-- <Image Source="http://multimedia.ekstrabladet.dk/archive/00593/rep-borgen-sidse_12_593720m.jpg"/> -->
+        </Button>
+        </Grid>
+        <!-- Button menu end -->
+
+        <!-- Main grid components end -->
+    </Grid>
+    <!-- Main grid end -->
+</Window>

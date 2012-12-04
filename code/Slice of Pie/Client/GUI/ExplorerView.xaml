@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Client.ExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" Loaded="ExplorerView_Loaded" >
+    <Grid>
+        <!-- Grid definitions -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <!-- Grid components -->
+        
+        <!-- Top buttons definitions -->
+        <Button Content="New Folder" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonNewFolder" />
+        <Button Content="Delete" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonDelete" />
+
+        <!-- Bottom buttons -->
+        <Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="button2" Grid.Row="2"/>
+
+        <!-- Explorer treeview -->
+        <TreeView Grid.Row="1" HorizontalAlignment="Stretch" Name="ExplorerTree" VerticalAlignment="Stretch" />
+
+        <!-- Online treeview -->
+        <TreeView Grid.Row="3" HorizontalAlignment="Stretch" Name="OnlineTree" VerticalAlignment="Stretch" />
+
+        <!-- Grid components end -->
+    </Grid>
+</UserControl>

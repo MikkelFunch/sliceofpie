@@ -1,0 +1,12 @@
+﻿<Window x:Class="Client.ImageURLDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ImageURLDialog" Height="155" Width="400" ResizeMode="NoResize" Loaded="Window_Loaded" >
+    <Grid>
+        <Label Content="Enter url to image:" Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Stretch" Margin="12,46,12,0" Name="textBoxURL" VerticalAlignment="Top" />
+
+        <Button Name="buttonInsert" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add image" Margin="12,0,0,18" Width="70" Click="buttonInsert_Click" />
+        <Button Name="buttonCancel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Cancel" Margin="88,0,0,18" Width="70" Click="buttonCancel_Click" />
+    </Grid>
+</Window>
