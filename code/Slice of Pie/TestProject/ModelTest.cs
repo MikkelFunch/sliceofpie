@@ -17,7 +17,7 @@ namespace TestProject
         /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestAppend()
-        {
+        {   
             Model target = Model.GetInstance();
             string[] original = {"A", "B", "C", "D"};
             string[] latest = {"A", "B", "C", "D", "E"};

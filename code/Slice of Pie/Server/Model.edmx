@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PieFactoryModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="PieFactoryModelStoreContainer">
+          <EntitySet Name="Document" EntityType="PieFactoryModel.Store.Document" store:Type="Tables" Schema="PieFactory" />
+          <EntitySet Name="Documentrevision" EntityType="PieFactoryModel.Store.Documentrevision" store:Type="Tables" Schema="PieFactory" />
+          <EntitySet Name="Folder" EntityType="PieFactoryModel.Store.Folder" store:Type="Tables" Schema="PieFactory" />
+          <EntitySet Name="User" EntityType="PieFactoryModel.Store.User" store:Type="Tables" Schema="PieFactory" />
+          <EntitySet Name="Userdocument" EntityType="PieFactoryModel.Store.Userdocument" store:Type="Tables" Schema="PieFactory" />
+          <AssociationSet Name="Document_ibfk_1" Association="PieFactoryModel.Store.Document_ibfk_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="Documentrevision_ibfk_1" Association="PieFactoryModel.Store.Documentrevision_ibfk_1">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="Documentrevision" EntitySet="Documentrevision" />
+          </AssociationSet>
+          <AssociationSet Name="Documentrevision_ibfk_2" Association="PieFactoryModel.Store.Documentrevision_ibfk_2">
+            <End Role="User" EntitySet="User" />
+            <End Role="Documentrevision" EntitySet="Documentrevision" />
+          </AssociationSet>
+          <AssociationSet Name="Folder_ibfk_1" Association="PieFactoryModel.Store.Folder_ibfk_1">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="Folder1" EntitySet="Folder" />
+          </AssociationSet>
+          <AssociationSet Name="User_ibfk_1" Association="PieFactoryModel.Store.User_ibfk_1">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_1" Association="PieFactoryModel.Store.Userdocument_ibfk_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Userdocument" EntitySet="Userdocument" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_2" Association="PieFactoryModel.Store.Userdocument_ibfk_2">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="Userdocument" EntitySet="Userdocument" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_3" Association="PieFactoryModel.Store.Userdocument_ibfk_3">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="Userdocument" EntitySet="Userdocument" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="64" />
+          <Property Name="path" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="creationTime" Type="timestamp" Nullable="false" Precision="0" />
+          <Property Name="creatorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Documentrevision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="documentId" Type="int" Nullable="false" />
+          <Property Name="creationTime" Type="timestamp" Nullable="false" Precision="0" />
+          <Property Name="path" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="editorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="64" />
+          <Property Name="parentFolderId" Type="int" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="password" Type="varchar" Nullable="false" MaxLength="32" />
+          <Property Name="rootFolderId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Userdocument">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="documentId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="documentId" Type="int" Nullable="false" />
+          <Property Name="folderId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="Document_ibfk_1">
+          <End Role="User" Type="PieFactoryModel.Store.User" Multiplicity="1" />
+          <End Role="Document" Type="PieFactoryModel.Store.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="creatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Documentrevision_ibfk_1">
+          <End Role="Document" Type="PieFactoryModel.Store.Document" Multiplicity="1" />
+          <End Role="Documentrevision" Type="PieFactoryModel.Store.Documentrevision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Documentrevision">
+              <PropertyRef Name="documentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Documentrevision_ibfk_2">
+          <End Role="User" Type="PieFactoryModel.Store.User" Multiplicity="1" />
+          <End Role="Documentrevision" Type="PieFactoryModel.Store.Documentrevision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Documentrevision">
+              <PropertyRef Name="editorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Folder_ibfk_1">
+          <End Role="Folder" Type="PieFactoryModel.Store.Folder" Multiplicity="0..1" />
+          <End Role="Folder1" Type="PieFactoryModel.Store.Folder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Folder1">
+              <PropertyRef Name="parentFolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_ibfk_1">
+          <End Role="Folder" Type="PieFactoryModel.Store.Folder" Multiplicity="1" />
+          <End Role="User" Type="PieFactoryModel.Store.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="rootFolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_1">
+          <End Role="User" Type="PieFactoryModel.Store.User" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Store.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_2">
+          <End Role="Document" Type="PieFactoryModel.Store.Document" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Store.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="documentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_3">
+          <End Role="Folder" Type="PieFactoryModel.Store.Folder" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Store.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="folderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PieFactoryModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="PieFactoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Documents" EntityType="PieFactoryModel.Document" />
+          <EntitySet Name="Documentrevisions" EntityType="PieFactoryModel.Documentrevision" />
+          <EntitySet Name="Folders" EntityType="PieFactoryModel.Folder" />
+          <EntitySet Name="Users" EntityType="PieFactoryModel.User" />
+          <EntitySet Name="Userdocuments" EntityType="PieFactoryModel.Userdocument" />
+          <AssociationSet Name="Document_ibfk_1" Association="PieFactoryModel.Document_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="Documentrevision_ibfk_1" Association="PieFactoryModel.Documentrevision_ibfk_1">
+            <End Role="Document" EntitySet="Documents" />
+            <End Role="Documentrevision" EntitySet="Documentrevisions" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_2" Association="PieFactoryModel.Userdocument_ibfk_2">
+            <End Role="Document" EntitySet="Documents" />
+            <End Role="Userdocument" EntitySet="Userdocuments" />
+          </AssociationSet>
+          <AssociationSet Name="Documentrevision_ibfk_2" Association="PieFactoryModel.Documentrevision_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Documentrevision" EntitySet="Documentrevisions" />
+          </AssociationSet>
+          <AssociationSet Name="Folder_ibfk_1" Association="PieFactoryModel.Folder_ibfk_1">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="Folder1" EntitySet="Folders" />
+          </AssociationSet>
+          <AssociationSet Name="User_ibfk_1" Association="PieFactoryModel.User_ibfk_1">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_3" Association="PieFactoryModel.Userdocument_ibfk_3">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="Userdocument" EntitySet="Userdocuments" />
+          </AssociationSet>
+          <AssociationSet Name="Userdocument_ibfk_1" Association="PieFactoryModel.Userdocument_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Userdocument" EntitySet="Userdocuments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="path" Type="String" Nullable="false" />
+          <Property Name="creationTime" Type="DateTime" Nullable="false" />
+          <Property Name="creatorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="PieFactoryModel.Document_ibfk_1" FromRole="Document" ToRole="User" />
+          <NavigationProperty Name="Documentrevisions" Relationship="PieFactoryModel.Documentrevision_ibfk_1" FromRole="Document" ToRole="Documentrevision" />
+          <NavigationProperty Name="Userdocuments" Relationship="PieFactoryModel.Userdocument_ibfk_2" FromRole="Document" ToRole="Userdocument" />
+        </EntityType>
+        <EntityType Name="Documentrevision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="documentId" Type="Int32" Nullable="false" />
+          <Property Name="creationTime" Type="DateTime" Nullable="false" />
+          <Property Name="path" Type="String" Nullable="false" />
+          <Property Name="editorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Document" Relationship="PieFactoryModel.Documentrevision_ibfk_1" FromRole="Documentrevision" ToRole="Document" />
+          <NavigationProperty Name="User" Relationship="PieFactoryModel.Documentrevision_ibfk_2" FromRole="Documentrevision" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="parentFolderId" Type="Int32" />
+          <NavigationProperty Name="Folder1" Relationship="PieFactoryModel.Folder_ibfk_1" FromRole="Folder" ToRole="Folder1" />
+          <NavigationProperty Name="Folder2" Relationship="PieFactoryModel.Folder_ibfk_1" FromRole="Folder1" ToRole="Folder" />
+          <NavigationProperty Name="Users" Relationship="PieFactoryModel.User_ibfk_1" FromRole="Folder" ToRole="User" />
+          <NavigationProperty Name="Userdocuments" Relationship="PieFactoryModel.Userdocument_ibfk_3" FromRole="Folder" ToRole="Userdocument" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+          <Property Name="rootFolderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Documents" Relationship="PieFactoryModel.Document_ibfk_1" FromRole="User" ToRole="Document" />
+          <NavigationProperty Name="Documentrevisions" Relationship="PieFactoryModel.Documentrevision_ibfk_2" FromRole="User" ToRole="Documentrevision" />
+          <NavigationProperty Name="Folder" Relationship="PieFactoryModel.User_ibfk_1" FromRole="User" ToRole="Folder" />
+          <NavigationProperty Name="Userdocuments" Relationship="PieFactoryModel.Userdocument_ibfk_1" FromRole="User" ToRole="Userdocument" />
+        </EntityType>
+        <EntityType Name="Userdocument">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="documentId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="documentId" Type="Int32" Nullable="false" />
+          <Property Name="folderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Document" Relationship="PieFactoryModel.Userdocument_ibfk_2" FromRole="Userdocument" ToRole="Document" />
+          <NavigationProperty Name="Folder" Relationship="PieFactoryModel.Userdocument_ibfk_3" FromRole="Userdocument" ToRole="Folder" />
+          <NavigationProperty Name="User" Relationship="PieFactoryModel.Userdocument_ibfk_1" FromRole="Userdocument" ToRole="User" />
+        </EntityType>
+        <Association Name="Document_ibfk_1">
+          <End Role="User" Type="PieFactoryModel.User" Multiplicity="1" />
+          <End Role="Document" Type="PieFactoryModel.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="creatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Documentrevision_ibfk_1">
+          <End Role="Document" Type="PieFactoryModel.Document" Multiplicity="1" />
+          <End Role="Documentrevision" Type="PieFactoryModel.Documentrevision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Documentrevision">
+              <PropertyRef Name="documentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_2">
+          <End Role="Document" Type="PieFactoryModel.Document" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="documentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Documentrevision_ibfk_2">
+          <End Role="User" Type="PieFactoryModel.User" Multiplicity="1" />
+          <End Role="Documentrevision" Type="PieFactoryModel.Documentrevision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Documentrevision">
+              <PropertyRef Name="editorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Folder_ibfk_1">
+          <End Role="Folder" Type="PieFactoryModel.Folder" Multiplicity="0..1" />
+          <End Role="Folder1" Type="PieFactoryModel.Folder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Folder1">
+              <PropertyRef Name="parentFolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_ibfk_1">
+          <End Role="Folder" Type="PieFactoryModel.Folder" Multiplicity="1" />
+          <End Role="User" Type="PieFactoryModel.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="rootFolderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_3">
+          <End Role="Folder" Type="PieFactoryModel.Folder" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="folderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Userdocument_ibfk_1">
+          <End Role="User" Type="PieFactoryModel.User" Multiplicity="1" />
+          <End Role="Userdocument" Type="PieFactoryModel.Userdocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Userdocument">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PieFactoryModelStoreContainer" CdmEntityContainer="PieFactoryEntities">
+          <EntitySetMapping Name="Documents"><EntityTypeMapping TypeName="PieFactoryModel.Document"><MappingFragment StoreEntitySet="Document">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="path" ColumnName="path" />
+            <ScalarProperty Name="creationTime" ColumnName="creationTime" />
+            <ScalarProperty Name="creatorId" ColumnName="creatorId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Documentrevisions"><EntityTypeMapping TypeName="PieFactoryModel.Documentrevision"><MappingFragment StoreEntitySet="Documentrevision">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="documentId" ColumnName="documentId" />
+            <ScalarProperty Name="creationTime" ColumnName="creationTime" />
+            <ScalarProperty Name="path" ColumnName="path" />
+            <ScalarProperty Name="editorId" ColumnName="editorId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Folders"><EntityTypeMapping TypeName="PieFactoryModel.Folder"><MappingFragment StoreEntitySet="Folder">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="parentFolderId" ColumnName="parentFolderId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="PieFactoryModel.User"><MappingFragment StoreEntitySet="User">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="email" ColumnName="email" />
+            <ScalarProperty Name="password" ColumnName="password" />
+            <ScalarProperty Name="rootFolderId" ColumnName="rootFolderId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Userdocuments"><EntityTypeMapping TypeName="PieFactoryModel.Userdocument"><MappingFragment StoreEntitySet="Userdocument">
+            <ScalarProperty Name="userId" ColumnName="userId" />
+            <ScalarProperty Name="documentId" ColumnName="documentId" />
+            <ScalarProperty Name="folderId" ColumnName="folderId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="PieFactoryModel.Document" Width="1.5" PointX="5.25" PointY="3.5" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="PieFactoryModel.Documentrevision" Width="1.5" PointX="7.5" PointY="3.625" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="PieFactoryModel.Folder" Width="1.5" PointX="0.75" PointY="3.625" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="PieFactoryModel.User" Width="1.5" PointX="3" PointY="3.5" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="PieFactoryModel.Userdocument" Width="1.5" PointX="7.5" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
+        <AssociationConnector Association="PieFactoryModel.Document_ibfk_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="4.7785953776041667" />
+          <ConnectorPoint PointX="5.25" PointY="4.7785953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Documentrevision_ibfk_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="4.8074446614583328" />
+          <ConnectorPoint PointX="7.5" PointY="4.8074446614583328" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Userdocument_ibfk_2" ManuallyRouted="false">
+          <ConnectorPoint PointX="6" PointY="3.5" />
+          <ConnectorPoint PointX="6" PointY="1.8362939453124998" />
+          <ConnectorPoint PointX="7.5" PointY="1.8362939453124998" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Documentrevision_ibfk_2" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="6.0571907552083335" />
+          <ConnectorPoint PointX="4.875" PointY="6.4321907552083335" />
+          <ConnectorPoint PointX="4.875" PointY="6.3648893229166656" />
+          <ConnectorPoint PointX="7.125" PointY="6.3648893229166656" />
+          <ConnectorPoint PointX="7.5" PointY="5.9898893229166656" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Folder_ibfk_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.2819230769230767" PointY="5.9898893229166656" />
+          <ConnectorPoint PointX="1.2819230769230767" PointY="6.2398893229166656" />
+          <ConnectorPoint PointX="1.7284615384615383" PointY="6.2398893229166656" />
+          <ConnectorPoint PointX="1.7284615384615383" PointY="5.9898893229166656" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.User_ibfk_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.8074446614583328" />
+          <ConnectorPoint PointX="3" PointY="4.8074446614583328" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Userdocument_ibfk_3" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="3.625" />
+          <ConnectorPoint PointX="1.5" PointY="2.4106934179687505" />
+          <ConnectorPoint PointX="3.6666666666666665" PointY="2.41069341796875" />
+          <ConnectorPoint PointX="3.8333333333333335" PointY="2.4106934179687505" />
+          <ConnectorPoint PointX="5.916666666666667" PointY="2.41069341796875" />
+          <ConnectorPoint PointX="6.083333333333333" PointY="2.4106934179687505" />
+          <ConnectorPoint PointX="7.5" PointY="2.4106934179687505" />
+        </AssociationConnector>
+        <AssociationConnector Association="PieFactoryModel.Userdocument_ibfk_1" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.75" PointY="3.5" />
+          <ConnectorPoint PointX="3.75" PointY="1.2618944726562491" />
+          <ConnectorPoint PointX="7.5" PointY="1.2618944726562491" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
