@@ -62,7 +62,7 @@ namespace TestProject
         //}
         //
         #endregion
-
+        /*
         /// <summary>
         /// Deletes all tuples in database.
         /// </summary>
@@ -75,44 +75,44 @@ namespace TestProject
                 var folders = context.Folders;
                 foreach (Folder f in folders)
                 {
-                    context.DeleteObject(f);
+                    context.Folders.DeleteObject(f);
                 }
 
                 //Delete all users
                 var users = context.Users;
                 foreach (User u in users)
                 {
-                    context.DeleteObject(u);
+                    context.Users.DeleteObject(u);
                 }
 
                 //Delete all documents
                 var documents = context.Documents;
                 foreach (Document d in documents)
                 {
-                    context.DeleteObject(d);
+                    context.Documents.DeleteObject(d);
                 }
 
                 //Delete all documentRevision
                 var documentRevisions = context.Documentrevisions;
                 foreach (Documentrevision d in documentRevisions)
                 {
-                    context.DeleteObject(d);
+                    context.Documentrevisions.DeleteObject(d);
                 }
 
                 //Delete all userDocuments
                 var userdocuments = context.Userdocuments;
                 foreach(Userdocument ud in userdocuments)
                 {
-                    context.DeleteObject(ud);
+                    context.Userdocuments.DeleteObject(ud);
                 }
 
                 context.SaveChanges();
             }
           
         }
-        
+        */
         /// <summary>
-        ///A test for AddUser
+        ///A test for AddUser and GetUser
         ///</summary>
         [TestMethod()]
         [DeploymentItem("Server.dll")]
@@ -128,7 +128,7 @@ namespace TestProject
         }
 
         [TestMethod()]
-        [DeploymentItem("Server.dll")]
+        //[DeploymentItem("Server.dll")]
         public void AddDocumentGetDocumentTest()
         {
         }
