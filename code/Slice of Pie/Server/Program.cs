@@ -11,7 +11,9 @@ namespace Server
         {
             String email = "heyho";
             String password = "gedig";
-            Controller.GetInstance().AddUser(email, password);
+            Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
+            Controller.GetInstance().AddFolder("testFolder", null);
+            Console.In.ReadLine();
         }
     }
 }

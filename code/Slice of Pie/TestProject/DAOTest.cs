@@ -58,7 +58,7 @@ namespace TestProject
         }
 
         /// <summary>
-        ///A test for AddUser
+        ///A test for AddUser and GetUser
         ///</summary>
         [TestMethod()]
         public void AddUserGetUserTest()
@@ -69,7 +69,6 @@ namespace TestProject
             User u = DAO.GetInstance().GetUser(email);
             Assert.AreEqual(u.email, email);
             Assert.AreEqual(u.password, password);
-
         }
 
         [TestMethod()]
