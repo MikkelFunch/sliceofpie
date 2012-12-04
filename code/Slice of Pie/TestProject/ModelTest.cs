@@ -18,7 +18,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestAppend()
         {   
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = {"A", "B", "C", "D"};
             string[] latest = {"A", "B", "C", "D", "E"};
             string[] expected = {"A", "B", "C", "D", "E"};
@@ -33,7 +33,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestDeleteAtEnd()
         {
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = { "A", "B", "C", "D" };
             string[] latest = { "A", "B", "C" };
             string[] expected = { "A", "B", "C"};
@@ -48,7 +48,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestDelete()
         {
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = { "A", "B", "C", "D" };
             string[] latest = { "A", "C", "D" };
             string[] expected = { "A", "C", "D" };
@@ -60,7 +60,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestInsert()
         {
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = { "A", "B", "D", "E" };
             string[] latest = { "A", "B", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "D", "E" };
@@ -72,7 +72,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestMultipleEdits1()
         {
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = { "A", "B", "D", "E", "F"};
             string[] latest = { "A", "B", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "D", "E" };
@@ -84,7 +84,7 @@ namespace TestProject
         [TestMethod()]
         public void MergeDocumentsTestMultipleEdits2()
         {
-            Model_Accessor target = new Model_Accessor();
+            Model target = Model.GetInstance();
             string[] original = { "A", "B", "D", "E", "F" };
             string[] latest = { "A", "B", "C", "C", "C", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "C", "C", "C", "D", "E" };
