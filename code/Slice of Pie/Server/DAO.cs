@@ -142,6 +142,27 @@ namespace Server
         }
 
         /// <summary>
+        /// Get a document from the database
+        /// </summary>
+        /// <param name="documentId">The name of the document</param>
+        /// <returns>The document with the given id. Null if no document has that id</returns>
+        public Document GetDocument(String name)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documents = from d in context.Documents
+                                where d.name == name
+                                select d;
+                Document document = null;
+                if (documents.Count<Document>() > 0)
+                {
+                    document = documents.First<Document>();
+                }
+                return document;
+            }
+        }
+
+        /// <summary>
         /// Get a folder from the database
         /// </summary>
         /// <param name="folderId">The id of the folder</param>
