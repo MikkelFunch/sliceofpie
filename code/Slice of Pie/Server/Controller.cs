@@ -31,13 +31,13 @@ namespace Server
         }
 
         /// <summary>
-        /// Adds a document to the database.
+        /// Adds a user to the database.
         /// </summary>
-        /// <param name="name">The name of the document</param>
-        /// <param name="userId">The id of the user that creates the document</param>
-        public void AddDocument(String name, int userId)
+        /// <param name="email">The email of the user</param>
+        /// <param name="password">The non-encrypted password of the user</param>
+        public void AddUser(String email, String password)
         {
-            DAO.GetInstance().AddDocument(name, userId);
+            DAO.GetInstance().AddUser(email, password);
         }
 
         /// <summary>
@@ -52,13 +52,53 @@ namespace Server
         }
 
         /// <summary>
-        /// Adds a user to the database.
+        /// Adds a document to the database.
         /// </summary>
-        /// <param name="email">The email of the user</param>
-        /// <param name="password">The non-encrypted password of the user</param>
-        public void AddUser(String email, String password)
+        /// <param name="name">The name of the document</param>
+        /// <param name="userId">The id of the user that creates the document</param>
+        public void AddDocument(String name, int userId)
         {
-            DAO.GetInstance().AddUser(email, password);
+            DAO.GetInstance().AddDocument(name, userId);
+        }
+
+        public User GetUser(int userId)
+        {
+            return DAO.GetInstance().GetUser(userId);
+        }
+
+        public User GetUser(String email)
+        {
+            return DAO.GetInstance().GetUser(email);
+        }
+
+        public Document GetDocument(int documentId)
+        {
+            return DAO.GetInstance().GetDocument(documentId);
+        }
+
+        public Document GetDocument(String name)
+        {
+            return DAO.GetInstance().GetDocument(name);
+        }
+
+        public Folder GetFolder(int folderId)
+        {
+            return DAO.GetInstance().GetFolder(folderId);
+        }
+
+        public void DeleteFolder(int folderId)
+        {
+            DAO.GetInstance().DeleteFolder(folderId);
+        }
+
+        public void DeleteDocumentReference(int userId, int documentId)
+        {
+            DAO.GetInstance().DeleteDocumentReference(userId, documentId);
+        }
+
+        public void DeleteDocument(int documentId)
+        {
+            DAO.GetInstance().DeleteDocument(documentId);
         }
     }
 }
