@@ -14,10 +14,7 @@ namespace WcfServiceLibrary
     {
         public void AddUser(String email, String password)
         {
-            User user = new User();
-            user.email = email;
-            user.password = password;
-            DAO.AddUser(user);
+            Controller.GetInstance().AddUser(email, password);
         }
     }
 }

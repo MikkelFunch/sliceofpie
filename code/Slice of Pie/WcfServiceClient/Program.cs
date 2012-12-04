@@ -10,6 +10,10 @@ namespace WcfServiceClient
     {
         static void Main(string[] args)
         {
+            using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
+            {
+                proxy.AddUser("markt", "oajiq3");
+            }
         }
     }
 }

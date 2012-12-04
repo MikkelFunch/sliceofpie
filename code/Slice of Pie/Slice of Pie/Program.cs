@@ -11,10 +11,9 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
-            User user = new User();
-            user.password = "Password";
-            user.email = "Email";
-            DAO.AddUser(user);
+            String email = "Email";
+            String password = "Password";
+            Controller.GetInstance().AddUser(email, password);
         }
     }
 }
