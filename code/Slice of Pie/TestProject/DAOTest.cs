@@ -121,7 +121,6 @@ namespace TestProject
                 string email = "test@test.test";
                 string password = "test123";
                 DAO.GetInstance().AddUser(email, password);
-                //TODO create getter with email
                 User u = DAO.GetInstance().GetUser(email);
                 Assert.AreEqual(u.email, email);
                 Assert.AreEqual(u.password, password);

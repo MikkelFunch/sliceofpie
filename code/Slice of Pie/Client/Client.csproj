@@ -69,6 +69,9 @@
     <Compile Include="GUI\ImageURLDialog.xaml.cs">
       <DependentUpon>ImageURLDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
@@ -94,6 +97,10 @@
     <Page Include="GUI\ImageURLDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

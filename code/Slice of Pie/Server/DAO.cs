@@ -16,6 +16,10 @@ namespace Server
         {
         }
 
+        /// <summary>
+        /// Accessor method for accessing the single instance of DAO.
+        /// </summary>
+        /// <returns>The only instance of DAO</returns>
         public static DAO GetInstance()
         {
             if (instance == null)
