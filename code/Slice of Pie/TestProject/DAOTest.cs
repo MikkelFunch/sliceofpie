@@ -118,7 +118,18 @@ namespace TestProject
             target.AddUser(email, password);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
-        
+
+
+        /// <summary>
+        ///A test for DAO Constructor
+        ///</summary>
+        [TestMethod()]
+        [DeploymentItem("Server.dll")]
+        public void DAOConstructorTest()
+        {
+            DAO_Accessor target = new DAO_Accessor();
+            Assert.Inconclusive("TODO: Implement code to verify target");
+        }
     }
     
 }
