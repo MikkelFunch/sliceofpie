@@ -16,7 +16,7 @@ namespace TestProject
 
 
         private TestContext testContextInstance;
-        
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -62,62 +62,6 @@ namespace TestProject
         //}
         //
         #endregion
-
-        /// <summary>
-        /// Deletes all tuples in database.
-        /// </summary>
-        [TestInitialize()]
-        public void CleanDataBase()
-        {
-            using (PieFactoryEntities context = new PieFactoryEntities())
-            {
-                //Delete all folders
-                var folders = context.Folders;
-                foreach (Folder f in folders)
-                {
-                    context.DeleteObject(f);
-                }
-                context.SaveChanges();
-
-                //Delete all users
-                var users = context.Users;
-                foreach (User u in users)
-                {
-                    context.DeleteObject(u);
-                }
-                context.SaveChanges();
-
-                //Delete all documents
-                var documents = context.Documents;
-                foreach (Document d in documents)
-                {
-                    context.DeleteObject(d);
-                }
-                context.SaveChanges();
-
-                //Delete all documentRevision
-                var documentRevision = context.Documentrevisions;
-                foreach (Document d in documents)
-                {
-                    context.DeleteObject(d);
-                }
-                context.SaveChanges();
-            }
-          
-        }
-        
-        /// <summary>
-        ///A test for AddUser
-        ///</summary>
-        [TestMethod()]
-        public void AddUserTest()
-        {
-            DAO_Accessor target = new DAO_Accessor(); // TODO: Initialize to an appropriate value
-            string email = string.Empty; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            target.AddUser(email, password);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
 
 
         /// <summary>
