@@ -26,12 +26,15 @@ namespace Client
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             string username = textBoxUser.Text;
-            string password = textBoxPass1.Text;
+            string pass1 = textBoxPass1.Text;
+            string pass2 = textBoxPass2.Text;
 
-            /*using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
+
+
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
             {
-                proxy.AddUser(username, password);
-            }*/
+                proxy.AddUser(username, pass1);
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

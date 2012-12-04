@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{EA572791-620D-457E-B500-9A94D8AB1230}"
+	ProjectSection(ProjectDependencies) = postProject
+		{853721D2-ACB8-4313-93A9-28ED4DD4164F} = {853721D2-ACB8-4313-93A9-28ED4DD4164F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceLibrary", "WcfServiceLibrary\WcfServiceLibrary.csproj", "{853721D2-ACB8-4313-93A9-28ED4DD4164F}"
 EndProject

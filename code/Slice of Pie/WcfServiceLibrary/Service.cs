@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using Server;
 
 namespace WcfServiceLibrary
 {
@@ -12,7 +13,7 @@ namespace WcfServiceLibrary
     {
         public void AddUser(String email, String password)
         {
-            //Controller.GetInstance().AddUser(email, password);
+            Controller.GetInstance().AddUser(email, password);
         }
     }
 }
