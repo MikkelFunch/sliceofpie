@@ -53,7 +53,7 @@
         <Menu Name="topMenu" IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,0">
             <!-- Menu items -->
             <MenuItem Header="_File ">
-                <MenuItem Header="Register new _user"/>
+                <MenuItem Header="Register new _user" Click="MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit " />
             <MenuItem Header="_View " />

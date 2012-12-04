@@ -30,6 +30,6 @@ namespace Slice_of_Pie
             String password = "Password";
             Controller.GetInstance().AddUser(email, password);
 
-
+        }
     }
 }

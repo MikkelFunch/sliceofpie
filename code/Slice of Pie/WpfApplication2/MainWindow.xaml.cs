@@ -51,5 +51,13 @@ namespace WpfApplication2
                 documentView.richTextBox.Document.Blocks.Add(p);
             }
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterUserDialog userdialog = new RegisterUserDialog();
+            userdialog.ShowDialog();
+
+
+        }
     }
 }

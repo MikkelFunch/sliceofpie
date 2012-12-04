@@ -22,5 +22,21 @@ namespace WpfApplication2
         {
             InitializeComponent();
         }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            string username = textBoxUser.Text;
+            string password = textBoxPass1.Text;
+
+            using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
+            {
+                proxy.AddUser(username, password);
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

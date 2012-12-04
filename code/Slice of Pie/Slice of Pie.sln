@@ -27,6 +27,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceClient", "WcfServiceClient\WcfServiceClient.csproj", "{27316F2F-B714-4C47-A6A1-919B6DAA9A77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication2", "WpfApplication2\WpfApplication2.csproj", "{E54CA5AF-2462-4182-BF67-0C5DBF3F68FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{893B9830-0EB5-4368-B219-9D52F06ED8F4} = {893B9830-0EB5-4368-B219-9D52F06ED8F4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
