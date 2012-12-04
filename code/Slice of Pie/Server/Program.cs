@@ -9,8 +9,8 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            String email = "Email";
-            String password = "Password";
+            String email = "heyho";
+            String password = "gedig";
             Controller.GetInstance().AddUser(email, password);
         }
     }
