@@ -4,8 +4,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Slice_of_Pie;
-
 
 namespace WcfServiceLibrary
 {
@@ -14,7 +12,7 @@ namespace WcfServiceLibrary
     {
         public void AddUser(String email, String password)
         {
-            Controller.GetInstance().AddUser(email, password);
+            //Controller.GetInstance().AddUser(email, password);
         }
     }
 }
