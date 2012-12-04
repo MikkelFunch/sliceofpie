@@ -63,17 +63,78 @@ namespace TestProject
         //
         #endregion
 
-
         /// <summary>
-        ///A test for DAO Constructor
+        /// Deletes all tuples in database.
+        /// </summary>
+        [TestInitialize()]
+        public void CleanDataBase()
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                //Delete all folders
+                var folders = context.Folders;
+                foreach (Folder f in folders)
+                {
+                    context.DeleteObject(f);
+                }
+
+                //Delete all users
+                var users = context.Users;
+                foreach (User u in users)
+                {
+                    context.DeleteObject(u);
+                }
+
+                //Delete all documents
+                var documents = context.Documents;
+                foreach (Document d in documents)
+                {
+                    context.DeleteObject(d);
+                }
+
+                //Delete all documentRevision
+                var documentRevisions = context.Documentrevisions;
+                foreach (Documentrevision d in documentRevisions)
+                {
+                    context.DeleteObject(d);
+                }
+
+                //Delete all userDocuments
+                var userdocuments = context.Userdocuments;
+                foreach(Userdocument ud in userdocuments)
+                {
+                    context.DeleteObject(ud);
+                }
+
+                context.SaveChanges();
+            }
+          
+        }
+        
+        /// <summary>
+        ///A test for AddUser
         ///</summary>
         [TestMethod()]
         [DeploymentItem("Server.dll")]
-        public void DAOConstructorTest()
+        public void AddUserGetUserTest()
         {
-            DAO_Accessor target = new DAO_Accessor();
-            Assert.Inconclusive("TODO: Implement code to verify target");
+                string email = "test@test.test";
+                string password = "test123";
+                DAO.GetInstance().AddUser(email, password);
+                //TODO create getter with email
+                User u = DAO.GetInstance().GetUser(email);
+                Assert.AreEqual(u.email, email);
+                Assert.AreEqual(u.password, password);
+
         }
+
+        [TestMethod()]
+        [DeploymentItem("Server.dll")]
+        public void AddDocumentGetDocumentTest()
+        {
+        }
+        
     }
     
 }
+
