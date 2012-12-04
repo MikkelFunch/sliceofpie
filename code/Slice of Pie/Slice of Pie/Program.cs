@@ -11,10 +11,20 @@ namespace Slice_of_Pie
     {
         static void Main(string[] args)
         {
-            User user = new User();
-            user.password = "Password";
-            user.email = "Email";
-            DAO.AddUser(user);
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                //Delete all folders
+                var folders = context.Folders;
+                foreach (Folder f in folders)
+                {
+                    context.DeleteObject(f);
+                }
+                context.SaveChanges();
+
+                //Delete all users
+                var users = context.Users;
+                foreach()
+            }
         }
     }
 }
