@@ -25,15 +25,31 @@ namespace Client
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            string username = textBoxUser.Text;
-            string pass1 = textBoxPass1.Text;
-            string pass2 = textBoxPass2.Text;
+            string uname = textBoxUser.Text;
+            string passUnencrypted = passwordBox1.Password;
 
-
-
-            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            if (uname.Length > 0)
             {
-                proxy.AddUser(username, pass1);
+                if (passUnencrypted != null && passUnencrypted.Length > 0 && passUnencrypted == passwordBox2.Password)
+                {
+                    string pass = Security.EncryptPassword(passUnencrypted);
+                    using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+                    {
+                        Boolean successful = proxy.AddUser(uname, pass);
+                        if (!successful)
+                        {
+                            MessageBox.Show("User exsists", "Creation error");
+                        }
+                    }
+                }
+                else //the passwords does not match
+                {
+                    MessageBox.Show("User could not be created./nEntered passwords does not match", "Creation error");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter username", "Creation error");
             }
         }
 

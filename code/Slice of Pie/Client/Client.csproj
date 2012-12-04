@@ -73,6 +73,7 @@
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Security.cs" />
     <Compile Include="Service References\WcfServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -135,11 +136,29 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Document.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Folder.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Server.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\WcfServiceReference\service.wsdl" />
     <None Include="Service References\WcfServiceReference\service.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WcfServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfServiceReference\System.Data.Objects.DataClasses.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfServiceReference\System.Data.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

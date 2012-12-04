@@ -35,9 +35,17 @@ namespace Server
         /// </summary>
         /// <param name="email">The email of the user</param>
         /// <param name="password">The non-encrypted password of the user</param>
-        public void AddUser(String email, String password)
+        public Boolean AddUser(String email, String password)
         {
-            DAO.GetInstance().AddUser(email, password);
+            try
+            {
+                DAO.GetInstance().AddUser(email, password);
+            }
+            catch(System.Data.UpdateException e)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

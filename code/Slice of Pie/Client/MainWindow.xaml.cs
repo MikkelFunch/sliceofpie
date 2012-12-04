@@ -52,7 +52,12 @@ namespace Client
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void LoginItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RegisterItem_Click(object sender, RoutedEventArgs e)
         {
             RegisterUserDialog userdialog = new RegisterUserDialog();
             userdialog.ShowDialog();
