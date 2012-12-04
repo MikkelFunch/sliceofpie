@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Slice_of_Pie
 {
-    class Model
+    public class Model
     {
         //Singleton instance of model
         private static Model instance;

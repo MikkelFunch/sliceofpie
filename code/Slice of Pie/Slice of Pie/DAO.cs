@@ -29,7 +29,7 @@ namespace Slice_of_Pie
         /// <summary>
         /// Adds a user to the database
         /// </summary>
-        /// <param name="user">The user to add</param>
+        /// <param name="user">The email and password for the user</param>
         public void AddUser(String email, String password)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -48,7 +48,7 @@ namespace Slice_of_Pie
         /// <summary>
         /// Add a folder to the database
         /// </summary>
-        /// <param name="folder">The folder to add</param>
+        /// <param name="folder">The name of the folder and id of parent folder</param>
         public void AddFolder(String name, int parentFolderId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -64,7 +64,7 @@ namespace Slice_of_Pie
         /// <summary>
         /// Add a document to the database
         /// </summary>
-        /// <param name="document">The document to add</param>
+        /// <param name="document">The name of the document and the id of the user creator</param>
         public void AddDocument(String name, int userId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
