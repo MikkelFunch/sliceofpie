@@ -69,10 +69,14 @@
     <Compile Include="GUI\ImageURLDialog.xaml.cs">
       <DependentUpon>ImageURLDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Security.cs" />
     <Compile Include="Service References\WcfServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +97,10 @@
     <Page Include="GUI\ImageURLDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -129,19 +137,35 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Document.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Folder.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfServiceReference\Server.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\WcfServiceReference\service.wsdl" />
     <None Include="Service References\WcfServiceReference\service.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WcfServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfServiceReference\System.Data.Objects.DataClasses.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfServiceReference\System.Data.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

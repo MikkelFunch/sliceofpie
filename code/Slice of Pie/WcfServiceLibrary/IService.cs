@@ -13,7 +13,7 @@ namespace WcfServiceLibrary
     public interface IService
     {
         [OperationContract]
-        void AddUser(String email, String password);
+        Boolean AddUser(String email, String password);
 
         [OperationContract]
         void AddFolder(String name, int parentFolderId);
