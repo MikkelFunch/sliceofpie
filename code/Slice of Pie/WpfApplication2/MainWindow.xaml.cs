@@ -25,5 +25,31 @@ namespace WpfApplication2
 
             Model m = new Model();
         }
+
+        private void buttonImage_Click(object sender, RoutedEventArgs e)
+        {
+            string url = null;
+
+            ImageURLDialog imDialog = new ImageURLDialog();
+            imDialog.ShowDialog();
+
+            //get inserted url
+            url = imDialog.URLString;
+
+            //check if it is a valid url
+            if (url != null && url.StartsWith("http://"))
+            {
+                String path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\Random\\Gamer 1337.png";
+                BitmapImage bitmap = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
+                Image image = new Image();
+                image.Source = bitmap;
+                image.Width = 130;
+                image.Height = 130;
+
+                Paragraph p = (Paragraph) documentView.richTextBox.Document.Blocks.LastBlock;
+                p.Inlines.Add(image);
+                documentView.richTextBox.Document.Blocks.Add(p);
+            }
+        }
     }
 }

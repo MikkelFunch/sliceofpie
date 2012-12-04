@@ -55,15 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ButtonMenuView.xaml">
+    <Page Include="Views\ButtonMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DocumentView.xaml">
+    <Page Include="Views\DocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ExplorerView.xaml">
+    <Page Include="Views\ExplorerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageURLDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -75,14 +79,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ButtonMenuView.xaml.cs">
+    <Compile Include="Views\ButtonMenuView.xaml.cs">
       <DependentUpon>ButtonMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocumentView.xaml.cs">
+    <Compile Include="Views\DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExplorerView.xaml.cs">
+    <Compile Include="Views\ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageURLDialog.xaml.cs">
+      <DependentUpon>ImageURLDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -116,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Treeview notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\img_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
