@@ -16,7 +16,7 @@ namespace TestProject
 
 
         private TestContext testContextInstance;
-        
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -66,7 +66,7 @@ namespace TestProject
         /// <summary>
         /// Deletes all tuples in database.
         /// </summary>
-        [TestInitialize()]
+        /*[TestInitialize()]
         public void CleanDataBase()
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -117,7 +117,7 @@ namespace TestProject
             string password = string.Empty; // TODO: Initialize to an appropriate value
             target.AddUser(email, password);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
+        }*/
         
     }
     
