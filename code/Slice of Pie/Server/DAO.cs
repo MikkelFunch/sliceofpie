@@ -243,13 +243,63 @@ namespace Server
             }
         }
 
-        public void AddDocumentRevision(String name, int editorId, int documentId)
+        /// <summary>
+        /// Adds an edition/revision of an existing document.
+        /// </summary>
+        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="documentId">The id of the document that has been edited</param>
+        public void AddDocumentRevision(int editorId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 Documentrevision dr = new Documentrevision();
+                dr.creationTime = DateTime.UtcNow;
+                dr.editorId = editorId;
+                dr.documentId = documentId;
+                dr.path = "";                                  //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                context.Documentrevisions.AddObject(dr);
+                context.SaveChanges();
             }
         }
+
+        public List<Documentrevision> GetDocumentRevisions(int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+
+                List<Documentrevision> documentRevisionList = new List<Documentrevision>();
+                foreach (Documentrevision dr in documentRevisions)
+                {
+                    documentRevisionList.Add(dr);
+                }
+                return documentRevisionList;
+            }
+        }
+
+        public Documentrevision GetLatestDocumentRevision(int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+
+                Documentrevision mostRecent = documentRevisions.First<Documentrevision>();
+                foreach(Documentrevision dr in documentRevisions)
+                {
+                    if (dr.creationTime > mostRecent.creationTime)
+                    {
+                        mostRecent = dr;
+                    }
+                }
+                return mostRecent;
+            }
+        }
+
+
 
         /// <summary>
         /// Get a document from the database
