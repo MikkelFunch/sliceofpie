@@ -29,6 +29,51 @@ namespace Server
             return instance;
         }
 
+        /// <summary>
+        /// Removes all data from the database.
+        /// </summary>
+        public void DeleteAllData()
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                //Delete all folders
+                var folders = context.Folders;
+                foreach (Folder f in folders)
+                {
+                    context.Folders.DeleteObject(f);
+                }
+
+                //Delete all users
+                var users = context.Users;
+                foreach (User u in users)
+                {
+                    context.Users.DeleteObject(u);
+                }
+
+                //Delete all documents
+                var documents = context.Documents;
+                foreach (Document d in documents)
+                {
+                    context.Documents.DeleteObject(d);
+                }
+
+                //Delete all documentRevision
+                var documentRevisions = context.Documentrevisions;
+                foreach (Documentrevision d in documentRevisions)
+                {
+                    context.Documentrevisions.DeleteObject(d);
+                }
+
+                //Delete all userDocuments
+                var userdocuments = context.Userdocuments;
+                foreach (Userdocument ud in userdocuments)
+                {
+                    context.Userdocuments.DeleteObject(ud);
+                }
+                context.SaveChanges();
+            }
+        }
+
 
         /// <summary>
         /// Adds a user to the database
@@ -42,7 +87,7 @@ namespace Server
                 user.email = email;
                 user.password = password;
                 Folder folder = new Folder();
-                folder.name = "Root Folder";
+                folder.name = "root";
                 user.Folder = folder;
                 context.Users.AddObject(user);
                 context.SaveChanges();
@@ -77,7 +122,27 @@ namespace Server
                 document.name = name;
                 document.creatorId = userId;
                 document.creationTime = DateTime.UtcNow;
+                document.path = "";                     //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 context.Documents.AddObject(document);
+                context.SaveChanges();
+            }
+        }
+        
+        /// <summary>
+        /// Adds a reference from a user to a document to the database.
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="folderId">the id of the folder</param>
+        public void AddUserDocument(int userId, int documentId, int folderId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Userdocument userDocument = new Userdocument();
+                userDocument.documentId = documentId;
+                userDocument.userId = userId;
+                userDocument.folderId = folderId;
+                context.Userdocuments.AddObject(userDocument);
                 context.SaveChanges();
             }
         }
@@ -121,6 +186,14 @@ namespace Server
                     user = users.First<User>();
                 }
                 return user;
+            }
+        }
+
+        public void AddDocumentRevision(String name, int editorId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Documentrevision dr = new Documentrevision();
             }
         }
 
@@ -188,6 +261,27 @@ namespace Server
         }
 
         /// <summary>
+        /// Get a folder from the database
+        /// </summary>
+        /// <param name="folderId">The name of the folder</param>
+        /// <returns>The folder with the given name. Null if no folder has that name</returns>
+        public Folder GetFolder(String name)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var folders = from f in context.Folders
+                              where f.name == name
+                              select f;
+                Folder folder = null;
+                if (folders.Count<Folder>() > 0)
+                {
+                    folder = folders.First<Folder>();
+                }
+                return folder;
+            }
+        }
+
+        /// <summary>
         /// Delete a folder from the database
         /// </summary>
         /// <param name="folderId">The id of the folder to delete</param>
@@ -210,8 +304,8 @@ namespace Server
         /// <summary>
         /// Delete a users reference to a document
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="documentId"></param>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
         public void DeleteDocumentReference(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())

@@ -17,48 +17,11 @@ namespace TestProject
         [TestInitialize()]
         public void CleanDataBase()
         {
-            using (PieFactoryEntities context = new PieFactoryEntities())
-            {
-                //Delete all folders
-                var folders = context.Folders;
-                foreach (Folder f in folders)
-                {
-                    context.Folders.DeleteObject(f);
-                }
-
-                //Delete all users
-                var users = context.Users;
-                foreach (User u in users)
-                {
-                    context.Users.DeleteObject(u);
-                }
-
-                //Delete all documents
-                var documents = context.Documents;
-                foreach (Document d in documents)
-                {
-                    context.Documents.DeleteObject(d);
-                }
-
-                //Delete all documentRevision
-                var documentRevisions = context.Documentrevisions;
-                foreach (Documentrevision d in documentRevisions)
-                {
-                    context.Documentrevisions.DeleteObject(d);
-                }
-
-                //Delete all userDocuments
-                var userdocuments = context.Userdocuments;
-                foreach (Userdocument ud in userdocuments)
-                {
-                    context.Userdocuments.DeleteObject(ud);
-                }
-                context.SaveChanges();
-            }
+            DAO.GetInstance().DeleteAllData();
         }
 
         /// <summary>
-        ///A test for AddUser and GetUser
+        ///Test for AddUser and GetUser. Has no explicit dependencies.
         ///</summary>
         [TestMethod()]
         public void AddUserGetUserTest()
@@ -71,10 +34,38 @@ namespace TestProject
             Assert.AreEqual(u.password, password);
         }
 
+        /// <summary>
+        /// Test for AddDocument and GetDocument. Has AddUserGetUserTest as dependency.
+        /// </summary>
         [TestMethod()]
         public void AddDocumentGetDocumentTest()
         {
-
+            string email = "test@test.test";
+            string password = "test123";
+            DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUser(email);
+            string name = "TestDoc";
+            DAO.GetInstance().AddDocument("TestDoc", u.id);
+            Document d = DAO.GetInstance().GetDocument(name);
+            Assert.AreEqual(d.name, name);
         }
+
+        /// <summary>
+        /// Test for AddFolder and GetFolder. Has AddUserGetUserTest as dependency.
+        /// </summary>
+        [TestMethod()]
+        public void AddFolderGetFolderTest()
+        {
+            string email = "test@test.test";
+            string password = "test123";
+            DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUser(email);
+            string name = "testFolder";
+            DAO.GetInstance().AddFolder(name, u.rootFolderId);
+            Folder f = DAO.GetInstance().GetFolder(name);
+            Assert.AreEqual(f.name, name);
+        }
+
+
     }
 }
