@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Server
 {
@@ -114,7 +115,7 @@ namespace Server
         /// Add a document to the database
         /// </summary>
         /// <param name="document">The name of the document and the id of the user creator</param>
-        public void AddDocument(String name, int userId)
+        public void AddDocument(String name, int userId, int folderId, String content)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -122,12 +123,42 @@ namespace Server
                 document.name = name;
                 document.creatorId = userId;
                 document.creationTime = DateTime.UtcNow;
-                document.path = "";                     //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
+                //Find the path of this document
+                StringBuilder sb = new StringBuilder();
+                Folder folder = GetFolder(folderId);
+                while (folder != null || folder.parentFolderId != null)
+                {
+                    if (folder.parentFolderId == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        sb.Insert(0, "\\" + folder.name);
+                    }
+                    folder = GetFolder((int)folder.parentFolderId);
+                }
+                String userEmail = GetUser(userId).email;
+                sb.Insert(0, "\\sliceofpie\\" + userEmail);
+                String folderPath = sb.ToString();
+
+                document.path = String.Format("{0}{1}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), folderPath);
+                Directory.CreateDirectory(document.path);
+                String filepath = String.Format("{0}\\{1}.txt", document.path, document.name);
+                File.Create(filepath);
+
+                //Write to the document
+                using (StreamWriter sw = new StreamWriter(filepath))
+                {
+                    sw.Write(content);
+                }
+
                 context.Documents.AddObject(document);
                 context.SaveChanges();
             }
         }
-        
+
         /// <summary>
         /// Adds a reference from a user to a document to the database.
         /// </summary>
@@ -339,6 +370,28 @@ namespace Server
                     context.Documents.DeleteObject(document);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get a userdocument from the database
+        /// </summary>
+        /// <param name="userId">The userId of the userdocument</param>
+        /// <param name="documentId">The documentId of the userdocument</param>
+        /// <returns>The Userdocument with the given userId and documentId. Null if none exists</returns>
+        public Userdocument GetUserdocument(int userId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var userdocuments = from ud in context.Userdocuments
+                                    where ud.userId == userId && ud.documentId == documentId
+                                    select ud;
+                Userdocument userdocument = null;
+                if (userdocuments.Count<Userdocument>() > 0)
+                {
+                    userdocument = userdocuments.First<Userdocument>();
+                }
+                return userdocument;
             }
         }
     }

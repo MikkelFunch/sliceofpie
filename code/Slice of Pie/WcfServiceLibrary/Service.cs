@@ -21,9 +21,9 @@ namespace WcfServiceLibrary
             Controller.GetInstance().AddFolder(name, parentFolderId);
         }
 
-        public void AddDocument(String name, int userId)
+        public void AddDocument(String name, int userId, int folderId, String content)
         {
-            Controller.GetInstance().AddDocument(name, userId);
+            Controller.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
         public User GetUserById(int userId)
