@@ -41,7 +41,7 @@ namespace Server
             {
                 DAO.GetInstance().AddUser(email, password);
             }
-            catch(System.Data.UpdateException e)
+            catch(System.Data.UpdateException)
             {
                 return false;
             }
