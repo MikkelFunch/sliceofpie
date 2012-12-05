@@ -10,7 +10,6 @@ namespace Server
         static void Main(string[] args)
         {
             String email = "heyho";
-            String password = "gedig";
             Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
             Console.In.ReadLine();
         }
