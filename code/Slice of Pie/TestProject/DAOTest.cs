@@ -20,6 +20,12 @@ namespace TestProject
             DAO.GetInstance().DeleteAllData();
         }
 
+        [ClassCleanup()]
+        public static void CleanDataBaseFinish()
+        {
+            DAO.GetInstance().DeleteAllData();
+        }
+
         /// <summary>
         ///Test for AddUser and GetUser. Has no explicit dependencies.
         ///</summary>
