@@ -159,6 +159,36 @@ namespace Server
         }
 
         /// <summary>
+        /// Adds an edition/revision of an existing document.
+        /// </summary>
+        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="documentId">The id of the document that has been edited</param>
+        public void AddDocumentRevision(int editorId, int documentId, String content)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Documentrevision documentRevision = new Documentrevision();
+                documentRevision.creationTime = DateTime.UtcNow;
+                documentRevision.editorId = editorId;
+                documentRevision.documentId = documentId;
+
+                Document originalDocument = GetDocument(documentId);
+                String folderPath = originalDocument.path;
+
+                String filepath = String.Format("{0}\\{1}_revision_{2}.txt", folderPath, originalDocument.name, documentRevision.creationTime.ToString().Replace(':', '.'));
+                //Create the document and write the content to it.
+                using (StreamWriter sw = new StreamWriter(File.Create(filepath)))
+                {
+                    sw.Write(content);
+                }
+
+                documentRevision.path = filepath;
+                context.Documentrevisions.AddObject(documentRevision);
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
         /// Adds a reference from a user to a document to the database.
         /// </summary>
         /// <param name="userId">The id of the user</param>
@@ -267,6 +297,7 @@ namespace Server
         /// </summary>
         /// <param name="documentId">The id of the document</param>
         /// <returns>A list of all document revisions from the original document</returns>
+
         public List<Documentrevision> GetDocumentRevisions(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())

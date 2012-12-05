@@ -113,5 +113,10 @@ namespace Server
         {
             DAO.GetInstance().DeleteDocument(documentId);
         }
+
+        public void AddDocumentRevision(int editorId, int documentId, String content)
+        {
+            DAO.GetInstance().AddDocumentRevision(editorId, documentId, content);
+        }
     }
 }
