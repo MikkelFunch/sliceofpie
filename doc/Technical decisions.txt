@@ -13,3 +13,7 @@ We've chosen to keep the URL's in the document.
 We decided to let folder be an object restricted to a single user, which means that one document can be stored differently for each user sharing the document.
 This makes deletion and syncing of documents easier to handle. It also limites the conflicts that can happen around folder names.
 The table which handles the many-to-many relationship between user and document also stores the folder location.
+
+2012-12-05 Document revision server format
+We decided to make the server identify the document revision by name+"revision"+timestamp in the user's folder.
+This will be a part of the path of the documentRevision path attribute in the database.

@@ -262,6 +262,11 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets all document revisions from a single document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>A list of all document revisions from the original document</returns>
         public List<Documentrevision> GetDocumentRevisions(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -279,6 +284,11 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets the latest document revision from a document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The latest document revision</returns>
         public Documentrevision GetLatestDocumentRevision(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
