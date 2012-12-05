@@ -273,6 +273,31 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Adds an edition/revision of an existing document.
+        /// </summary>
+        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="documentId">The id of the document that has been edited</param>
+        public void AddDocumentRevision(int editorId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Documentrevision dr = new Documentrevision();
+                dr.creationTime = DateTime.UtcNow;
+                dr.editorId = editorId;
+                dr.documentId = documentId;
+                dr.path = "";                                  //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                context.Documentrevisions.AddObject(dr);
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Gets all document revisions from a single document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>A list of all document revisions from the original document</returns>
+
         public List<Documentrevision> GetDocumentRevisions(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -290,6 +315,11 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets the latest document revision from a document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The latest document revision</returns>
         public Documentrevision GetLatestDocumentRevision(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
