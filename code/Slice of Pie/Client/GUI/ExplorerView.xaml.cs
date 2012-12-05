@@ -36,7 +36,7 @@ namespace Client
         private void ExplorerView_Loaded(object sender, RoutedEventArgs e)
         {
             //Get path to the current users files
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Model.Username;
+            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + "pepsy11";//Model.User.email;
             //Create a DirectoryInfo for that folder
             DirectoryInfo dir = new DirectoryInfo(folderPath);
 

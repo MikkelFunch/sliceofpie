@@ -7,15 +7,22 @@ namespace Client
 {
     class Model
     {
-        public Model()
+        private MainWindow mw;
+
+        public Model(MainWindow mw)
         {
-            Username = "pepsy11";
+            this.mw = mw;
         }
 
-        public static String Username
+        public static int UserID
         {
             get;
             set;
+        }
+
+        public void LoginSuccessful(int UserID)
+        {
+
         }
     }
 }

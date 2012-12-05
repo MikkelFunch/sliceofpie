@@ -19,11 +19,12 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        Controller controller = Controller.GetInstance();
+
         public MainWindow()
         {
             InitializeComponent();
-
-            Model m = new Model();
+            //Model m = new Model();
         }
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
@@ -54,7 +55,8 @@ namespace Client
 
         private void LoginItem_Click(object sender, RoutedEventArgs e)
         {
-
+            LoginDialog logDialog = new LoginDialog();
+            logDialog.Show();
         }
 
         private void RegisterItem_Click(object sender, RoutedEventArgs e)

@@ -26,6 +26,11 @@ namespace WcfServiceLibrary
             Controller.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
+        public int GetUserByEmailAndPass(String email, String pass)
+        {
+            return Controller.GetInstance().GetUser(email, pass);
+        }
+
         public User GetUserById(int userId)
         {
             return Controller.GetInstance().GetUser(userId);
