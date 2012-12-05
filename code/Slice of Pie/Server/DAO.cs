@@ -83,6 +83,30 @@ namespace Server
         }
 
         /// <summary>
+        /// Retrieve user from database using email and md5 encrypted password
+        /// </summary>
+        /// <param name="email">user email</param>
+        /// <param name="pass">corresponding password encrypted using md5</param>
+        /// <returns>return null if user does not exist and the corresponding User object if the user exists</returns>
+        public int GetUser(String email, String pass)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var userid = from u in context.Users
+                            where u.email == email && u.password == pass
+                            select u.id;
+
+                int returnID = -1;
+                if (userid.Count<int>() > 0)
+                {
+                    returnID = userid.First<int>();
+                }
+
+                return returnID;
+            }
+        }
+
+        /// <summary>
         /// Get a user from the database
         /// </summary>
         /// <param name="userId">The id of the user</param>
