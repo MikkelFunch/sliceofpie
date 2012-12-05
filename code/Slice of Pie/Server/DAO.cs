@@ -146,10 +146,9 @@ namespace Server
                 document.path = String.Format("{0}{1}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), folderPath);
                 Directory.CreateDirectory(document.path);
                 String filepath = String.Format("{0}\\{1}.txt", document.path, document.name);
-                File.Create(filepath);
 
-                //Write to the document
-                using (StreamWriter sw = new StreamWriter(filepath))
+                //Create the document and write the content to it.
+                using (StreamWriter sw = new StreamWriter(File.Create(filepath)))
                 {
                     sw.Write(content);
                 }
