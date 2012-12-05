@@ -19,7 +19,7 @@ namespace WcfServiceLibrary
         void AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        void AddDocument(String name, int userId);
+        void AddDocument(String name, int userId, int folderId, String content);
 
         [OperationContract]
         int GetUserByEmailAndPass(String email, String pass);

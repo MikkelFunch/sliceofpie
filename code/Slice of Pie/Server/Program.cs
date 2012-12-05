@@ -9,16 +9,9 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            string email = "test@test.test";
-            string password = "test123";
-            DAO.GetInstance().AddUser(email, password);
-            User u = DAO.GetInstance().GetUser(email);
-            string name = "TestDoc";
-            DAO.GetInstance().AddDocument("TestDoc", u.id);
-            Document d = DAO.GetInstance().GetDocument(name);
 
-            Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
-            Console.In.ReadLine();
+            Controller.GetInstance().AddDocument("YoMommaDoc", 28, 82, "This is some dope ass content!");
+            //Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
         }
     }
 }

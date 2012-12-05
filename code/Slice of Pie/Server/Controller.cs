@@ -64,9 +64,9 @@ namespace Server
         /// </summary>
         /// <param name="name">The name of the document</param>
         /// <param name="userId">The id of the user that creates the document</param>
-        public void AddDocument(String name, int userId)
+        public void AddDocument(String name, int userId, int folderId, String content)
         {
-            DAO.GetInstance().AddDocument(name, userId);
+            DAO.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
         public int GetUser(String email, String pass)

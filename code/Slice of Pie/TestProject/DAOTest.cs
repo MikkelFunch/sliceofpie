@@ -20,6 +20,9 @@ namespace TestProject
             DAO.GetInstance().DeleteAllData();
         }
 
+        /// <summary>
+        /// Deletes all tuples in database.
+        /// </summary>
         [ClassCleanup()]
         public static void CleanDataBaseFinish()
         {
@@ -51,7 +54,7 @@ namespace TestProject
             DAO.GetInstance().AddUser(email, password);
             User u = DAO.GetInstance().GetUser(email);
             string name = "TestDoc";
-            DAO.GetInstance().AddDocument("TestDoc", u.id);
+            DAO.GetInstance().AddDocument("TestDoc", u.id, u.rootFolderId, "testcontent");
             Document d = DAO.GetInstance().GetDocument(name);
             Assert.AreEqual(d.name, name);
         }
@@ -71,6 +74,13 @@ namespace TestProject
             Folder f = DAO.GetInstance().GetFolder(name);
             Assert.AreEqual(f.name, name);
         }
+
+
+        [TestMethod()]
+        public void AddUserdocumentGetUserdocumentTest()
+        {
+        }
+
 
 
     }
