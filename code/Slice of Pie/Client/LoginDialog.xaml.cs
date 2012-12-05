@@ -30,18 +30,37 @@ namespace Client
 
         private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
-            String user = textboxEmail.Text;
+            String email = textboxEmail.Text;
             String unencrytedPass = passwordBox.Password;
 
-            if (unencrytedPass.Length > 0 && user.Length > 0)
+            if (unencrytedPass.Length > 0 && email.Length > 0)
             {
                 String pass = Security.EncryptPassword(unencrytedPass);
                 using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
                 {
-                    //int successful = proxy
+                    int userID = proxy.GetUserByEmailAndPass(email, pass);
+                    if(userID != -1)
+                    {
+                        Model.UserID = userID;
+                        Console.WriteLine("You did it, you gui bastard");
+                        this.Close();
+
+                        //Login event
+                        if(LoginEvent != null)
+                            LoginEvent();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wrong email or password", "Unable to login");
+                    }
                 }
             }
-            
+            else
+            {
+                MessageBox.Show("Enter email and password", "Login error");
+            }
         }
+
+        public static event Action LoginEvent;
     }
 }

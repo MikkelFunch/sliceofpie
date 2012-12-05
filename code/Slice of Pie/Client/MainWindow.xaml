@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:app="clr-namespace:Client"
-        Title="MainWindow" Height="500" Width="960" >
+        Title="MainWindow" Height="500" Width="960" Loaded="Window_Loaded" >
     
     <!-- Main grid -->
     <Grid Name="mainGrid">
@@ -67,14 +67,19 @@
         <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
 
         <!-- Buttons to the left side-->
+            <StackPanel Orientation="Horizontal">
+            <TextBlock>
+                <Label Content="Online: "/>
+                <!--<Image Source="{Binding Path=" Resources="img_icon.gif", UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                -->
+            </TextBlock>
         <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
-
+</StackPanel>
 
         <!-- Buttons to the right side -->
         <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
         <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
             <Image Source="Resources/img_icon.gif" />
-                <!-- <Image Source="http://multimedia.ekstrabladet.dk/archive/00593/rep-borgen-sidse_12_593720m.jpg"/> -->
         </Button>
         </Grid>
         <!-- Button menu end -->

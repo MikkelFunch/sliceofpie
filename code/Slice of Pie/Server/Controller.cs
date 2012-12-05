@@ -69,6 +69,11 @@ namespace Server
             DAO.GetInstance().AddDocument(name, userId);
         }
 
+        public int GetUser(String email, String pass)
+        {
+            return DAO.GetInstance().GetUser(email,pass);
+        }
+
         public User GetUser(int userId)
         {
             return DAO.GetInstance().GetUser(userId);

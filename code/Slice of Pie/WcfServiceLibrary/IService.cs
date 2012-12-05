@@ -22,6 +22,9 @@ namespace WcfServiceLibrary
         void AddDocument(String name, int userId);
 
         [OperationContract]
+        int GetUserByEmailAndPass(String email, String pass);
+
+        [OperationContract]
         User GetUserById(int userId);
 
         [OperationContract]

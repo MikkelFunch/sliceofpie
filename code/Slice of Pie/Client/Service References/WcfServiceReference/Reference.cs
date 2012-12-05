@@ -1065,6 +1065,9 @@ namespace Client.WcfServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AddDocument", ReplyAction="http://tempuri.org/IService/AddDocumentResponse")]
         void AddDocument(string name, int userId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByEmailAndPass", ReplyAction="http://tempuri.org/IService/GetUserByEmailAndPassResponse")]
+        int GetUserByEmailAndPass(string email, string pass);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserById", ReplyAction="http://tempuri.org/IService/GetUserByIdResponse")]
         Client.WcfServiceReference.User GetUserById(int userId);
         
@@ -1127,6 +1130,10 @@ namespace Client.WcfServiceReference {
         
         public void AddDocument(string name, int userId) {
             base.Channel.AddDocument(name, userId);
+        }
+        
+        public int GetUserByEmailAndPass(string email, string pass) {
+            return base.Channel.GetUserByEmailAndPass(email, pass);
         }
         
         public Client.WcfServiceReference.User GetUserById(int userId) {

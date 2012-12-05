@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controller.cs" />
     <Compile Include="GUI\ButtonMenuView.xaml.cs">
       <DependentUpon>ButtonMenuView.xaml</DependentUpon>
     </Compile>
