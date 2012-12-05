@@ -10,7 +10,8 @@ namespace Server
         static void Main(string[] args)
         {
 
-            Controller.GetInstance().AddDocument("YoMommaDoc", 28, 82, "This is some dope ass content!");
+            //Controller.GetInstance().AddDocument("YoMommaDoc", 28, 82, "This is some dope ass content!");
+            Controller.GetInstance().AddDocumentRevision(29, 12, "This is some new content");
             //Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
         }
     }
