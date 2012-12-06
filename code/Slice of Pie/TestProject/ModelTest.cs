@@ -43,7 +43,7 @@ namespace TestProject
         }
         
         /// <summary>
-        /// 
+        /// Test for the deletion of a line in an arbitrary position
         /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestDelete()
@@ -57,6 +57,9 @@ namespace TestProject
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
         }
 
+        /// <summary>
+        /// Test for the insertion of a line in an arbitrary position
+        /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestInsert()
         {
@@ -69,6 +72,9 @@ namespace TestProject
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
         }
 
+        /// <summary>
+        /// Test for different operations tested above to discover eventual confliting behaviour.
+        /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestMultipleEdits1()
         {
@@ -81,6 +87,9 @@ namespace TestProject
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
         }
 
+        /// <summary>
+        /// Test for different operations tested above to discover eventual confliting behaviour.
+        /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestMultipleEdits2()
         {
@@ -93,6 +102,11 @@ namespace TestProject
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
         }
 
+        /// <summary>
+        /// Helper method for comparison of results.
+        /// </summary>
+        /// <param name="sa">String array</param>
+        /// <returns>String build by appending elements from the array.</returns>
         private String ArrayToString(String[] sa)
         {
             StringBuilder sb = new StringBuilder();

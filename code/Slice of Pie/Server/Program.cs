@@ -9,9 +9,10 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            String email = "heyho";
-            Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
-            Console.In.ReadLine();
+
+            //Controller.GetInstance().AddDocument("YoMommaDoc", 28, 82, "This is some dope ass content!");
+            Controller.GetInstance().AddDocumentRevision(29, 12, "This is some new content");
+            //Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
         }
     }
 }

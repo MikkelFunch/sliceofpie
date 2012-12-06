@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Server
 {
@@ -114,7 +115,7 @@ namespace Server
         /// Add a document to the database
         /// </summary>
         /// <param name="document">The name of the document and the id of the user creator</param>
-        public void AddDocument(String name, int userId)
+        public void AddDocument(String name, int userId, int folderId, String content)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -122,12 +123,71 @@ namespace Server
                 document.name = name;
                 document.creatorId = userId;
                 document.creationTime = DateTime.UtcNow;
-                document.path = "";                     //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
+                //Find the path of this document
+                StringBuilder sb = new StringBuilder();
+                Folder folder = GetFolder(folderId);
+                while (folder != null || folder.parentFolderId != null)
+                {
+                    if (folder.parentFolderId == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        sb.Insert(0, "\\" + folder.name);
+                    }
+                    folder = GetFolder((int)folder.parentFolderId);
+                }
+                String userEmail = GetUser(userId).email;
+                sb.Insert(0, "\\sliceofpie\\" + userEmail);
+                String folderPath = sb.ToString();
+
+                document.path = String.Format("{0}{1}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), folderPath);
+                Directory.CreateDirectory(document.path);
+                String filepath = String.Format("{0}\\{1}.txt", document.path, document.name);
+
+                //Create the document and write the content to it.
+                using (StreamWriter sw = new StreamWriter(File.Create(filepath)))
+                {
+                    sw.Write(content);
+                }
+
                 context.Documents.AddObject(document);
                 context.SaveChanges();
             }
         }
-        
+
+        /// <summary>
+        /// Adds an edition/revision of an existing document.
+        /// </summary>
+        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="documentId">The id of the document that has been edited</param>
+        public void AddDocumentRevision(int editorId, int documentId, String content)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Documentrevision documentRevision = new Documentrevision();
+                documentRevision.creationTime = DateTime.UtcNow;
+                documentRevision.editorId = editorId;
+                documentRevision.documentId = documentId;
+
+                Document originalDocument = GetDocument(documentId);
+                String folderPath = originalDocument.path;
+
+                String filepath = String.Format("{0}\\{1}_revision_{2}.txt", folderPath, originalDocument.name, documentRevision.creationTime.ToString().Replace(':', '.'));
+                //Create the document and write the content to it.
+                using (StreamWriter sw = new StreamWriter(File.Create(filepath)))
+                {
+                    sw.Write(content);
+                }
+
+                documentRevision.path = filepath;
+                context.Documentrevisions.AddObject(documentRevision);
+                context.SaveChanges();
+            }
+        }
+
         /// <summary>
         /// Adds a reference from a user to a document to the database.
         /// </summary>
@@ -213,13 +273,74 @@ namespace Server
             }
         }
 
-        public void AddDocumentRevision(String name, int editorId, int documentId)
+        /// <summary>
+        /// Adds an edition/revision of an existing document.
+        /// </summary>
+        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="documentId">The id of the document that has been edited</param>
+        public void AddDocumentRevision(int editorId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 Documentrevision dr = new Documentrevision();
+                dr.creationTime = DateTime.UtcNow;
+                dr.editorId = editorId;
+                dr.documentId = documentId;
+                dr.path = "";                                  //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                context.Documentrevisions.AddObject(dr);
+                context.SaveChanges();
             }
         }
+
+        /// <summary>
+        /// Gets all document revisions from a single document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>A list of all document revisions from the original document</returns>
+
+        public List<Documentrevision> GetDocumentRevisions(int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+
+                List<Documentrevision> documentRevisionList = new List<Documentrevision>();
+                foreach (Documentrevision dr in documentRevisions)
+                {
+                    documentRevisionList.Add(dr);
+                }
+                return documentRevisionList;
+            }
+        }
+
+        /// <summary>
+        /// Gets the latest document revision from a document.
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The latest document revision</returns>
+        public Documentrevision GetLatestDocumentRevision(int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+
+                Documentrevision mostRecent = documentRevisions.First<Documentrevision>();
+                foreach(Documentrevision dr in documentRevisions)
+                {
+                    if (dr.creationTime > mostRecent.creationTime)
+                    {
+                        mostRecent = dr;
+                    }
+                }
+                return mostRecent;
+            }
+        }
+
+
 
         /// <summary>
         /// Get a document from the database
@@ -363,6 +484,28 @@ namespace Server
                     context.Documents.DeleteObject(document);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get a userdocument from the database
+        /// </summary>
+        /// <param name="userId">The userId of the userdocument</param>
+        /// <param name="documentId">The documentId of the userdocument</param>
+        /// <returns>The Userdocument with the given userId and documentId. Null if none exists</returns>
+        public Userdocument GetUserdocument(int userId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var userdocuments = from ud in context.Userdocuments
+                                    where ud.userId == userId && ud.documentId == documentId
+                                    select ud;
+                Userdocument userdocument = null;
+                if (userdocuments.Count<Userdocument>() > 0)
+                {
+                    userdocument = userdocuments.First<Userdocument>();
+                }
+                return userdocument;
             }
         }
     }
