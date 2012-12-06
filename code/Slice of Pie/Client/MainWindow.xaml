@@ -22,14 +22,27 @@
         <Grid Name="gridExplorer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Row="2" Margin="0,0,0,0">
             <!-- Explorer grid definitions -->
             <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-
             <!-- Explorer grid components -->
 
+            <!-- Top buttons definitions -->
+            <Button Content="New Folder" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonNewFolder" />
+            <Button Content="Delete" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonDelete" />
 
+            <!-- Bottom buttons -->
+            <Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="button2" Grid.Row="2"/>
+
+            <!-- Explorer treeview -->
+            <TreeView Grid.Row="1" HorizontalAlignment="Stretch" Name="ExplorerTree" VerticalAlignment="Stretch" Loaded="ExplorerTree_Loaded"/>
+
+            <!-- Online treeview -->
+            <TreeView Grid.Row="3" HorizontalAlignment="Stretch" Name="OnlineTree" VerticalAlignment="Stretch" />
 
             <!-- Explorer grid components end -->
-            <app:ExplorerView x:Name="explorerView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" />
         </Grid>
         <!-- Explorer grid end -->
         
@@ -44,7 +57,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Center grid components -->
-            <app:DocumentView x:Name="documentView" Grid.Column="1" Grid.Row="0"/>
+            <RichTextBox Name="richTextBox" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" />
         </Grid>
         <!-- Center grid end-->
 
@@ -63,28 +76,27 @@
         
         <!-- Button menu -->
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
-        <!-- Border -->
-        <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+            <!-- Border -->
+            <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
 
-        <!-- Buttons to the left side-->
+            <!-- Buttons to the left side-->
             <StackPanel Orientation="Horizontal">
-            <TextBlock>
-                <Label Content="Online: "/>
-                <!--<Image Source="{Binding Path=" Resources="img_icon.gif", UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-                -->
-            </TextBlock>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
-</StackPanel>
+                <TextBlock>
+                    <Label Content="Online: " />
+                    <Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4"/>
+                </TextBlock>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
+            </StackPanel>
 
-        <!-- Buttons to the right side -->
-        <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
-        <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
-            <Image Source="Resources/img_icon.gif" />
-        </Button>
-        </Grid>
-        <!-- Button menu end -->
+            <!-- Buttons to the right side -->
+            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
+            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
+                <Image Source="Resources/img_icon.gif" />
+            </Button>
+            </Grid>
+            <!-- Button menu end -->
 
-        <!-- Main grid components end -->
+            <!-- Main grid components end -->
     </Grid>
     <!-- Main grid end -->
 </Window>

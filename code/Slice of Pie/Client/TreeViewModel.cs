@@ -2,47 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 using System.IO;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for ExplorerView.xaml
-    /// </summary>
-    public partial class ExplorerView : UserControl
+    class TreeViewModel
     {
-        public ExplorerView()
+        private static TreeViewModel instance;
+        public static TreeViewModel GetInstance()
         {
-            InitializeComponent();
+            if(instance == null)
+            {
+                instance = new TreeViewModel();
+            }
+            return instance;
         }
 
         private object nullItem = null; //in order to lazy load files and folders - Makes folders expandable
 
-        /// <summary>
-        /// Method being run when the view has been loaded
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExplorerView_Loaded(object sender, RoutedEventArgs e)
+        public static void LoadFilesAndFolders(ItemCollection items)
         {
             //Get path to the current users files
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + "pepsy11";//Model.User.email;
+            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Model.UserID;//Model.User.email;
             //Create a DirectoryInfo for that folder
             DirectoryInfo dir = new DirectoryInfo(folderPath);
 
             //Insert dictionaries and files from the folder as items in treeview
-            insertDirectoryIntoDirectory(ExplorerTree.Items, dir);
-            insertFilesIntoDirectory(ExplorerTree.Items, dir);
+            GetInstance().InsertDirectoriesIntoDirectory(items, dir);
+            GetInstance().InsertFilesIntoDirectory(items, dir);
         }
 
         /// <summary>
@@ -50,7 +40,7 @@ namespace Client
         /// </summary>
         /// <param name="sender">The item being expanded</param>
         /// <param name="e"></param>
-        private void folderExpanded(object sender, RoutedEventArgs e)
+        private void FolderExpanded(object sender, RoutedEventArgs e)
         {
             //Get the treeviewitem and create a DirectoryInfo for the folder which it represent
             TreeViewItem item = (TreeViewItem)sender;
@@ -62,8 +52,8 @@ namespace Client
                 //Clear the items(remove nullItem)
                 item.Items.Clear();
                 //Insert dictionaries and files from the folder as subitems in the item
-                insertDirectoryIntoDirectory(item.Items, dir);
-                insertFilesIntoDirectory(item.Items, dir);
+                InsertDirectoriesIntoDirectory(item.Items, dir);
+                InsertFilesIntoDirectory(item.Items, dir);
 
                 //If no itmes are found, insert the nullItem, so that the folder still looks expanable
                 if (item.Items.Count == 0)
@@ -79,7 +69,7 @@ namespace Client
         /// </summary>
         /// <param name="collection">Collection which should contain the directories</param>
         /// <param name="dir">DirectoryInfo for the directory which should be explored</param>
-        private void insertDirectoryIntoDirectory(ItemCollection collection, DirectoryInfo dir)
+        private void InsertDirectoriesIntoDirectory(ItemCollection collection, DirectoryInfo dir)
         {
             //For each directory in the given directory
             foreach (DirectoryInfo dInfo in dir.GetDirectories())
@@ -93,7 +83,7 @@ namespace Client
                 //add a nullItem to the folder, in roder to make it expandable
                 subItem.Items.Add(nullItem);
                 //When the Expand event occurs, call folderExpanded
-                subItem.Expanded += new RoutedEventHandler(folderExpanded);
+                subItem.Expanded += new RoutedEventHandler(FolderExpanded);
                 //Add the item to the collection
                 collection.Add(subItem);
             }
@@ -104,7 +94,7 @@ namespace Client
         /// </summary>
         /// <param name="collection">Collection which should contain the files</param>
         /// <param name="dir">DirectoryInfo for the directory which should be explored</param>
-        private void insertFilesIntoDirectory(ItemCollection collection, DirectoryInfo dir)
+        private void InsertFilesIntoDirectory(ItemCollection collection, DirectoryInfo dir)
         {
             //For each file in the given directory
             foreach (FileInfo file in dir.GetFiles("*.txt"))
@@ -113,9 +103,18 @@ namespace Client
                 TreeViewItem subItem = new TreeViewItem();
                 //Set the header to be the name of the file
                 subItem.Header = file.Name;
+                //Set tag to the full path to the folder
+                subItem.Tag = file.FullName;
+                subItem.MouseDoubleClick += new MouseButtonEventHandler(OpenDocment);
                 //Add the file to the collction
                 collection.Add(subItem);
             }
+        }
+
+        private void OpenDocment(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = (TreeViewItem)sender;
+            Console.WriteLine("dude");
         }
     }
 }

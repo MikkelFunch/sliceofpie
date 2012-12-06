@@ -9,10 +9,13 @@ namespace Server
     {
         static void Main(string[] args)
         {
-
-            //Controller.GetInstance().AddDocument("YoMommaDoc", 28, 82, "This is some dope ass content!");
-            Controller.GetInstance().AddDocumentRevision(29, 12, "This is some new content");
-            //Console.Out.WriteLine(Controller.GetInstance().GetUser(email).email);
+            using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
+            {
+                Document doc = (Document)proxy.GetDocumentById(32);
+                User user = (User)proxy.GetUserById(76);
+                Folder folder = (Folder)proxy.GetFolder(139);
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -7,11 +7,20 @@ namespace Client
 {
     class Model
     {
-        private MainWindow mw;
+        private static Model instance;
 
-        public Model(MainWindow mw)
+        private Model()
         {
-            this.mw = mw;
+            UserID = 1;
+        }
+
+        public static Model GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Model();
+            }
+            return instance;
         }
 
         public static int UserID
@@ -20,9 +29,30 @@ namespace Client
             set;
         }
 
-        public void LoginSuccessful(int UserID)
+        public Boolean RegisterUser(string email, string passUnencrypted)
         {
+            Boolean successful = false;
+            string pass = Security.EncryptPassword(passUnencrypted);
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            {
+                successful = proxy.AddUser(email, pass);
+            }
+            return successful;
+        }
 
+        public int LoginUser(string email, string pass)
+        {
+            int id = -1;
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            {
+                id = proxy.GetUserByEmailAndPass(email, pass);
+            }
+            if (id != -1)
+            {
+                //User logged in
+                UserID = id;
+            }
+            return id;
         }
     }
 }

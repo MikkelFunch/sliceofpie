@@ -98,7 +98,8 @@ namespace Server
         /// <summary>
         /// Add a folder to the database
         /// </summary>
-        /// <param name="folder">The name of the folder and id of parent folder</param>
+        /// <param name="name">The name of the folder</param>
+        /// <param name="parentFolderId">The id of the parentfolder</param>
         public void AddFolder(String name, int parentFolderId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -112,9 +113,12 @@ namespace Server
         }
 
         /// <summary>
-        /// Add a document to the database
+        /// Adds a document to the database
         /// </summary>
-        /// <param name="document">The name of the document and the id of the user creator</param>
+        /// <param name="name">The name of the document</param>
+        /// <param name="userId">The id of the creator</param>
+        /// <param name="folderId">The id of the folder in which the document is located</param>
+        /// <param name="content">The content of the document</param>
         public void AddDocument(String name, int userId, int folderId, String content)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -161,8 +165,9 @@ namespace Server
         /// <summary>
         /// Adds an edition/revision of an existing document.
         /// </summary>
-        /// <param name="editorId">The id of the user editor</param>
+        /// <param name="editorId">The id of the editor</param>
         /// <param name="documentId">The id of the document that has been edited</param>
+        /// <param name="content">The content of the document</param>
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -274,25 +279,6 @@ namespace Server
         }
 
         /// <summary>
-        /// Adds an edition/revision of an existing document.
-        /// </summary>
-        /// <param name="editorId">The id of the user editor</param>
-        /// <param name="documentId">The id of the document that has been edited</param>
-        public void AddDocumentRevision(int editorId, int documentId)
-        {
-            using (PieFactoryEntities context = new PieFactoryEntities())
-            {
-                Documentrevision dr = new Documentrevision();
-                dr.creationTime = DateTime.UtcNow;
-                dr.editorId = editorId;
-                dr.documentId = documentId;
-                dr.path = "";                                  //TODO Create that path!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                context.Documentrevisions.AddObject(dr);
-                context.SaveChanges();
-            }
-        }
-
-        /// <summary>
         /// Gets all document revisions from a single document.
         /// </summary>
         /// <param name="documentId">The id of the document</param>
@@ -326,6 +312,7 @@ namespace Server
             {
                 var documentRevisions = from dr in context.Documentrevisions
                                         where dr.documentId == documentId
+                                        orderby dr.creationTime descending
                                         select dr;
 
                 Documentrevision mostRecent = documentRevisions.First<Documentrevision>();

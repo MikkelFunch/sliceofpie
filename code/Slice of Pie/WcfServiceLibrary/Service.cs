@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Server;
 
 namespace WcfServiceLibrary
 {
@@ -13,67 +12,74 @@ namespace WcfServiceLibrary
     {
         public Boolean AddUser(String email, String password)
         {
-            return Controller.GetInstance().AddUser(email, password);
+            return Server.Controller.GetInstance().AddUser(email, password);
         }
 
         public void AddFolder(String name, int parentFolderId)
         {
-            Controller.GetInstance().AddFolder(name, parentFolderId);
+            Server.Controller.GetInstance().AddFolder(name, parentFolderId);
         }
 
+        /// <summary>
+        /// Adds a document to the database.
+        /// </summary>
+        /// <param name="name">The name of the document</param>
+        /// <param name="userId">The id of the user that creates the document</param>
+        /// <param name="folderId">The id of the folder in which the document is located</param>
+        /// <param name="content">The content of the document</param>
         public void AddDocument(String name, int userId, int folderId, String content)
         {
-            Controller.GetInstance().AddDocument(name, userId, folderId, content);
+            Server.Controller.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
-            Controller.GetInstance().AddDocumentRevision(editorId, documentId, content);
+            Server.Controller.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
         public int GetUserByEmailAndPass(String email, String pass)
         {
-            return Controller.GetInstance().GetUser(email, pass);
+            return Server.Controller.GetInstance().GetUser(email, pass);
         }
 
-        public User GetUserById(int userId)
+        public ServiceUser GetUserById(int userId)
         {
-            return Controller.GetInstance().GetUser(userId);
+            return (ServiceUser)Server.Controller.GetInstance().GetUser(userId);
         }
 
-        public User GetUserByEmail(String email)
+        public ServiceUser GetUserByEmail(String email)
         {
-            return Controller.GetInstance().GetUser(email);
+            return (ServiceUser)Server.Controller.GetInstance().GetUser(email);
         }
 
-        public Document GetDocumentById(int documentId)
+        public ServiceDocument GetDocumentById(int documentId)
         {
-            return Controller.GetInstance().GetDocument(documentId);
+            return (ServiceDocument)Server.Controller.GetInstance().GetDocument(documentId);
         }
 
-        public Document GetDocumentByName(String name)
+        public ServiceDocument GetDocumentByName(String name)
         {
-            return Controller.GetInstance().GetDocument(name);
+            return (ServiceDocument)Server.Controller.GetInstance().GetDocument(name);
         }
 
-        public Folder GetFolder(int folderId)
+        public ServiceFolder GetFolder(int folderId)
         {
-            return Controller.GetInstance().GetFolder(folderId);
+            return (ServiceFolder)Server.Controller.GetInstance().GetFolder(folderId);
         }
 
         public void DeleteFolder(int folderId)
         {
-            Controller.GetInstance().DeleteFolder(folderId);
+            Server.Controller.GetInstance().DeleteFolder(folderId);
         }
 
         public void DeleteDocumentReference(int userId, int documentId)
         {
-            Controller.GetInstance().DeleteDocumentReference(userId, documentId);
+            Server.Controller.GetInstance().DeleteDocumentReference(userId, documentId);
         }
 
         public void DeleteDocument(int documentId)
         {
-            Controller.GetInstance().DeleteDocument(documentId);
+            Server.Controller.GetInstance().DeleteDocument(documentId);
         }
     }
 }
