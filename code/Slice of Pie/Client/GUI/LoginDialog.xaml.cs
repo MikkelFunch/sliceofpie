@@ -14,19 +14,19 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaction logic for ImageURLDialog.xaml
+    /// Interaction logic for LoginDialog.xaml
     /// </summary>
-    public partial class ImageURLDialog : Window
+    public partial class LoginDialog : Window
     {
-        public ImageURLDialog()
+        public LoginDialog()
         {
             InitializeComponent();
         }
 
-        private void buttonInsert_Click(object sender, RoutedEventArgs e)
+        public Boolean Online
         {
-            URLString = textBoxURL.Text;
-            this.Close();
+            get;
+            set;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -34,15 +34,17 @@ namespace Client
             this.Close();
         }
 
-        public string URLString
+        private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
-            get;
-            private set;
-        }
+            String email = textboxEmail.Text;
+            String unencrytedPass = passwordBox.Password;
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            textBoxURL.Focus();
+            Boolean successful = Controller.GetInstance().LoginUser(email, unencrytedPass);
+            if (successful)
+            {
+                Online = true;
+                this.Close();
+            }
         }
     }
 }
