@@ -34,7 +34,7 @@ namespace Server
         /// Adds a user to the database.
         /// </summary>
         /// <param name="email">The email of the user</param>
-        /// <param name="password">The non-encrypted password of the user</param>
+        /// <param name="password">The encrypted password of the user</param>
         public Boolean AddUser(String email, String password)
         {
             try
@@ -52,7 +52,7 @@ namespace Server
         /// Adds a folder to the database.
         /// </summary>
         /// <param name="name">The name of the folder</param>
-        /// <param name="parentFolderId">The id of the parent folder. Null if it is a root folder.</param>
+        /// <param name="parentFolderId">The id of the parent folder. Null if it's a root folder.</param>
         public void AddFolder(String name, int parentFolderId)
         {
 
@@ -64,9 +64,16 @@ namespace Server
         /// </summary>
         /// <param name="name">The name of the document</param>
         /// <param name="userId">The id of the user that creates the document</param>
+        /// <param name="folderId">The id of the folder in which the document is located</param>
+        /// <param name="content">The content of the document</param>
         public void AddDocument(String name, int userId, int folderId, String content)
         {
             DAO.GetInstance().AddDocument(name, userId, folderId, content);
+        }
+
+        public void AddDocumentRevision(int editorId, int documentId, String content)
+        {
+            DAO.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
         public int GetUser(String email, String pass)
@@ -112,11 +119,6 @@ namespace Server
         public void DeleteDocument(int documentId)
         {
             DAO.GetInstance().DeleteDocument(documentId);
-        }
-
-        public void AddDocumentRevision(int editorId, int documentId, String content)
-        {
-            DAO.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
     }
 }
