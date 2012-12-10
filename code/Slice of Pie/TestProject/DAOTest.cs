@@ -123,6 +123,7 @@ namespace TestProject
             DAO.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
             Document d = DAO.GetInstance().GetDocument(name);
             //DocumentRevision
+
             DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
             List<Documentrevision> drlist = DAO.GetInstance().GetDocumentRevisions(d.id);
             Assert.AreEqual(drlist[0].documentId, d.id);

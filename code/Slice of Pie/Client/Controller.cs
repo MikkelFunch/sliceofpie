@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 
 namespace Client
 {
@@ -86,6 +87,7 @@ namespace Client
                 {
                     System.Windows.MessageBox.Show("Logged in successfully", "Login");
                     successful = true;
+                    UpdateExplorerView();
                 }
                 else
                 {
@@ -100,11 +102,50 @@ namespace Client
         }
 
 
-        public void SetDocumentText(String content)
+        public void SetOpenDocument(String content, String fileName)
         {
-            
-
-            //gui.richTextBox.Document
+            //try catch in case of currupted file
+            FlowDocument doc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
+            gui.richTextBox.Document = doc;
+            gui.labelOpenDocument.Content = "Current document: " + fileName;
         }
+
+        public void CreateDocument(String title)
+        {
+            model.CreateDocument(title, gui.richTextBox.Document);
+            
+            UpdateExplorerView();
+        }
+
+        public void SaveDocument(FlowDocument document)
+        {
+            model.SaveDocument(document);
+            UpdateExplorerView();
+        }
+
+        private void UpdateExplorerView()
+        {
+            TreeViewModel.GetInstance().LoadFilesAndFolders(gui.ExplorerTree.Items);
+        }
+
+        public void DownloadComplete(object sender, EventArgs e)
+        {
+            System.Windows.Media.Imaging.BitmapImage image = (System.Windows.Media.Imaging.BitmapImage)sender;
+            
+            model.DownloadComplete(image);
+        }
+        /*
+        public void SaveDocument(String name, int userId, int folderId, int documentId, String content)
+        {
+            if (documentId != null)
+            {
+                model.SaveDocument(name, userId, folderId, content);
+            }
+            else
+            {
+                model.SaveDocumentRevision(userId, documentId, content);
+            }
+        }
+        */
     }
 }

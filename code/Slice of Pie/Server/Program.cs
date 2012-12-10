@@ -9,6 +9,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            /*
             using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
             {
                 Document doc = (Document)proxy.GetDocumentById(32);
@@ -16,6 +17,11 @@ namespace Server
                 Folder folder = (Folder)proxy.GetFolder(139);
                 Console.ReadLine();
             }
+             * */
+            string[] original = { "A", "B", "D", "E" };
+            string[] latest = { "A", "B", "C", "D", "E" };
+            Model.GetInstance().MergeDocuments(original, latest);
+            Console.ReadLine();
         }
     }
 }

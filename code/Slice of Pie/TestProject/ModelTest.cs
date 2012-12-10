@@ -22,11 +22,15 @@ namespace TestProject
             string[] original = {"A", "B", "C", "D"};
             string[] latest = {"A", "B", "C", "D", "E"};
             string[] expected = {"A", "B", "C", "D", "E"};
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, null, null, "i" };
+            string[] expectedDeletions = {null, null, null, null };
+            String[][]result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
-
+        
         /// <summary>
         /// Testing the end of document delete function
         /// </summary>
@@ -37,9 +41,13 @@ namespace TestProject
             string[] original = { "A", "B", "C", "D" };
             string[] latest = { "A", "B", "C" };
             string[] expected = { "A", "B", "C"};
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, null};
+            string[] expectedDeletions = { null, null, null, "d"};
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
         
         /// <summary>
@@ -52,9 +60,13 @@ namespace TestProject
             string[] original = { "A", "B", "C", "D" };
             string[] latest = { "A", "C", "D" };
             string[] expected = { "A", "C", "D" };
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, null };
+            string[] expectedDeletions = { null, "d", null, null };
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
 
         /// <summary>
@@ -67,9 +79,13 @@ namespace TestProject
             string[] original = { "A", "B", "D", "E" };
             string[] latest = { "A", "B", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "D", "E" };
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, "i", null, null };
+            string[] expectedDeletions = { null, null, null, null};
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
 
         /// <summary>
@@ -82,11 +98,15 @@ namespace TestProject
             string[] original = { "A", "B", "D", "E", "F"};
             string[] latest = { "A", "B", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "D", "E" };
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, "i", null, null};
+            string[] expectedDeletions = { null, null, null, null, "d" };
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
-
+        
         /// <summary>
         /// Test for different operations tested above to discover eventual confliting behaviour.
         /// </summary>
@@ -97,11 +117,31 @@ namespace TestProject
             string[] original = { "A", "B", "D", "E", "F" };
             string[] latest = { "A", "B", "C", "C", "C", "C", "D", "E" };
             string[] expected = { "A", "B", "C", "C", "C", "C", "D", "E" };
-            string[] actual;
-            actual = target.MergeDocuments(original, latest);
+            string[] expectedInsertions = { null, null, "i", "i", "i", "i", null, null };
+            string[] expectedDeletions = { null, null, null, null, "d" };
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
             Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
 
+        [TestMethod()]
+        public void MergeDocumentsTestMultipleEdits3()
+        {
+            Model target = Model.GetInstance();
+            string[] original = { "A", "B", "D", "E", "F" };
+            string[] latest = { "A", "B", "C", "C", "C", "D", "Da", "E", "F", "G"};
+            string[] expected = { "A", "B", "C", "C", "C", "D", "Da", "E", "F", "G" };
+            string[] expectedInsertions = { null, null, "i", "i", "i", null, "i", null, null, "i" };
+            string[] expectedDeletions = { null, null, null, null, null };
+            String[][] result = target.MergeDocuments(original, latest);
+            string[] actual = result[0];
+            Assert.AreEqual(ArrayToString(expected), ArrayToString(actual));
+            Assert.AreEqual(ArrayToString(expectedInsertions), ArrayToString(result[1]));
+            Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
+        }
+ 
         /// <summary>
         /// Helper method for comparison of results.
         /// </summary>
@@ -113,6 +153,10 @@ namespace TestProject
 
             foreach (string s in sa)
             {
+                if (s == null)
+                {
+                    sb.Append("Null");
+                }
                 sb.Append(s);
             }
             return sb.ToString();

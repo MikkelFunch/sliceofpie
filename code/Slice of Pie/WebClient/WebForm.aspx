@@ -10,6 +10,8 @@
     <form id="form1" runat="server">
     <div>
     
+        <asp:Button ID="Button1" runat="server" Text="Register User" OnClick="RegisterNewUser"/>
+    
         <asp:TreeView ID="TreeView" runat="server" OnLoad="PopulateTreeView">
         </asp:TreeView>
         <asp:TextBox ID="TextBox" runat="server" Height="253px" Width="449px"></asp:TextBox>

@@ -14,6 +14,11 @@ namespace WebClient
 
         }
 
+        public void RegisterNewUser()
+        {
+            //Response.RedirectLocation
+        }
+
         public void PopulateTreeView()
         {
             
