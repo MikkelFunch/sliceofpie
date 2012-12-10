@@ -16,4 +16,5 @@ The table which handles the many-to-many relationship between user and document 
 
 2012-12-05 Document revision server format
 We decided to make the server identify the document revision by name+"revision"+timestamp in the user's folder.
-This will be a part of the path of the documentRevision path attribute in the database.
+This will be a part of the path of the documentRevision path attribute in the database. The alternative would be fetching the id from the database
+after creation and make it a part of the name. This is less efficient and requires both a write and a read.

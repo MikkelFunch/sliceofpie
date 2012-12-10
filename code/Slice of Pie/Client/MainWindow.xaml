@@ -88,6 +88,7 @@
                 </TextBlock>
                 <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
                 <Label Content="Current document: None" Height="28" Name="labelOpenDocument" Margin="120,0,0,0"/>
+                <Button Content="Save Document" HorizontalAlignment="Left" Margin="4,2,0,2" Name="saveDocumentButton" VerticalAlignment="Stretch" Click="saveDocumentButton_Click"/>
             </StackPanel>
             
             <!-- Buttons to the right side -->

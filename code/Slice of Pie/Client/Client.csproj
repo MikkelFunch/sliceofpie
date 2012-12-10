@@ -134,17 +134,14 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Document.datasource">
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceDocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.Folder.datasource">
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceFolder.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.User.datasource">
+    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WcfServiceReference\Server.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WcfServiceReference\service.wsdl" />
     <None Include="Service References\WcfServiceReference\service.xsd">
@@ -153,10 +150,7 @@
     <None Include="Service References\WcfServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\WcfServiceReference\System.Data.Objects.DataClasses.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WcfServiceReference\System.Data.xsd">
+    <None Include="Service References\WcfServiceReference\WcfServiceLibrary.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

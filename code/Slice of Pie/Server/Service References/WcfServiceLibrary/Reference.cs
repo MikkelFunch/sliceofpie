@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Client.WcfServiceReference {
+namespace Server.WcfServiceLibrary {
     using System.Runtime.Serialization;
     using System;
     
@@ -293,7 +293,7 @@ namespace Client.WcfServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WcfServiceReference.IService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WcfServiceLibrary.IService")]
     public interface IService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AddUser", ReplyAction="http://tempuri.org/IService/AddUserResponse")]
@@ -312,19 +312,19 @@ namespace Client.WcfServiceReference {
         int GetUserByEmailAndPass(string email, string pass);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserById", ReplyAction="http://tempuri.org/IService/GetUserByIdResponse")]
-        Client.WcfServiceReference.ServiceUser GetUserById(int userId);
+        Server.WcfServiceLibrary.ServiceUser GetUserById(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByEmail", ReplyAction="http://tempuri.org/IService/GetUserByEmailResponse")]
-        Client.WcfServiceReference.ServiceUser GetUserByEmail(string email);
+        Server.WcfServiceLibrary.ServiceUser GetUserByEmail(string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetFolder", ReplyAction="http://tempuri.org/IService/GetFolderResponse")]
-        Client.WcfServiceReference.ServiceFolder GetFolder(int folderId);
+        Server.WcfServiceLibrary.ServiceFolder GetFolder(int folderId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetDocumentById", ReplyAction="http://tempuri.org/IService/GetDocumentByIdResponse")]
-        Client.WcfServiceReference.ServiceDocument GetDocumentById(int documentId);
+        Server.WcfServiceLibrary.ServiceDocument GetDocumentById(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetDocumentByName", ReplyAction="http://tempuri.org/IService/GetDocumentByNameResponse")]
-        Client.WcfServiceReference.ServiceDocument GetDocumentByName(string name);
+        Server.WcfServiceLibrary.ServiceDocument GetDocumentByName(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteFolder", ReplyAction="http://tempuri.org/IService/DeleteFolderResponse")]
         void DeleteFolder(int folderId);
@@ -337,12 +337,12 @@ namespace Client.WcfServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServiceChannel : Client.WcfServiceReference.IService, System.ServiceModel.IClientChannel {
+    public interface IServiceChannel : Server.WcfServiceLibrary.IService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServiceClient : System.ServiceModel.ClientBase<Client.WcfServiceReference.IService>, Client.WcfServiceReference.IService {
+    public partial class ServiceClient : System.ServiceModel.ClientBase<Server.WcfServiceLibrary.IService>, Server.WcfServiceLibrary.IService {
         
         public ServiceClient() {
         }
@@ -383,23 +383,23 @@ namespace Client.WcfServiceReference {
             return base.Channel.GetUserByEmailAndPass(email, pass);
         }
         
-        public Client.WcfServiceReference.ServiceUser GetUserById(int userId) {
+        public Server.WcfServiceLibrary.ServiceUser GetUserById(int userId) {
             return base.Channel.GetUserById(userId);
         }
         
-        public Client.WcfServiceReference.ServiceUser GetUserByEmail(string email) {
+        public Server.WcfServiceLibrary.ServiceUser GetUserByEmail(string email) {
             return base.Channel.GetUserByEmail(email);
         }
         
-        public Client.WcfServiceReference.ServiceFolder GetFolder(int folderId) {
+        public Server.WcfServiceLibrary.ServiceFolder GetFolder(int folderId) {
             return base.Channel.GetFolder(folderId);
         }
         
-        public Client.WcfServiceReference.ServiceDocument GetDocumentById(int documentId) {
+        public Server.WcfServiceLibrary.ServiceDocument GetDocumentById(int documentId) {
             return base.Channel.GetDocumentById(documentId);
         }
         
-        public Client.WcfServiceReference.ServiceDocument GetDocumentByName(string name) {
+        public Server.WcfServiceLibrary.ServiceDocument GetDocumentByName(string name) {
             return base.Channel.GetDocumentByName(name);
         }
         

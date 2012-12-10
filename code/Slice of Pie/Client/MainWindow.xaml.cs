@@ -133,5 +133,10 @@ namespace Client
         {
             controller.SaveDocument(richTextBox.Document);
         }
+
+        private void saveDocumentButton_Click(object sender, RoutedEventArgs e)
+        {
+            //controller.SaveDocument("Title
+        }
     }
 }

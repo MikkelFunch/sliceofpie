@@ -134,5 +134,18 @@ namespace Client
             
             model.DownloadComplete(image);
         }
+        /*
+        public void SaveDocument(String name, int userId, int folderId, int documentId, String content)
+        {
+            if (documentId != null)
+            {
+                model.SaveDocument(name, userId, folderId, content);
+            }
+            else
+            {
+                model.SaveDocumentRevision(userId, documentId, content);
+            }
+        }
+        */
     }
 }
