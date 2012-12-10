@@ -46,5 +46,10 @@ namespace Client
                 this.Close();
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            textboxEmail.Focus();
+        }
     }
 }

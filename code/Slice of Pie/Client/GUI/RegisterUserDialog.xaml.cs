@@ -25,7 +25,7 @@ namespace Client
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            string email = textBoxUser.Text;
+            string email = textBoxEmail.Text;
             string passUnencrypted1 = passwordBox1.Password;
             string passUnencrypted2 = passwordBox2.Password;
 
@@ -38,6 +38,11 @@ namespace Client
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            textBoxEmail.Focus();
         }
     }
 }

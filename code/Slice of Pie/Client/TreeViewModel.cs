@@ -23,10 +23,15 @@ namespace Client
 
         private object nullItem = null; //in order to lazy load files and folders - Makes folders expandable
 
-        public static void LoadFilesAndFolders(ItemCollection items)
+        public void LoadFilesAndFolders(ItemCollection items)
         {
+            items.Clear();
+            String folderPath = "";
             //Get path to the current users files
-            String folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Model.UserID;//Model.User.email;
+            if (Model.UserID != -1)
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Model.Email;//Model.User.email;
+            else
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
             //Create a DirectoryInfo for that folder
             DirectoryInfo dir = new DirectoryInfo(folderPath);
 
@@ -114,7 +119,9 @@ namespace Client
         private void OpenDocment(object sender, RoutedEventArgs e)
         {
             TreeViewItem item = (TreeViewItem)sender;
-            Console.WriteLine("dude");
+            String text = File.ReadAllText(item.Tag.ToString()); //IOException, if file is used by another program
+            Controller.GetInstance().SetOpenDocument(text, item.Header.ToString());
+            Model.GetInstance().CurrentDocument = item.Tag.ToString();
         }
     }
 }

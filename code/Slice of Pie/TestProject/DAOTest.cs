@@ -105,7 +105,7 @@ namespace TestProject
             Assert.AreEqual(ud.userId, u2.id);
         }
 
-        [TestMethod()]
+        /*[TestMethod()]
         public void AddDocumentRevisionTest()
         {
             //User
@@ -119,7 +119,7 @@ namespace TestProject
             Document d = DAO.GetInstance().GetDocument(name);
             //DocumentRevision
             DAO.GetInstance().AddDocumentRevision(
-        }
+        }*/
 
 
 

@@ -22,7 +22,7 @@ namespace WcfServiceLibrary
         void AddDocument(String name, int userId, int folderId, String content);
 
         [OperationContract]
-        public void AddDocumentRevision(int editorId, int documentId, String content);
+        void AddDocumentRevision(int editorId, int documentId, String content);
 
         [OperationContract]
         int GetUserByEmailAndPass(String email, String pass);
