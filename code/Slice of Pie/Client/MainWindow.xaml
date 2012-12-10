@@ -85,7 +85,7 @@
                     <Label Content="Online: " />
                     <Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4"/>
                 </TextBlock>
-                <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
+                <Button Content="Save Document" HorizontalAlignment="Left" Margin="4,2,0,2" Name="saveDocumentButton" VerticalAlignment="Stretch" Click="saveDocumentButton_Click"/>
             </StackPanel>
 
             <!-- Buttons to the right side -->

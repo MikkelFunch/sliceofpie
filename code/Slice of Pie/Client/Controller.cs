@@ -106,5 +106,18 @@ namespace Client
 
             //gui.richTextBox.Document
         }
+        /*
+        public void SaveDocument(String name, int userId, int folderId, int documentId, String content)
+        {
+            if (documentId != null)
+            {
+                model.SaveDocument(name, userId, folderId, content);
+            }
+            else
+            {
+                model.SaveDocumentRevision(userId, documentId, content);
+            }
+        }
+        */
     }
 }

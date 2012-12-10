@@ -54,5 +54,30 @@ namespace Client
             }
             return id;
         }
+        /*
+        public Boolean DocumentExists(int documentId)
+        {
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            {
+                return proxy.GetDocumentById(documentId).id != 0;
+            }
+        }
+
+        public void SaveDocument(String name, int folderId, String content)
+        {
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            {
+                proxy.AddDocument(name, UserID, folderId, content);
+            }
+        }
+
+        public void SaveDocumentRevision(int int documentId, String content)
+        {
+            using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+            {
+                proxy.AddDocumentRevision(editorId, documentId, content);
+            }
+        }
+        */
     }
 }

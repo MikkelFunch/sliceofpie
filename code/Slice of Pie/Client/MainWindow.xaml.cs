@@ -79,5 +79,10 @@ namespace Client
         {
             TreeViewModel.LoadFilesAndFolders(ExplorerTree.Items);
         }
+
+        private void saveDocumentButton_Click(object sender, RoutedEventArgs e)
+        {
+            //controller.SaveDocument("Title
+        }
     }
 }
