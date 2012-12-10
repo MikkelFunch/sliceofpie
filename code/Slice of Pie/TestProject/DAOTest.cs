@@ -1,6 +1,8 @@
 ﻿using Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace TestProject
 {
@@ -105,9 +107,9 @@ namespace TestProject
             Assert.AreEqual(ud.userId, u2.id);
         }
 
-        /*
+        
         [TestMethod()]
-        public void AddDocumentRevisionTest()
+        public void AddDocumentRevisionGetDocumentRevisionsTest()
         {
             //User
             string email = "test@test.test";
@@ -119,10 +121,39 @@ namespace TestProject
             DAO.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
             Document d = DAO.GetInstance().GetDocument(name);
             //DocumentRevision
-            DAO.GetInstance().AddDocumentRevision(
+            DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
+            List<Documentrevision> drlist = DAO.GetInstance().GetDocumentRevisions(d.id);
+            Assert.AreEqual(drlist[0].documentId, d.id);
+            Assert.AreEqual(drlist[0].editorId, u.id);
         }
-        */
 
 
+        [TestMethod()]
+        public void AddDocumentRevisionGetLatestDocumentRevisionTest()
+        {
+            //User
+            string email = "test@test.test";
+            string password = "test123";
+            DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUser(email);
+            string email1 = "test1@test.test";
+            string password1 = "test123";
+            DAO.GetInstance().AddUser(email1, password1);
+            User u1 = DAO.GetInstance().GetUser(email);
+            string email2 = "test2@test.test";
+            string password2 = "test123";
+            DAO.GetInstance().AddUser(email2, password2);
+            User u2 = DAO.GetInstance().GetUser(email);
+            //Document
+            string name = "TestDoc";
+            DAO.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
+            Document d = DAO.GetInstance().GetDocument(name);
+            //DocumentRevision
+            DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
+            DAO.GetInstance().AddDocumentRevision(u1.id, d.id, "Newtestcontentedited");
+            DAO.GetInstance().AddDocumentRevision(u2.id, d.id, "Newtestcontenteditedagain");
+            Documentrevision dr = DAO.GetInstance().GetLatestDocumentRevision(d.id);
+            Assert.AreEqual(dr.editorId, u2.id);
+        }
     }
 }
