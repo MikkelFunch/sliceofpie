@@ -399,6 +399,27 @@ namespace Server
         }
 
         /// <summary>
+        /// Gets the folders with a specific parent id.
+        /// </summary>
+        /// <param name="parentId">The parent id of the folders</param>
+        /// <returns>The folders with the parentId</returns>
+        public List<Folder> GetFoldersByRootId(int parentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var folders = from f in context.Folders
+                              where f.parentFolderId == parentId
+                              select f;
+                List<Folder> folderList = new List<Folder>();
+                foreach (Folder f in folders)
+                {
+                    folderList.Add(f);
+                }
+                return folderList;
+            }
+        }
+
+        /// <summary>
         /// Get a folder from the database
         /// </summary>
         /// <param name="folderId">The name of the folder</param>

@@ -126,6 +126,9 @@ namespace TestProject
             Assert.AreEqual(ArrayToString(expectedDeletions), ArrayToString(result[2]));
         }
 
+        /// <summary>
+        /// Test for different operations tested above to discover eventual confliting behaviour.
+        /// </summary>
         [TestMethod()]
         public void MergeDocumentsTestMultipleEdits3()
         {
