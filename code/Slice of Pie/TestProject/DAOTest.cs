@@ -107,7 +107,9 @@ namespace TestProject
             Assert.AreEqual(ud.userId, u2.id);
         }
 
-        
+        /// <summary>
+        /// Tests AddDocumentRevision and GetDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
+        /// </summary>
         [TestMethod()]
         public void AddDocumentRevisionGetDocumentRevisionsTest()
         {
@@ -127,9 +129,11 @@ namespace TestProject
             Assert.AreEqual(drlist[0].editorId, u.id);
         }
 
-
+        /// <summary>
+        /// Tests AddDocumentRevision and GetLatestDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
+        /// </summary>
         [TestMethod()]
-        public void AddDocumentRevisionGetLatestDocumentRevisionTest()
+        public void GetLatestDocumentRevisionTest()
         {
             //User
             string email = "test@test.test";
@@ -152,7 +156,8 @@ namespace TestProject
             DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
             DAO.GetInstance().AddDocumentRevision(u1.id, d.id, "Newtestcontentedited");
             DAO.GetInstance().AddDocumentRevision(u2.id, d.id, "Newtestcontenteditedagain");
-            Documentrevision dr = DAO.GetInstance().GetLatestDocumentRevision(d.id);
+            List<Documentrevision> drlist = DAO.GetInstance().GetLatestDocumentRevision(d.id, 1);
+            Documentrevision dr = drlist[0];
             Assert.AreEqual(dr.editorId, u2.id);
         }
     }
