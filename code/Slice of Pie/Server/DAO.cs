@@ -112,6 +112,7 @@ namespace Server
             }
         }
 
+        /*
         /// <summary>
         /// Adds a document to the database
         /// </summary>
@@ -160,8 +161,23 @@ namespace Server
                 context.Documents.AddObject(document);
                 context.SaveChanges();
             }
+        }*/
+
+        public void AddDocument(String name, int userId, String documentPath)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Document document = new Document();
+                document.name = name;
+                document.creatorId = userId;
+                document.creationTime = DateTime.UtcNow;
+                document.path = documentPath;
+                context.Documents.AddObject(document);
+                context.SaveChanges();
+            }
         }
 
+        /*
         /// <summary>
         /// Adds an edition/revision of an existing document.
         /// </summary>
@@ -180,13 +196,27 @@ namespace Server
                 Document originalDocument = GetDocument(documentId);
                 String folderPath = originalDocument.path;
 
-                String filepath = String.Format("{0}\\{1}_revision_{2}.txt", folderPath, originalDocument.name, documentRevision.creationTime.ToString().Replace(':', '.'));
+                String filepath = String.Format("{0}\\{1}_revision_{2}.txt", folderPath,
+                    originalDocument.name, documentRevision.creationTime.ToString().Replace(':', '.'));
                 //Create the document and write the content to it.
                 using (StreamWriter sw = new StreamWriter(File.Create(filepath)))
                 {
                     sw.Write(content);
                 }
 
+                documentRevision.path = filepath;
+                context.Documentrevisions.AddObject(documentRevision);
+                context.SaveChanges();
+            }
+        }*/
+
+        public void AddDocumentRevision(DateTime creationTime, int editorId, int documentId, String filepath) {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                Documentrevision documentRevision = new Documentrevision();
+                documentRevision.creationTime = creationTime;
+                documentRevision.editorId = editorId;
+                documentRevision.documentId = documentId;
                 documentRevision.path = filepath;
                 context.Documentrevisions.AddObject(documentRevision);
                 context.SaveChanges();
@@ -550,7 +580,6 @@ namespace Server
                 content = reader.ReadToEnd();
             }
             return content;
-
         }
     }
 }

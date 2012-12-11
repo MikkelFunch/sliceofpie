@@ -20,7 +20,7 @@ namespace Server
         /// <summary>
         /// Accessor method for accessing the single instance of controller.
         /// </summary>
-        /// <returns>The only instance of model</returns>
+        /// <returns>The only instance of controller</returns>
         public static Controller GetInstance()
         {
             if (instance == null)
@@ -39,7 +39,7 @@ namespace Server
         {
             try
             {
-                DAO.GetInstance().AddUser(email, password);
+                Facade.GetInstance().AddUser(email, password);
             }
             catch(System.Data.UpdateException)
             {
@@ -56,7 +56,7 @@ namespace Server
         public void AddFolder(String name, int parentFolderId)
         {
 
-            DAO.GetInstance().AddFolder(name, parentFolderId);
+            Facade.GetInstance().AddFolder(name, parentFolderId);
         }
 
         /// <summary>
@@ -68,67 +68,67 @@ namespace Server
         /// <param name="content">The content of the document</param>
         public void AddDocument(String name, int userId, int folderId, String content)
         {
-            DAO.GetInstance().AddDocument(name, userId, folderId, content);
+            Facade.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
-            DAO.GetInstance().AddDocumentRevision(editorId, documentId, content);
+            Facade.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
         public int GetUser(String email, String pass)
         {
-            return DAO.GetInstance().GetUser(email,pass);
+            return Facade.GetInstance().GetUser(email,pass);
         }
 
         public User GetUser(int userId)
         {
-            return DAO.GetInstance().GetUser(userId);
+            return Facade.GetInstance().GetUser(userId);
         }
 
         public User GetUser(String email)
         {
-            return DAO.GetInstance().GetUser(email);
+            return Facade.GetInstance().GetUser(email);
         }
 
         public Document GetDocument(int documentId)
         {
-            return DAO.GetInstance().GetDocument(documentId);
+            return Facade.GetInstance().GetDocument(documentId);
         }
 
         public Document GetDocument(String name)
         {
-            return DAO.GetInstance().GetDocument(name);
+            return Facade.GetInstance().GetDocument(name);
         }
 
         public Folder GetFolder(int folderId)
         {
-            return DAO.GetInstance().GetFolder(folderId);
+            return Facade.GetInstance().GetFolder(folderId);
         }
 
         public void DeleteFolder(int folderId)
         {
-            DAO.GetInstance().DeleteFolder(folderId);
+            Facade.GetInstance().DeleteFolder(folderId);
         }
 
         public void DeleteDocumentReference(int userId, int documentId)
         {
-            DAO.GetInstance().DeleteDocumentReference(userId, documentId);
+            Facade.GetInstance().DeleteDocumentReference(userId, documentId);
         }
 
         public void DeleteDocument(int documentId)
         {
-            DAO.GetInstance().DeleteDocument(documentId);
+            Facade.GetInstance().DeleteDocument(documentId);
         }
 
         public List<Document> GetAllDocumentsByUserId(int userId)
         {
-            return DAO.GetInstance().GetAllDocumentsByUserId(userId);
+            return Facade.GetInstance().GetAllDocumentsByUserId(userId);
         }
 
         public String GetDocumentContent(String path)
         {
-            return DAO.GetInstance().GetDocumentContent(path);
+            return Facade.GetInstance().GetDocumentContent(path);
         }
     }
 }
