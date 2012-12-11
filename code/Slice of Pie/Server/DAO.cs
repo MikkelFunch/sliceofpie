@@ -283,7 +283,6 @@ namespace Server
         /// </summary>
         /// <param name="documentId">The id of the document</param>
         /// <returns>A list of all document revisions from the original document</returns>
-
         public List<Documentrevision> GetDocumentRevisions(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -302,11 +301,12 @@ namespace Server
         }
 
         /// <summary>
-        /// Gets the latest document revision from a document.
+        /// Gets the latest documents revisions from a document.
         /// </summary>
         /// <param name="documentId">The id of the document</param>
+        /// /// <param name="count">The number of document revisions to return</param>
         /// <returns>The latest document revision</returns>
-        public Documentrevision GetLatestDocumentRevision(int documentId)
+        public List<Documentrevision> GetLatestDocumentRevision(int documentId, int count)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -315,18 +315,24 @@ namespace Server
                                         orderby dr.creationTime descending
                                         select dr;
 
-                Documentrevision mostRecent = documentRevisions.First<Documentrevision>();
-                foreach(Documentrevision dr in documentRevisions)
+                List<Documentrevision> documentRevisionList = new List<Documentrevision>();
+                int i = 1;
+                foreach (Documentrevision dr in documentRevisions)
                 {
-                    if (dr.creationTime > mostRecent.creationTime)
+                    if (i <= count)
                     {
-                        mostRecent = dr;
+                        documentRevisionList.Add(dr);
+                        i++;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
-                return mostRecent;
+
+                return documentRevisionList;
             }
         }
-
 
 
         /// <summary>
@@ -389,6 +395,27 @@ namespace Server
                     folder = folders.First<Folder>();
                 }
                 return folder;
+            }
+        }
+
+        /// <summary>
+        /// Gets the folders with a specific parent id.
+        /// </summary>
+        /// <param name="parentId">The parent id of the folders</param>
+        /// <returns>The folders with the parentId</returns>
+        public List<Folder> GetFoldersByRootId(int parentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var folders = from f in context.Folders
+                              where f.parentFolderId == parentId
+                              select f;
+                List<Folder> folderList = new List<Folder>();
+                foreach (Folder f in folders)
+                {
+                    folderList.Add(f);
+                }
+                return folderList;
             }
         }
 

@@ -36,14 +36,20 @@ namespace Server
         /// <param name="original">The document prior to the latest</param>
         /// <param name="latest">The latest version of the document</param>
         /// <returns>The merged version of two documents</returns>
-        public String[] MergeDocuments(String[] original, String[] latest)
+        public String[][] MergeDocuments(String[] original, String[] latest)
         {
             //index of the original document
             int o = 0;
             //index of the latest document
             int n = 0;
+            //The array which contains the resukting string arrays.
+            String[][] result = new String[3][];
             //The final merged version
             List<String> merged = new List<String>();
+            //Array containing trace of deletions.
+            String[] deletions = new String[original.Length];
+            //Array containing trace of insertions.
+            String[] insertions = new String[latest.Length];
 
             do
             {
@@ -52,6 +58,8 @@ namespace Server
                     //Remaining lines are new in the latest document. Ends loop.
                     if (IsEndOfDocument(original, o) && !IsEndOfDocument(latest, n))
                     {
+                        fillIntervalWithText(insertions, n, latest.Length-1, "i");
+
                         AppendLines(merged, latest, n, LastIndexOf(latest));
                         n = LastIndexOf(latest) + 1;
                     }
@@ -59,6 +67,8 @@ namespace Server
                     //Remaining lines are deleted in the latest document. Ends loop.
                     if (!IsEndOfDocument(original, o) && IsEndOfDocument(latest, n))
                     {
+                        fillIntervalWithText(deletions, o, original.Length-1, "d");
+
                         o = LastIndexOf(original) + 1;
                     }
                 }
@@ -77,22 +87,39 @@ namespace Server
                         int? i = FindAppearanceOfLine(latest, original[o], n + 1, LastIndexOf(latest));
                         if (i == null)
                         {
+                            deletions[o] = "d";
                             o++;
                         }
                         else
                         {
+                            fillIntervalWithText(insertions, n, (int)i - 1, "i");
                             AppendLines(merged, latest, n, (int)i - 1);
                             n = (int)i;
-                            o++;
+                            //o++;
                         }
                     }
                 }
             }
             while (!(IsEndOfDocument(original, o) && IsEndOfDocument(latest, n)));
                   
+            result[0] = merged.ToArray();
+            result[1] = insertions;
+            result[2] = deletions;
 
-            return merged.ToArray();
+            return result;
         }
+        
+        private void fillIntervalWithText(String[] s, int start, int end, string text)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (i >= start && i <= end)
+                {
+                    s[i] = text;
+                }
+            }
+        }
+
 
         private int LastIndexOf(String[] s)
         {
