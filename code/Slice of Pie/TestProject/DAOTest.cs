@@ -29,7 +29,7 @@ namespace TestProject
         [ClassCleanup()]
         public static void CleanDataBaseFinish()
         {
-            DAO.GetInstance().DeleteAllData();
+            //DAO.GetInstance().DeleteAllData();
         }
         
         
@@ -107,8 +107,9 @@ namespace TestProject
             Assert.AreEqual(ud.userId, u2.id);
         }
 
-
-        
+        /// <summary>
+        /// Tests AddDocumentRevision and GetDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
+        /// </summary>
         [TestMethod()]
         public void AddDocumentRevisionGetDocumentRevisionsTest()
         {
@@ -122,16 +123,17 @@ namespace TestProject
             DAO.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
             Document d = DAO.GetInstance().GetDocument(name);
             //DocumentRevision
-
             DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
             List<Documentrevision> drlist = DAO.GetInstance().GetDocumentRevisions(d.id);
             Assert.AreEqual(drlist[0].documentId, d.id);
             Assert.AreEqual(drlist[0].editorId, u.id);
         }
 
-
+        /// <summary>
+        /// Tests AddDocumentRevision and GetLatestDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
+        /// </summary>
         [TestMethod()]
-        public void AddDocumentRevisionGetLatestDocumentRevisionTest()
+        public void GetLatestDocumentRevisionTest()
         {
             //User
             string email = "test@test.test";
@@ -154,8 +156,35 @@ namespace TestProject
             DAO.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
             DAO.GetInstance().AddDocumentRevision(u1.id, d.id, "Newtestcontentedited");
             DAO.GetInstance().AddDocumentRevision(u2.id, d.id, "Newtestcontenteditedagain");
-            Documentrevision dr = DAO.GetInstance().GetLatestDocumentRevision(d.id);
+            List<Documentrevision> drlist = DAO.GetInstance().GetLatestDocumentRevision(d.id, 1);
+            Documentrevision dr = drlist[0];
             Assert.AreEqual(dr.editorId, u2.id);
         }
+
+        /// <summary>
+        /// Tests GetFolderByParentId. Has AddUserGetUserTest and AddFolderGetFolder as dependency.
+        /// </summary>
+        [TestMethod()]
+        public void GetFolderByIdTest()
+        {
+            //User
+            string email = "test@test.test";
+            string password = "test123";
+            DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUser(email);
+            //Folders
+            string name1 = "testFolder1";
+            string name2 = "testFolder2";
+            string name3 = "testFolder3";
+            DAO.GetInstance().AddFolder(name1, u.rootFolderId);
+            DAO.GetInstance().AddFolder(name2, u.rootFolderId);
+            DAO.GetInstance().AddFolder(name3, u.rootFolderId);
+            List<Folder> folders = DAO.GetInstance().GetFoldersByRootId(u.rootFolderId);
+            Assert.IsTrue(folders.Count == 3);
+            Assert.IsTrue(name1.Equals(folders[0].name) || name1.Equals(folders[1].name) || name1.Equals(folders[2].name));
+            Assert.IsTrue(name2.Equals(folders[0].name) || name2.Equals(folders[1].name) || name2.Equals(folders[2].name));
+            Assert.IsTrue(name3.Equals(folders[0].name) || name3.Equals(folders[1].name) || name3.Equals(folders[2].name));
+        }
+
     }
 }

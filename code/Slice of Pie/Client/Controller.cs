@@ -107,13 +107,14 @@ namespace Client
             //try catch in case of currupted file
             FlowDocument doc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
             gui.richTextBox.Document = doc;
-            gui.labelOpenDocument.Content = "Current document: " + fileName;
+            gui.labelOpenDocument.Content = fileName.EndsWith(".txt") ? "Current document: " + fileName : "Current document: " + fileName + ".txt";
         }
 
         public void CreateDocument(String title)
         {
             model.CreateDocument(title, gui.richTextBox.Document);
-            
+            FlowDocument emptyDoc = new FlowDocument();
+            SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title);
             UpdateExplorerView();
         }
 
@@ -134,6 +135,13 @@ namespace Client
             
             model.DownloadComplete(image);
         }
+
+        public void SyncAllDocuments()
+        {
+            model.SyncAllDocuments();
+        }
+
+        
         /*
         public void SaveDocument(String name, int userId, int folderId, int documentId, String content)
         {

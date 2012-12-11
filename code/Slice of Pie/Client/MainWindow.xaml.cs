@@ -41,6 +41,31 @@ namespace Client
 
             //get inserted url
             url = imDialog.URLString;
+
+            //check if it is a valid url
+            if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
+            {
+                TextRange tr = new TextRange(
+                richTextBox.Selection.Start,
+                richTextBox.Selection.End);
+
+                tr.Text = "";
+                Run run = new Run("[" + url + "]");
+                Hyperlink hlink = new Hyperlink(run, tr.Start);
+                hlink.NavigateUri = new Uri(url);
+            }
+
+
+            /// Show an image rather than a text with the link
+            /*
+            string url = null;
+
+            ImageURLDialog imDialog = new ImageURLDialog();
+            imDialog.ShowDialog();
+
+            //get inserted url
+            url = imDialog.URLString;
+>>>>>>> c201143b2ac7301d07aa9f99523ecc7a966da4b4
              
 
             //check if it is a valid url
@@ -69,8 +94,8 @@ namespace Client
                 //insert the image
                 Paragraph p = (Paragraph) richTextBox.Document.Blocks.LastBlock;
                 p.Inlines.Add(image);
-                richTextBox.Document.Blocks.Add(p);*/
-            }
+                richTextBox.Document.Blocks.Add(p);
+            }*/
         }
 
 
@@ -117,9 +142,21 @@ namespace Client
             controller.SaveDocument(richTextBox.Document);
         }
 
-        private void saveDocumentButton_Click(object sender, RoutedEventArgs e)
+        private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
-            //controller.SaveDocument("Title
+
+        }
+
+        private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                controller.SyncAllDocuments();
+            }
+            else
+            {
+                //some error
+            }
         }
     }
 }
