@@ -105,5 +105,20 @@ namespace WcfService
         Server.Controller.GetInstance().DeleteDocument(documentId);
     }
 
+    public List<ServiceDocument> GetAllDocumentsByUserId(int userId)
+    {
+        List<Server.Document> serverList = Server.Controller.GetInstance().GetAllDocumentsByUserId(userId);
+        List<ServiceDocument> returnList = new List<ServiceDocument>();
+        for (int i = 0; i < serverList.Count; i++)
+        {
+            returnList.Add((ServiceDocument)serverList[i]);
+        }
+        return returnList;
+    }
+
+    public String GetDocumentContent(String path)
+    {
+        return Server.Controller.GetInstance().GetDocumentContent(path);
+    }
   }
 }

@@ -60,6 +60,12 @@ namespace WcfService
 
     [OperationContract]
     void DeleteDocument(int documentId);
+
+    [OperationContract]
+    List<ServiceDocument> GetAllDocumentsByUserId(int userId);
+
+    [OperationContract]
+    String GetDocumentContent(String path);
   }
 
   [DataContract]

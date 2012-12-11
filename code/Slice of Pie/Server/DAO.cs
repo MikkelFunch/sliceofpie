@@ -545,7 +545,7 @@ namespace Server
         public String GetDocumentContent(String path)
         {
             String content = null;
-            using (StreamReader reader = new StreamReader(path))
+            using (StreamReader reader = new StreamReader(path + ".txt"))
             {
                 content = reader.ReadToEnd();
             }
