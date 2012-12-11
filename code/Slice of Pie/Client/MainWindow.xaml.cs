@@ -41,53 +41,36 @@ namespace Client
 
             //get inserted url
             url = imDialog.URLString;
-
-            //check if it is a valid url
-            /*if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
-            {
-                richTextBox.Document
-            }*/
-
-
-            /// Show an image rather than a text with the link
-            /*
-            string url = null;
-
-            ImageURLDialog imDialog = new ImageURLDialog();
-            imDialog.ShowDialog();
-
-            //get inserted url
-            url = imDialog.URLString;
              
 
             //check if it is a valid url
             if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
             {
-             * Create bitmapimage refrenceing the online link to download it
+                //Create bitmapimage refrenceing the online link to download it
                 BitmapImage bitmap = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
                 
                 //bitmap.DownloadCompleted += controller.GetDownloadCompleteEventHandler();
                 bitmap.DownloadCompleted += new EventHandler(controller.DownloadComplete);
-             * 
-             * //Create a new source refrenceing the image locally
+                /*
+                //Create a new source refrenceing the image locally
                 Uri newSource = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\" + Security.EncryptPassword(url) + ".jpg", UriKind.RelativeOrAbsolute);
 
              
-             * create bitmapimage refrencing the local source
+                //create bitmapimage refrencing the local source
                 BitmapImage localImage = new BitmapImage(newSource);
-             * * Create the image which will be shown in gui
+                //Create the image which will be shown in gui
                 Image image = new Image();
-             *  set the source of the image
+                //set the source of the image
                 image.Source = localImage;
                 image.Width = 130;
                 image.Height = 130;
                 image.Tag = newSource;
                 
-             * insert the image
+                //insert the image
                 Paragraph p = (Paragraph) richTextBox.Document.Blocks.LastBlock;
                 p.Inlines.Add(image);
-                richTextBox.Document.Blocks.Add(p);
-            }*/
+                richTextBox.Document.Blocks.Add(p);*/
+            }
         }
 
 

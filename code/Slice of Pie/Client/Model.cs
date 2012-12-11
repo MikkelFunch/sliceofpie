@@ -138,8 +138,6 @@ namespace Client
 
                 using (var filestream = new FileStream(photolocation, FileMode.Create))
                     encoder.Save(filestream);
-                Semaphore token = new Semaphore(0, 1, "Token");
-                token.Release();
             }
         }
     }
