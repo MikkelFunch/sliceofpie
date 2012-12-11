@@ -27,4 +27,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ServiceDocument" nillable="true" type="tns:ServiceDocument" />
+  <xs:complexType name="ArrayOfServiceDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceDocument" nillable="true" type="tns:ServiceDocument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfServiceDocument" nillable="true" type="tns:ArrayOfServiceDocument" />
 </xs:schema>

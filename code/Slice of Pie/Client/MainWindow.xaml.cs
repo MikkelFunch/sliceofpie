@@ -43,10 +43,17 @@ namespace Client
             url = imDialog.URLString;
 
             //check if it is a valid url
-            /*if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
+            if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
             {
-                richTextBox.Document
-            }*/
+                TextRange tr = new TextRange(
+                richTextBox.Selection.Start,
+                richTextBox.Selection.End);
+
+                tr.Text = "";
+                Run run = new Run("[" + url + "]");
+                Hyperlink hlink = new Hyperlink(run, tr.Start);
+                hlink.NavigateUri = new Uri(url);
+            }
 
 
             /// Show an image rather than a text with the link
@@ -134,9 +141,21 @@ namespace Client
             controller.SaveDocument(richTextBox.Document);
         }
 
-        private void saveDocumentButton_Click(object sender, RoutedEventArgs e)
+        private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
-            //controller.SaveDocument("Title
+
+        }
+
+        private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                controller.SyncAllDocuments();
+            }
+            else
+            {
+                //some error
+            }
         }
     }
 }

@@ -120,5 +120,15 @@ namespace Server
         {
             DAO.GetInstance().DeleteDocument(documentId);
         }
+
+        public List<Document> GetAllDocumentsByUserId(int userId)
+        {
+            return DAO.GetInstance().GetAllDocumentsByUserId(userId);
+        }
+
+        public String GetDocumentContent(String path)
+        {
+            return DAO.GetInstance().GetDocumentContent(path);
+        }
     }
 }

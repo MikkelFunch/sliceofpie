@@ -138,8 +138,50 @@ namespace Client
 
                 using (var filestream = new FileStream(photolocation, FileMode.Create))
                     encoder.Save(filestream);
-                Semaphore token = new Semaphore(0, 1, "Token");
-                token.Release();
+            }
+        }
+
+        public void SyncAllDocuments()
+        {
+            if (UserID != -1)
+            {
+                using (WcfServiceReference.ServiceClient proxy = new WcfServiceReference.ServiceClient())
+                {
+                    WcfServiceReference.ServiceDocument[] documents = proxy.GetAllDocumentsByUserId(UserID);
+                    if (documents != null)
+                    {
+                        foreach (WcfServiceReference.ServiceDocument currentDoc in documents)
+                        {
+                            int index = currentDoc.path.IndexOf("sliceofpie");
+                            String path = currentDoc.path.Substring(index);
+                            String fullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + path;
+                            if (!File.Exists(fullPath + "\\" + currentDoc.name))
+                            {
+                                Directory.CreateDirectory(fullPath);
+                                using (FileStream stream = File.Create(fullPath + "\\" + currentDoc.name))
+                                {
+                                    String content = proxy.GetDocumentContent(currentDoc.path + "\\" + currentDoc.name);
+                                    System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+                                    byte[] byteContent = encoding.GetBytes(content);
+                                    stream.Write(byteContent,0, byteContent.Length);
+                                }
+                            }
+                            else
+                            {
+                                //Document already exits.
+                                //Make user single sync this document.
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //No documents found by this userId
+                    }
+                }
+            }
+            else
+            {
+                //not logged in
             }
         }
     }

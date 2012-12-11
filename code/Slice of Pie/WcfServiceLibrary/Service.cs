@@ -81,5 +81,28 @@ namespace WcfServiceLibrary
         {
             Server.Controller.GetInstance().DeleteDocument(documentId);
         }
+
+        public List<ServiceDocument> GetAllDocumentsByUserId(int userId)
+        {
+            List<Server.Document> serverDocuments =  Server.Controller.GetInstance().GetAllDocumentsByUserId(userId);
+            if (serverDocuments != null)
+            {
+                List<ServiceDocument> documents = new List<ServiceDocument>();
+                foreach (Server.Document currentDoc in serverDocuments)
+                {
+                    documents.Add((ServiceDocument)currentDoc);
+                }
+                return documents;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public String GetDocumentContent(String path)
+        {
+            return Server.Controller.GetInstance().GetDocumentContent(path);
+        }
     }
 }

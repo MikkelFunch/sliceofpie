@@ -495,5 +495,35 @@ namespace Server
                 return userdocument;
             }
         }
+
+        public List<Document> GetAllDocumentsByUserId(int userId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var docs = from ud in context.Userdocuments
+                                join d in context.Documents on ud.documentId equals d.id
+                                select d;
+                if (docs.Count<Document>() > 0)
+                {
+                    return docs.ToList();
+                }
+                else
+                {
+                    //No documents found
+                    return null;
+                }
+            }
+        }
+
+        public String GetDocumentContent(String path)
+        {
+            String content = null;
+            using (StreamReader reader = new StreamReader(path))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
+
+        }
     }
 }

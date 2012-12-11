@@ -30,9 +30,12 @@
             <!-- Explorer grid components -->
 
             <!-- Top buttons definitions -->
-            <Button Content="New Folder" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonNewFolder" />
-            <Button Content="Delete" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="buttonDelete" />
-            
+            <StackPanel Orientation="Horizontal">
+                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" />
+                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click"/>
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" />
+            </StackPanel>
+                
             <!-- Bottom buttons -->
             <Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="button2" Grid.Row="2"/>
 
@@ -88,16 +91,17 @@
                 </TextBlock>
                 <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
                 <Label Content="Current document: None" Height="28" Name="labelOpenDocument" Margin="120,0,0,0"/>
-                <Button Content="Save Document" HorizontalAlignment="Left" Margin="4,2,0,2" Name="saveDocumentButton" VerticalAlignment="Stretch" Click="saveDocumentButton_Click"/>
             </StackPanel>
             
             <!-- Buttons to the right side -->
+            
             <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
             <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
                 <Image Source="Resources/img_icon.gif" />
             </Button>
             <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click"/>
-            </Grid>
+            <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right"/>
+        </Grid>
             <!-- Button menu end -->
 
             <!-- Main grid components end -->

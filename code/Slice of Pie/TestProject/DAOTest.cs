@@ -29,7 +29,7 @@ namespace TestProject
         [ClassCleanup()]
         public static void CleanDataBaseFinish()
         {
-            DAO.GetInstance().DeleteAllData();
+            //DAO.GetInstance().DeleteAllData();
         }
         
         
