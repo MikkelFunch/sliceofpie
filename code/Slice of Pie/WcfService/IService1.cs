@@ -8,40 +8,160 @@ using System.Text;
 
 namespace WcfService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
     public interface IService1
     {
+        [OperationContract]
+        Boolean AddUser(String email, String password);
 
         [OperationContract]
-        string GetData(int value);
+        void AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
+        void AddDocument(String name, int userId, int folderId, String content);
 
-        // TODO: Add your service operations here
+        [OperationContract]
+        void AddDocumentRevision(int editorId, int documentId, String content);
+
+        [OperationContract]
+        int GetUserByEmailAndPass(String email, String pass);
+
+        [OperationContract]
+        ServiceUser GetUserById(int userId);
+
+        [OperationContract]
+        ServiceUser GetUserByEmail(String email);
+
+        [OperationContract]
+        ServiceFolder GetFolder(int folderId);
+
+        [OperationContract]
+        ServiceDocument GetDocumentById(int documentId);
+
+        [OperationContract]
+        ServiceDocument GetDocumentByName(String name);
+
+        [OperationContract]
+        void DeleteFolder(int folderId);
+
+        [OperationContract]
+        void DeleteDocumentReference(int userId, int documentId);
+
+        [OperationContract]
+        void DeleteDocument(int documentId);
+
+        [OperationContract]
+        List<ServiceDocument> GetAllDocumentsByUserId(int userId);
+
+        [OperationContract]
+        String GetDocumentContent(String path);
     }
 
-
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
-    public class CompositeType
+    public class ServiceDocument
     {
-        bool boolValue = true;
-        string stringValue = "Hello ";
+        [DataMember]
+        public int id { get; set; }
 
         [DataMember]
-        public bool BoolValue
+        public string name { get; set; }
+
+        [DataMember]
+        public string path { get; set; }
+
+        [DataMember]
+        public DateTime creationTime { get; set; }
+
+        [DataMember]
+        public int creatorId { get; set; }
+
+        public static explicit operator ServiceDocument(Server.Document d)
         {
-            get { return boolValue; }
-            set { boolValue = value; }
+            ServiceDocument doc = new ServiceDocument();
+            doc.creationTime = d.creationTime;
+            doc.creatorId = d.creatorId;
+            doc.id = d.id;
+            doc.name = d.name;
+            doc.path = d.path;
+            return doc;
         }
 
-        [DataMember]
-        public string StringValue
+        public static explicit operator Server.Document(ServiceDocument sd)
         {
-            get { return stringValue; }
-            set { stringValue = value; }
+            Server.Document doc = new Server.Document();
+            doc.creationTime = sd.creationTime;
+            doc.creatorId = sd.creatorId;
+            doc.id = sd.id;
+            doc.name = sd.name;
+            doc.path = sd.path;
+            return doc;
+        }
+    }
+
+    [DataContract]
+    public class ServiceUser
+    {
+        [DataMember]
+        public int id { get; set; }
+
+        [DataMember]
+        public String email { get; set; }
+
+        [DataMember]
+        public String password { get; set; }
+
+        [DataMember]
+        public int rootFolderId { get; set; }
+
+        public static explicit operator ServiceUser(Server.User u)
+        {
+            ServiceUser user = new ServiceUser();
+            user.email = u.email;
+            user.id = u.id;
+            user.password = u.password;
+            user.rootFolderId = u.rootFolderId;
+            return user;
+        }
+
+        public static explicit operator Server.User(ServiceUser su)
+        {
+            Server.User user = new Server.User();
+            user.email = su.email;
+            user.id = su.id;
+            user.password = su.password;
+            user.rootFolderId = su.rootFolderId;
+            return user;
+        }
+    }
+
+    [DataContract]
+    public class ServiceFolder
+    {
+        [DataMember]
+        public int id { get; set; }
+
+        [DataMember]
+        public string name { get; set; }
+
+        [DataMember]
+        public int? parentFolderId { get; set; }
+
+        public static explicit operator ServiceFolder(Server.Folder f)
+        {
+            ServiceFolder folder = new ServiceFolder();
+            folder.id = f.id;
+            folder.name = f.name;
+            folder.parentFolderId = f.parentFolderId;
+            return folder;
+        }
+
+        public static explicit operator Server.Folder(ServiceFolder sf)
+        {
+            Server.Folder folder = new Server.Folder();
+            folder.id = sf.id;
+            folder.name = sf.name;
+            folder.parentFolderId = sf.parentFolderId;
+            return folder;
         }
     }
 }

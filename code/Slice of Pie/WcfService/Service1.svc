@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfService.Service1" CodeBehind="Service1.svc.cs" %>
+=======
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfService.Service1" CodeBehind="Service1.svc.cs" %>
+>>>>>>> f28254f6a0fcc63b0043ef725af160695014ebde

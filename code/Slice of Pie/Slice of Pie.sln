@@ -2,11 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{EA572791-620D-457E-B500-9A94D8AB1230}"
-	ProjectSection(ProjectDependencies) = postProject
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F} = {853721D2-ACB8-4313-93A9-28ED4DD4164F}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceLibrary", "WcfServiceLibrary\WcfServiceLibrary.csproj", "{853721D2-ACB8-4313-93A9-28ED4DD4164F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{2B58E621-E468-439A-829F-FEA49F73FFA6}"
 EndProject
@@ -18,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{B186F550-7A26-4D6A-9531-D234919B846C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{5ED2CC5F-8A1B-45C2-BC77-F95013285065}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\WcfService.csproj", "{C2C296DE-23A5-44BE-879B-BA9BAFAA5838}"
 EndProject
@@ -46,16 +39,6 @@ Global
 		{EA572791-620D-457E-B500-9A94D8AB1230}.Release|Mixed Platforms.Build.0 = Release|x86
 		{EA572791-620D-457E-B500-9A94D8AB1230}.Release|x86.ActiveCfg = Release|x86
 		{EA572791-620D-457E-B500-9A94D8AB1230}.Release|x86.Build.0 = Release|x86
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{853721D2-ACB8-4313-93A9-28ED4DD4164F}.Release|x86.ActiveCfg = Release|Any CPU
 		{2B58E621-E468-439A-829F-FEA49F73FFA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B58E621-E468-439A-829F-FEA49F73FFA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B58E621-E468-439A-829F-FEA49F73FFA6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -76,16 +59,6 @@ Global
 		{B186F550-7A26-4D6A-9531-D234919B846C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B186F550-7A26-4D6A-9531-D234919B846C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B186F550-7A26-4D6A-9531-D234919B846C}.Release|x86.ActiveCfg = Release|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5ED2CC5F-8A1B-45C2-BC77-F95013285065}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2C296DE-23A5-44BE-879B-BA9BAFAA5838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2C296DE-23A5-44BE-879B-BA9BAFAA5838}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2C296DE-23A5-44BE-879B-BA9BAFAA5838}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
