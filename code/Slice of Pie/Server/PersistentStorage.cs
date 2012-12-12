@@ -39,6 +39,13 @@ namespace Server
             String documentPath = fsh.GetDocumentPath(userId, folderId);
             fsh.WriteToFile(documentPath, name, content);
             dao.AddDocument(name, userId, documentPath);
+            int documentId = GetDocumentIdByPath(documentPath, name);
+            AddUserDocument(userId, documentId, folderId);
+        }
+
+        public int GetDocumentIdByPath(String directoryPath, String filename)
+        {
+            return dao.GetDocumentIdByPath(directoryPath, filename);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)

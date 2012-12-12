@@ -587,5 +587,16 @@ namespace Server
         {
             return GetUser(userId).rootFolderId;
         }
+
+        public int GetDocumentIdByPath(String directoryPath, String filename)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var document = from d in context.Documents
+                               where d.path == directoryPath && d.name == filename
+                               select d;
+                return document.First<Document>().id;
+            }
+        }
     }
 }
