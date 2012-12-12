@@ -32,7 +32,7 @@ namespace Server
         public String GetDocumentPath(int userId, int folderId)
         {
             StringBuilder sb = new StringBuilder();
-            Folder folder = Facade.GetInstance().GetFolder(folderId);
+            Folder folder = PersistentStorage.GetInstance().GetFolder(folderId);
             while (folder != null || folder.parentFolderId != null)
             {
                 if (folder.parentFolderId == null)
@@ -43,9 +43,9 @@ namespace Server
                 {
                     sb.Insert(0, "\\" + folder.name);
                 }
-                folder = Facade.GetInstance().GetFolder((int)folder.parentFolderId);
+                folder = PersistentStorage.GetInstance().GetFolder((int)folder.parentFolderId);
             }
-            String userEmail = Facade.GetInstance().GetUser(userId).email;
+            String userEmail = PersistentStorage.GetInstance().GetUser(userId).email;
             sb.Insert(0, "D:\\SliceOfPieDocuments\\sliceofpie\\" + userEmail);
             return sb.ToString();
         }

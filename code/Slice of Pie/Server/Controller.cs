@@ -39,7 +39,7 @@ namespace Server
         {
             try
             {
-                Facade.GetInstance().AddUser(email, password);
+                PersistentStorage.GetInstance().AddUser(email, password);
             }
             catch(System.Data.UpdateException)
             {
@@ -56,7 +56,7 @@ namespace Server
         public void AddFolder(String name, int parentFolderId)
         {
 
-            Facade.GetInstance().AddFolder(name, parentFolderId);
+            PersistentStorage.GetInstance().AddFolder(name, parentFolderId);
         }
 
         /// <summary>
@@ -68,67 +68,67 @@ namespace Server
         /// <param name="content">The content of the document</param>
         public void AddDocument(String name, int userId, int folderId, String content)
         {
-            Facade.GetInstance().AddDocument(name, userId, folderId, content);
+            PersistentStorage.GetInstance().AddDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
-            Facade.GetInstance().AddDocumentRevision(editorId, documentId, content);
+            PersistentStorage.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
         public int GetUser(String email, String pass)
         {
-            return Facade.GetInstance().GetUser(email,pass);
+            return PersistentStorage.GetInstance().GetUser(email,pass);
         }
 
         public User GetUser(int userId)
         {
-            return Facade.GetInstance().GetUser(userId);
+            return PersistentStorage.GetInstance().GetUser(userId);
         }
 
         public User GetUser(String email)
         {
-            return Facade.GetInstance().GetUser(email);
+            return PersistentStorage.GetInstance().GetUser(email);
         }
 
         public Document GetDocument(int documentId)
         {
-            return Facade.GetInstance().GetDocument(documentId);
+            return PersistentStorage.GetInstance().GetDocument(documentId);
         }
 
         public Document GetDocument(String name)
         {
-            return Facade.GetInstance().GetDocument(name);
+            return PersistentStorage.GetInstance().GetDocument(name);
         }
 
         public Folder GetFolder(int folderId)
         {
-            return Facade.GetInstance().GetFolder(folderId);
+            return PersistentStorage.GetInstance().GetFolder(folderId);
         }
 
         public void DeleteFolder(int folderId)
         {
-            Facade.GetInstance().DeleteFolder(folderId);
+            PersistentStorage.GetInstance().DeleteFolder(folderId);
         }
 
         public void DeleteDocumentReference(int userId, int documentId)
         {
-            Facade.GetInstance().DeleteDocumentReference(userId, documentId);
+            PersistentStorage.GetInstance().DeleteDocumentReference(userId, documentId);
         }
 
         public void DeleteDocument(int documentId)
         {
-            Facade.GetInstance().DeleteDocument(documentId);
+            PersistentStorage.GetInstance().DeleteDocument(documentId);
         }
 
         public List<Document> GetAllDocumentsByUserId(int userId)
         {
-            return Facade.GetInstance().GetAllDocumentsByUserId(userId);
+            return PersistentStorage.GetInstance().GetAllDocumentsByUserId(userId);
         }
 
         public String GetDocumentContent(String path)
         {
-            return Facade.GetInstance().GetDocumentContent(path);
+            return PersistentStorage.GetInstance().GetDocumentContent(path);
         }
     }
 }

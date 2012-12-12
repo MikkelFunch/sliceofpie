@@ -50,7 +50,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="DAO.cs" />
     <Compile Include="Document.cs" />
-    <Compile Include="Facade.cs" />
+    <Compile Include="PersistentStorage.cs" />
     <Compile Include="FileSystemHandler.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Model.cs" />
