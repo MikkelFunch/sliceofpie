@@ -572,14 +572,20 @@ namespace Server
             }
         }
 
-        public String GetDocumentContent(String path)
+        public bool DocumentHasRevision(int documentId)
         {
-            String content = null;
-            using (StreamReader reader = new StreamReader(path + ".txt"))
+            using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                content = reader.ReadToEnd();
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+                return documentRevisions.Count<Documentrevision>() != 0;
             }
-            return content;
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return GetUser(userId).rootFolderId;
         }
     }
 }

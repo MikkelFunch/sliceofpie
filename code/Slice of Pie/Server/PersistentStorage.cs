@@ -116,9 +116,9 @@ namespace Server
             return dao.GetAllDocumentsByUserId(userId);
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return dao.GetDocumentContent(path);
+            return fsh.GetDocumentContent(directoryPath, filename);
         }
 
         public void AddUserDocument(int userId, int documentId, int folderId)
@@ -144,6 +144,37 @@ namespace Server
         public List<Folder> GetFoldersByRootId(int parentId)
         {
             return dao.GetFoldersByRootId(parentId);
+        }
+
+        public bool DocumentHasRevision(int documentId)
+        {
+            return dao.DocumentHasRevision(documentId);
+        }
+
+        public Documentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title)
+        {
+            //No conflict
+            if (!DocumentHasRevision(documentId))
+            {
+                AddDocument(title, editorId, folderId, content);
+                return null;
+            }
+            //No conflict
+            else if(GetLatestDocumentRevision(documentId, 1).First<Documentrevision>().creationTime == baseDocCreationTime)
+            {
+                AddDocumentRevision(editorId, documentId, content);
+                return null;
+            }
+            //Conflict
+            else
+            {
+                return GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+            }
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return dao.GetRootFolderId(userId);
         }
     }
 }

@@ -73,5 +73,15 @@ namespace Server
         {
             Directory.CreateDirectory(directoryPath);
         }
+
+        public String GetDocumentContent(String directoryPath, String filename)
+        {
+            String content = null;
+            using (StreamReader reader = new StreamReader(directoryPath + "\\" + filename + ".txt"))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
+        }
     }
 }

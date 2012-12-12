@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 
 namespace Server
 {
@@ -41,7 +42,7 @@ namespace Server
             {
                 PersistentStorage.GetInstance().AddUser(email, password);
             }
-            catch(System.Data.UpdateException)
+            catch (System.Data.UpdateException)
             {
                 return false;
             }
@@ -78,7 +79,7 @@ namespace Server
 
         public int GetUser(String email, String pass)
         {
-            return PersistentStorage.GetInstance().GetUser(email,pass);
+            return PersistentStorage.GetInstance().GetUser(email, pass);
         }
 
         public User GetUser(int userId)
@@ -126,9 +127,19 @@ namespace Server
             return PersistentStorage.GetInstance().GetAllDocumentsByUserId(userId);
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return PersistentStorage.GetInstance().GetDocumentContent(path);
+            return PersistentStorage.GetInstance().GetDocumentContent(directoryPath, filename);
+        }
+
+        public Documentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title)
+        {
+            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return PersistentStorage.GetInstance().GetRootFolderId(userId);
         }
     }
 }
