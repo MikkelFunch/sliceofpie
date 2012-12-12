@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Windows.Documents;
 
@@ -108,10 +109,11 @@ namespace WcfService
         {
             Server.Documentrevision documentRevision = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
             ServiceDocumentrevision serviceDoc = null;
-            if(documentRevision != null) {
-                serviceDoc = (ServiceDocumentrevision) documentRevision;
+            if (documentRevision != null)
+            {
+                serviceDoc = (ServiceDocumentrevision)documentRevision;
             }
             return serviceDoc;
-        }
+        }      
     }
 }

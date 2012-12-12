@@ -36,10 +36,12 @@ namespace Client
 
         private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
             String email = textboxEmail.Text;
             String unencrytedPass = passwordBox.Password;
 
             Boolean successful = Controller.GetInstance().LoginUser(email, unencrytedPass);
+            this.Cursor = Cursors.Arrow;
             if (successful)
             {
                 Online = true;

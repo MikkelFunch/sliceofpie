@@ -106,8 +106,8 @@ namespace Client
             {
                 //Create a treeviewitem to represent the file
                 TreeViewItem subItem = new TreeViewItem();
-                //Set the header to be the name of the file
-                subItem.Header = file.Name;
+                //Set the header to be the name of the file without .txt
+                subItem.Header = file.Name.Substring(0, (file.Name.Length-4));
                 //Set tag to the full path to the folder
                 subItem.Tag = file.FullName;
                 subItem.MouseDoubleClick += new MouseButtonEventHandler(OpenDocment);
@@ -121,7 +121,7 @@ namespace Client
             TreeViewItem item = (TreeViewItem)sender;
             String text = File.ReadAllText(item.Tag.ToString()); //IOException, if file is used by another program
             Controller.GetInstance().SetOpenDocument(text, item.Header.ToString());
-            Model.GetInstance().CurrentDocument = item.Tag.ToString();
+            Model.GetInstance().CurrentDocumentPath = item.Tag.ToString();
         }
     }
 }
