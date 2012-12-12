@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ServiceModel;
 
 namespace Server
 {
@@ -9,7 +10,8 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            
+
+            Console.ReadKey();
             using (WcfServiceLibrary.ServiceClient proxy = new WcfServiceLibrary.ServiceClient())
             {
                 Document doc = (Document)proxy.GetDocumentById(32);
@@ -17,7 +19,7 @@ namespace Server
                 Folder folder = (Folder)proxy.GetFolder(139);
                 Console.ReadLine();
             }
-
+            Console.ReadKey();
         }
     }
 }

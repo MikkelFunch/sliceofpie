@@ -25,14 +25,17 @@ namespace Client
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
             string email = textBoxEmail.Text;
             string passUnencrypted1 = passwordBox1.Password;
             string passUnencrypted2 = passwordBox2.Password;
 
             if (Controller.GetInstance().RegisterUser(email, passUnencrypted1, passUnencrypted2))
             {
+                this.Cursor = Cursors.Arrow;
                 this.Close();
             }
+            this.Cursor = Cursors.Arrow;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

@@ -107,6 +107,7 @@ namespace Client
             {
                 BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png",UriKind.Relative));
                 OnlineImage.Source = bitmap;
+                buttonSync.IsEnabled = true;
             }
         }
 
@@ -143,7 +144,14 @@ namespace Client
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
-
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                controller.SyncDocument(richTextBox.Document);
+            }
+            else
+            {
+                //some error
+            }
         }
 
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
@@ -154,7 +162,7 @@ namespace Client
             }
             else
             {
-                //some error
+                //no network
             }
         }
     }

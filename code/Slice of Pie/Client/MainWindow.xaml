@@ -100,7 +100,7 @@
                 <Image Source="Resources/img_icon.gif" />
             </Button>
             <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click"/>
-            <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right"/>
+            <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right" IsEnabled="False"/>
         </Grid>
             <!-- Button menu end -->
 

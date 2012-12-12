@@ -75,7 +75,7 @@
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Security.cs" />
-    <Compile Include="Service References\WcfServiceReference\Reference.cs">
+    <Compile Include="Service References\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -128,31 +128,27 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceDocument.datasource">
+    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceFolder.datasource">
+    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocumentrevision.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\Client.WcfServiceReference.ServiceUser.datasource">
+    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceFolder.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\service.wsdl" />
-    <None Include="Service References\WcfServiceReference\service.xsd">
-      <SubType>Designer</SubType>
+    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\WcfServiceReference\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WcfServiceReference\WcfServiceLibrary.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\ServiceReference\Service1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\img_icon.gif" />
@@ -161,24 +157,24 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\WcfServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\blackdot.png" />
     <Resource Include="Resources\greendot.png" />
     <Resource Include="Resources\reddot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

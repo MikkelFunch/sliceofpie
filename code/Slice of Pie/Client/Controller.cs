@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Documents;
+using System.Text.RegularExpressions;
 
 namespace Client
 {
@@ -102,18 +103,19 @@ namespace Client
         }
 
 
-        public void SetOpenDocument(String content, String fileName)
+        public void SetOpenDocument(String content, String title)
         {
-            //try catch in case of currupted file
-            FlowDocument doc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
+            //try catch in case of corrupted file
+            FlowDocument doc = model.CreateDocumentWithoutMetadata(content);
             gui.richTextBox.Document = doc;
-            gui.labelOpenDocument.Content = fileName.EndsWith(".txt") ? "Current document: " + fileName : "Current document: " + fileName + ".txt";
+            gui.labelOpenDocument.Content = "Current document: " + title;
+            model.CurrentDocumentTitle = title;
         }
 
         public void CreateDocument(String title)
         {
-            model.CreateDocument(title, gui.richTextBox.Document);
             FlowDocument emptyDoc = new FlowDocument();
+            model.CreateDocument(title, emptyDoc);
             SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title);
             UpdateExplorerView();
         }
@@ -139,6 +141,7 @@ namespace Client
         public void SyncAllDocuments()
         {
             model.SyncAllDocuments();
+            UpdateExplorerView();
         }
 
         
@@ -155,5 +158,10 @@ namespace Client
             }
         }
         */
+
+        public void SyncDocument(FlowDocument document)
+        {
+            model.SyncDocument(document);
+        }
     }
 }
