@@ -10,6 +10,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            PersistentStorage.GetInstance().AddDocument("SomeDoc", 205, 303, "");
         }
     }
 }
