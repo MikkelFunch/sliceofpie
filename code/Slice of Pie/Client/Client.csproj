@@ -139,9 +139,6 @@
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocumentrevision.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceFolder.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

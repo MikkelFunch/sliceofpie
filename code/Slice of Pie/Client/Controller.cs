@@ -161,7 +161,12 @@ namespace Client
 
         public void SyncDocument(FlowDocument document)
         {
-            model.SyncDocument(document);
+            String[][] response = model.SyncDocument(document);
+
+            if (response != null)
+            {
+                gui.SetupMergeView(response);
+            }
         }
     }
 }
