@@ -23,7 +23,7 @@ namespace Client
             InitializeComponent();
         }
 
-        public String Title
+        public String DocumentTitle
         {
             get;
             private set;
@@ -32,7 +32,7 @@ namespace Client
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
             //if anything in
-            Title = textBoxTitle.Text;
+            DocumentTitle = textBoxTitle.Text;
             this.Close();
         }
 

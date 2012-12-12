@@ -22,8 +22,6 @@ namespace Client
     public partial class MainWindow : Window
     {
         Controller controller;
-        Point _lastMouseDown;
-        TreeViewItem draggedItem, _target;
 
         public MainWindow()
         {
@@ -133,7 +131,7 @@ namespace Client
             NewDocumentDialog docDia = new NewDocumentDialog();
             docDia.ShowDialog();
 
-            String title = docDia.Title;
+            String title = docDia.DocumentTitle;
 
             controller.CreateDocument(title);
         }
@@ -157,6 +155,7 @@ namespace Client
 
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncAllDocuments();
@@ -165,6 +164,7 @@ namespace Client
             {
                 //no network
             }
+            this.Cursor = Cursors.Arrow;
         }
     }
 }
