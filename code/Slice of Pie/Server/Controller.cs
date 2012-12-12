@@ -132,9 +132,9 @@ namespace Server
             return PersistentStorage.GetInstance().GetDocumentContent(directoryPath, filename);
         }
 
-        public Documentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title)
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
         {
-            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
+            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
         }
 
         public int GetRootFolderId(int userId)

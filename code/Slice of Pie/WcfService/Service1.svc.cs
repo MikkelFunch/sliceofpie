@@ -105,15 +105,20 @@ namespace WcfService
             return Server.Controller.GetInstance().GetDocumentContent(directoryPath, filename);
         }
 
-        public ServiceDocumentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title)
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
         {
+            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+
+
+            return stringArray;
+            /*
             Server.Documentrevision documentRevision = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
             ServiceDocumentrevision serviceDoc = null;
             if (documentRevision != null)
             {
                 serviceDoc = (ServiceDocumentrevision)documentRevision;
             }
-            return serviceDoc;
+            return serviceDoc;*/
         }      
     }
 }
