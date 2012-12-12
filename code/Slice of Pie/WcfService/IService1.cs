@@ -61,7 +61,7 @@ namespace WcfService
         String GetDocumentContent(String directoryPath, String filename);
 
         [OperationContract]
-        ServiceDocumentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title);
+        String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
     }
 
     [DataContract]

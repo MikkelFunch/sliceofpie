@@ -83,5 +83,15 @@ namespace Server
             }
             return content;
         }
+
+        public string GetDocumentContent(string filepath)
+        {
+            String content = null;
+            using (StreamReader reader = new StreamReader(filepath))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
+        }
     }
 }

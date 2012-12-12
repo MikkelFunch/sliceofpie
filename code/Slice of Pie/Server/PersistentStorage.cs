@@ -151,7 +151,7 @@ namespace Server
             return dao.DocumentHasRevision(documentId);
         }
 
-        public Documentrevision SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title)
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] latest)
         {
             //No conflict
             if (!DocumentHasRevision(documentId))
@@ -168,13 +168,26 @@ namespace Server
             //Conflict
             else
             {
-                return GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+                String[][] returnArray = new String[4][];
+                String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
+                String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
+                returnArray[0] = mergedLines[0];
+                returnArray[1] = mergedLines[1];
+                returnArray[2] = mergedLines[2];
+                Documentrevision latestDoc = GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+                returnArray[3] = Model.GetInstance().GetContentAsStringArray(latestDoc.id);
+                return returnArray;
             }
         }
 
         public int GetRootFolderId(int userId)
         {
             return dao.GetRootFolderId(userId);
+        }
+
+        public string GetDocumentContent(string filepath)
+        {
+            return fsh.GetDocumentContent(filepath);
         }
     }
 }
