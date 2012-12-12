@@ -312,7 +312,9 @@ namespace Client
                 content = reader.ReadToEnd();
             }
             Object[] metadata = RetrieveMetadata(file);
-            proxy.AddDocument(file.Substring(file.IndexOf(dir + "\\"), (file.IndexOf(".txt") - file.IndexOf(dir + "\\"))), UserID, (int)metadata[3], content);
+            int index = file.IndexOf(dir + "\\");
+            String filename = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") -1));
+            proxy.AddDocument(filename, UserID, (int)metadata[3], content);
         }
 
         public String[][] SyncDocument(FlowDocument document)
