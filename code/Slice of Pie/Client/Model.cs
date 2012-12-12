@@ -95,7 +95,6 @@ namespace Client
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 id = proxy.GetUserByEmailAndPass(email, pass);
-                RootFolderID = proxy.GetRootFolderId(id);
             }
             if (id != -1)
             {
@@ -104,6 +103,11 @@ namespace Client
                 Email = email;
                 RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Email;
                 Directory.CreateDirectory(RootFolder);
+
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    RootFolderID = proxy.GetRootFolderId(id);
+                }
             }
             return id;
         }
@@ -127,8 +131,18 @@ namespace Client
         /// </returns>
         public object[] RetrieveMetadata()
         {
+            return RetrieveMetadata(CurrentDocumentPath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">Path to the file for which you want metadata</param>
+        /// <returns></returns>
+        public object[] RetrieveMetadata(String path)
+        {
             String content;
-            using (StreamReader stream = new StreamReader(File.OpenRead(CurrentDocumentPath)))
+            using (StreamReader stream = new StreamReader(File.OpenRead(path)))
             {
                 content = stream.ReadToEnd();
             }
@@ -268,6 +282,19 @@ namespace Client
                     else
                     {
                         //No documents found by this userId
+                        List<String> files = new List<String>();
+                        foreach (String file in Directory.GetFiles(RootFolder))
+                        {
+                            AddDocumentToServer(proxy, RootFolder, file);
+                        }
+
+                        foreach (String dir in Directory.GetDirectories(RootFolder))
+                        {
+                            foreach (String file in Directory.GetFiles(dir))
+                            {
+                                AddDocumentToServer(proxy, dir, file);
+                            }
+                        }
                     }
                 }
             }
@@ -275,6 +302,17 @@ namespace Client
             {
                 //not logged in
             }
+        }
+
+        private void AddDocumentToServer(ServiceReference.Service1Client proxy, String dir, String file)
+        {
+            String content;
+            using (StreamReader reader = new StreamReader(file))
+            {
+                content = reader.ReadToEnd();
+            }
+            Object[] metadata = RetrieveMetadata(file);
+            proxy.AddDocument(file.Substring(file.IndexOf(dir + "\\"), (file.IndexOf(".txt") - file.IndexOf(dir + "\\"))), UserID, (int)metadata[3], content);
         }
 
         public String[][] SyncDocument(FlowDocument document)
@@ -287,7 +325,7 @@ namespace Client
 
             int documentID = (int)metadata[0];
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
-            
+
             StringBuilder sb = new StringBuilder();
             sb.Append(GetMetadata());
             sb.AppendLine();
