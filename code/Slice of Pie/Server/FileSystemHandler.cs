@@ -50,13 +50,15 @@ namespace Server
             return sb.ToString();
         }
 
-        public void WriteToFile(String filePath, String content)
+        public void WriteToFile(String directoryPath, String filename, String content)
         {
-            if (!File.Exists(filePath))
+            String filepath = directoryPath + "\\" + filename + ".txt";
+            if (!File.Exists(directoryPath))
             {
-                CreateFile(filePath);
+                CreateDirectory(directoryPath);
+                CreateFile(filepath);
             }
-            using(StreamWriter sw = new StreamWriter(File.OpenWrite(filePath)))
+            using(StreamWriter sw = new StreamWriter(File.OpenWrite(filepath)))
                 {
                     sw.Write(content);
                 }
@@ -64,7 +66,12 @@ namespace Server
 
         public void CreateFile(String filePath)
         {
-            File.Create(filePath);
+            File.Create(filePath).Close();
+        }
+
+        public void CreateDirectory(String directoryPath)
+        {
+            Directory.CreateDirectory(directoryPath);
         }
     }
 }

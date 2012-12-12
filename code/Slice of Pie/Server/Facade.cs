@@ -37,7 +37,7 @@ namespace Server
         public void AddDocument(String name, int userId, int folderId, String content)
         {
             String documentPath = fsh.GetDocumentPath(userId, folderId);
-            fsh.WriteToFile(documentPath, content);
+            fsh.WriteToFile(documentPath, name, content);
             dao.AddDocument(name, userId, documentPath);
         }
 
@@ -45,8 +45,9 @@ namespace Server
         {
             DateTime creationTime = DateTime.UtcNow;
             Document document = dao.GetDocument(documentId);
-            String filepath = String.Format("{0}\\{1}_revision_{2}.txt", document.path, document.name, creationTime.ToString().Replace(':', '.'));
-            fsh.WriteToFile(filepath, content);
+            String filepath = document.path;
+            String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
+            fsh.WriteToFile(filepath, filename, content);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
