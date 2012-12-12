@@ -292,35 +292,6 @@ namespace Client.ServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceDocumentrevision", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
-    [System.SerializableAttribute()]
-    public partial class ServiceDocumentrevision : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService1")]
     public interface IService1 {
@@ -374,7 +345,7 @@ namespace Client.ServiceReference {
         string GetDocumentContent(string directoryPath, string filename);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        Client.ServiceReference.ServiceDocumentrevision SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title);
+        string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -468,8 +439,8 @@ namespace Client.ServiceReference {
             return base.Channel.GetDocumentContent(directoryPath, filename);
         }
         
-        public Client.ServiceReference.ServiceDocumentrevision SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title) {
-            return base.Channel.SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
+        public string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
+            return base.Channel.SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
         }
     }
 }

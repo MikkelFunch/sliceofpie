@@ -52,15 +52,22 @@
         
         <!-- Center grid -->
         <Grid Name="gridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27*" />
+                <RowDefinition Height="384*" />
+            </Grid.RowDefinitions>
             <!-- Center grid definitions-->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="700" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.5*" />
             </Grid.ColumnDefinitions>
-
+            
             <!-- Center grid components -->
-            <RichTextBox Name="richTextBox" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" />
+            <RichTextBox Name="richTextBox" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="2" />
+            <RichTextBox Name="richTextBoxMerged" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Visibility="Hidden" Grid.RowSpan="2" />
+            <Label Content="Server version" Grid.Column="1" Height="27" HorizontalAlignment="Left" Margin="0,0,0,0" Name="labelServer" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label Content="Merged version" Grid.Column="1" Height="27" HorizontalAlignment="Right" Margin="0,0,0,0" Name="labelMerge" VerticalAlignment="Top" Visibility="Hidden"/>
         </Grid>
         <!-- Center grid end-->
 

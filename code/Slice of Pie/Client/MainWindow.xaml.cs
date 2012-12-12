@@ -28,6 +28,7 @@ namespace Client
             InitializeComponent();
             controller = Controller.GetInstance();
             controller.SetGui(this);
+
         }
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
@@ -165,6 +166,51 @@ namespace Client
                 //no network
             }
             this.Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="response">0:server document, 1:merged document, 2:string[] with 3 arrays?</param>
+        public void SetupMergeView(String[][] response)
+        {
+            double centerGridWidth = (this.Width / 9) * 7;
+            double documentViewWidth = centerGridWidth * 0.92;
+            richTextBox.Width = (documentViewWidth) / 2;
+            richTextBoxMerged.Width = (documentViewWidth) / 2;
+            richTextBoxMerged.Visibility = Visibility.Visible;
+            Grid.SetRow(richTextBox, 1);
+            Grid.SetRow(richTextBoxMerged, 1);
+
+            labelMerge.Visibility = Visibility.Visible;
+            labelServer.Visibility = Visibility.Visible;
+
+            richTextBox.Document = InsertIntoRichtextbox(null,response[2]) ;
+            richTextBoxMerged.Document = InsertIntoRichtextbox(response[0], response[1]);
+        }
+
+
+        private FlowDocument InsertIntoRichtextbox(String[] content, String[] lineChanges)
+        {
+            FlowDocument doc = new FlowDocument();
+            for(int i = 0; i < content.Length; i++)
+            {
+                Paragraph p = new Paragraph(new Run(content[i]));
+                switch (lineChanges[i])
+                {
+                    case "i": 
+                        Background = new SolidColorBrush(Colors.Green);
+                        break;
+                    case "d": 
+                        Background = new SolidColorBrush(Colors.Red);
+                        break;
+                    default:
+                        Background = new SolidColorBrush(Colors.White);
+                        break;
+                }
+                doc.Blocks.Add(p);
+            }
+            return doc;
         }
     }
 }

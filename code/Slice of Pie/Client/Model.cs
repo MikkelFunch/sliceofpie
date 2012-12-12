@@ -277,7 +277,7 @@ namespace Client
             }
         }
 
-        public void SyncDocument(FlowDocument document)
+        public String[][] SyncDocument(FlowDocument document)
         {
             //Metadata
             //0: docid -> docid 11
@@ -291,24 +291,24 @@ namespace Client
             StringBuilder sb = new StringBuilder();
             sb.Append(GetMetadata());
             sb.AppendLine();
-            sb.Append(System.Windows.Markup.XamlWriter.Save(document));
+            String content = System.Windows.Markup.XamlWriter.Save(document);
+            sb.Append(content);
 
 
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
-                ServiceReference.ServiceDocumentrevision responseDocument = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle);
-                if (responseDocument == null)
+                String[][] responseArrays = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                if (responseArrays == null)
                 {
                     //save document with new metadata - basedocument
                     SaveDocument(document);
                 }
                 else
                 {
-
-                    //conflict
-                    //merge da shiat
+                    return responseArrays;
                 }
             }
+            return null;
         }
     }
 }
