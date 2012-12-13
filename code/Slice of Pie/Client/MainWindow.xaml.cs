@@ -22,8 +22,6 @@ namespace Client
     public partial class MainWindow : Window
     {
         Controller controller;
-        Point _lastMouseDown;
-        TreeViewItem draggedItem, _target;
 
         public MainWindow()
         {
@@ -79,8 +77,8 @@ namespace Client
                 /*
                 //Create a new source refrenceing the image locally
                 Uri newSource = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\" + Security.EncryptPassword(url) + ".jpg", UriKind.RelativeOrAbsolute);
-
-             
+                
+                
                 //create bitmapimage refrencing the local source
                 BitmapImage localImage = new BitmapImage(newSource);
                 //Create the image which will be shown in gui
@@ -108,8 +106,39 @@ namespace Client
             {
                 BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png",UriKind.Relative));
                 OnlineImage.Source = bitmap;
-                buttonSync.IsEnabled = true;
+                ChangeActiveButtons(true);
+
+                menuItemLogin.Header = "Log out";
+                menuItemLogin.Click -= LoginItem_Click;
+                menuItemLogin.Click += new RoutedEventHandler(LogoutItem_Click);
             }
+        }
+
+        private void LogoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            controller.Logout();
+            BitmapImage bitmap = new BitmapImage(new Uri("Resources\\redndot.png", UriKind.Relative));
+            OnlineImage.Source = bitmap;
+            ChangeActiveButtons(false);
+
+            menuItemLogin.Header = "Log in";
+            menuItemLogin.Click -= LogoutItem_Click;
+            menuItemLogin.Click += new RoutedEventHandler(LoginItem_Click);
+            richTextBox.Document = new FlowDocument();
+        }
+
+        /// <summary>
+        /// Change active buttons on login and logout
+        /// </summary>
+        /// <param name="loggedin">Wheter the user is logged in</param>
+        private void ChangeActiveButtons(Boolean loggedin)
+        {
+            buttonDelete.IsEnabled = loggedin;
+            buttonHistory.IsEnabled = loggedin;
+            buttonNewFolder.IsEnabled = loggedin;
+            buttonSync.IsEnabled = loggedin;
+            buttonSyncAll.IsEnabled = loggedin;
+            buttonImage.IsEnabled = loggedin;
         }
 
         private void RegisterItem_Click(object sender, RoutedEventArgs e)
@@ -133,9 +162,11 @@ namespace Client
             NewDocumentDialog docDia = new NewDocumentDialog();
             docDia.ShowDialog();
 
-            String title = docDia.Title;
-
-            controller.CreateDocument(title);
+            String title = docDia.DocumentTitle;
+            if (title != null && title.Length > 0)
+            {
+                controller.CreateDocument(title);
+            }
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)
@@ -157,6 +188,7 @@ namespace Client
 
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncAllDocuments();
@@ -165,6 +197,52 @@ namespace Client
             {
                 //no network
             }
+            this.Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="response">0:server document, 1:merged document, 2:string[] with 3 arrays?</param>
+        public void SetupMergeView(String[][] response)
+        {
+            double centerGridWidth = (this.Width / 9) * 7;
+            double documentViewWidth = centerGridWidth * 0.92;
+            richTextBox.Width = (documentViewWidth) / 2;
+            richTextBoxMerged.Width = (documentViewWidth) / 2;
+            richTextBoxMerged.Visibility = Visibility.Visible;
+            Grid.SetRow(richTextBox, 1);
+            Grid.SetRow(richTextBoxMerged, 1);
+
+            labelMerge.Visibility = Visibility.Visible;
+            labelServer.Visibility = Visibility.Visible;
+
+            richTextBox.Document = InsertIntoRichtextbox(null,response[2]) ;
+            richTextBoxMerged.Document = InsertIntoRichtextbox(response[0], response[1]);
+        }
+
+
+        private FlowDocument InsertIntoRichtextbox(String[] content, String[] lineChanges)
+        {
+            FlowDocument doc = new FlowDocument();
+            for(int i = 0; i < content.Length; i++)
+            {
+                Paragraph p = new Paragraph(new Run(content[i]));
+                switch (lineChanges[i])
+                {
+                    case "i": 
+                        Background = new SolidColorBrush(Colors.Green);
+                        break;
+                    case "d": 
+                        Background = new SolidColorBrush(Colors.Red);
+                        break;
+                    default:
+                        Background = new SolidColorBrush(Colors.White);
+                        break;
+                }
+                doc.Blocks.Add(p);
+            }
+            return doc;
         }
     }
 }

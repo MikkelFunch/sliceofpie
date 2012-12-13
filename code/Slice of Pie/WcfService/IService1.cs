@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Windows.Documents;
 
 namespace WcfService
 {
@@ -18,7 +19,7 @@ namespace WcfService
         void AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        void AddDocument(String name, int userId, int folderId, String content);
+        void AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
 
         [OperationContract]
         void AddDocumentRevision(int editorId, int documentId, String content);
@@ -34,6 +35,9 @@ namespace WcfService
 
         [OperationContract]
         ServiceFolder GetFolder(int folderId);
+
+        [OperationContract]
+        int GetRootFolderId(int userId);
 
         [OperationContract]
         ServiceDocument GetDocumentById(int documentId);
@@ -54,7 +58,13 @@ namespace WcfService
         List<ServiceDocument> GetAllDocumentsByUserId(int userId);
 
         [OperationContract]
-        String GetDocumentContent(String path);
+        String GetDocumentContent(String directoryPath, String filename);
+
+        [OperationContract]
+        String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
+
+        [OperationContract]
+        int GetDocumentId(int userId, String title);
     }
 
     [DataContract]
@@ -94,6 +104,42 @@ namespace WcfService
             doc.id = sd.id;
             doc.name = sd.name;
             doc.path = sd.path;
+            return doc;
+        }
+    }
+
+    [DataContract]
+    public class ServiceDocumentrevision
+    {
+        public int id { get; set; }
+
+        public int documentId { get; set; }
+
+        public DateTime creationTime { get; set; }
+
+        public String path { get; set; }
+
+        public int editorId { get; set; }
+
+        public static explicit operator ServiceDocumentrevision(Server.Documentrevision dr)
+        {
+            ServiceDocumentrevision doc = new ServiceDocumentrevision();
+            doc.creationTime = dr.creationTime;
+            doc.documentId = dr.documentId;
+            doc.editorId = dr.editorId;
+            doc.id = dr.id;
+            doc.path = dr.path;
+            return doc;
+        }
+
+        public static explicit operator Server.Documentrevision(ServiceDocumentrevision sdr)
+        {
+            Server.Documentrevision doc = new Server.Documentrevision();
+            doc.creationTime = sdr.creationTime;
+            doc.documentId = sdr.documentId;
+            doc.editorId = sdr.editorId;
+            doc.id = sdr.id;
+            doc.path = sdr.path;
             return doc;
         }
     }

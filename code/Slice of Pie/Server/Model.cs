@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 
 namespace Server
 {
@@ -146,6 +147,17 @@ namespace Server
             }
 
             return null;
+        }
+
+        public string[] GetContentAsStringArray(int documentId)
+        {
+            Documentrevision latestDoc = PersistentStorage.GetInstance().GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path);
+            content = content.Substring(content.IndexOf('<')); //Remove metadata
+            FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
+            TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);
+            String pureContent = textRange.Text; //The "pure" content of the flowdocument i.e. what the user has written
+            return pureContent.Split(new String[] {"\r\n", "\n"}, StringSplitOptions.None);
         }
     }
 }

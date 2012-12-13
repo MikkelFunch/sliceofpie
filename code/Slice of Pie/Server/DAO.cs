@@ -572,14 +572,42 @@ namespace Server
             }
         }
 
-        public String GetDocumentContent(String path)
+        public bool DocumentHasRevision(int documentId)
         {
-            String content = null;
-            using (StreamReader reader = new StreamReader(path + ".txt"))
+            using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                content = reader.ReadToEnd();
+                var documentRevisions = from dr in context.Documentrevisions
+                                        where dr.documentId == documentId
+                                        select dr;
+                return documentRevisions.Count<Documentrevision>() != 0;
             }
-            return content;
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return GetUser(userId).rootFolderId;
+        }
+
+        public int GetDocumentIdByPath(String directoryPath, String filename)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var document = from d in context.Documents
+                               where d.path == directoryPath && d.name == filename
+                               select d;
+                return document.First<Document>().id;
+            }
+        }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var document = from d in context.Documents
+                               where d.creatorId == userId && d.name == title
+                               select d;
+                return document.First<Document>().id;
+            }
         }
     }
 }

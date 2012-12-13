@@ -100,9 +100,9 @@ namespace WcfServiceLibrary
             }
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return Server.Controller.GetInstance().GetDocumentContent(path);
+            return Server.Controller.GetInstance().GetDocumentContent(directoryPath, filename);
         }
     }
 }

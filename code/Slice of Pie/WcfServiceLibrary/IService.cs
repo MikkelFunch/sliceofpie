@@ -55,7 +55,7 @@ namespace WcfServiceLibrary
         List<ServiceDocument> GetAllDocumentsByUserId(int userId);
 
         [OperationContract]
-        String GetDocumentContent(String path);
+        String GetDocumentContent(String directoryPath, String filename);
     }
 
     [DataContract]

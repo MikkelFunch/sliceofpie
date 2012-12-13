@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 
 namespace Server
 {
@@ -41,7 +42,7 @@ namespace Server
             {
                 PersistentStorage.GetInstance().AddUser(email, password);
             }
-            catch(System.Data.UpdateException)
+            catch (System.Data.UpdateException)
             {
                 return false;
             }
@@ -66,9 +67,9 @@ namespace Server
         /// <param name="userId">The id of the user that creates the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
         /// <param name="content">The content of the document</param>
-        public void AddDocument(String name, int userId, int folderId, String content)
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
         {
-            PersistentStorage.GetInstance().AddDocument(name, userId, folderId, content);
+            PersistentStorage.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
@@ -78,7 +79,7 @@ namespace Server
 
         public int GetUser(String email, String pass)
         {
-            return PersistentStorage.GetInstance().GetUser(email,pass);
+            return PersistentStorage.GetInstance().GetUser(email, pass);
         }
 
         public User GetUser(int userId)
@@ -126,9 +127,24 @@ namespace Server
             return PersistentStorage.GetInstance().GetAllDocumentsByUserId(userId);
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return PersistentStorage.GetInstance().GetDocumentContent(path);
+            return PersistentStorage.GetInstance().GetDocumentContent(directoryPath, filename);
+        }
+
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
+        {
+            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return PersistentStorage.GetInstance().GetRootFolderId(userId);
+        }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            return PersistentStorage.GetInstance().GetDocumentId(userId, title);
         }
     }
 }

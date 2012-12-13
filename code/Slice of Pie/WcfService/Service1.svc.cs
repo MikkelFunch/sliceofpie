@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Windows.Documents;
 
 namespace WcfService
 {
@@ -28,9 +29,9 @@ namespace WcfService
         /// <param name="userId">The id of the user that creates the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
         /// <param name="content">The content of the document</param>
-        public void AddDocument(String name, int userId, int folderId, String content)
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
         {
-            Server.Controller.GetInstance().AddDocument(name, userId, folderId, content);
+            Server.Controller.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
@@ -68,6 +69,11 @@ namespace WcfService
             return (ServiceFolder)Server.Controller.GetInstance().GetFolder(folderId);
         }
 
+        public int GetRootFolderId(int userId)
+        {
+            return Server.Controller.GetInstance().GetRootFolderId(userId);
+        }
+
         public void DeleteFolder(int folderId)
         {
             Server.Controller.GetInstance().DeleteFolder(folderId);
@@ -86,17 +92,32 @@ namespace WcfService
         public List<ServiceDocument> GetAllDocumentsByUserId(int userId)
         {
             List<Server.Document> serverList = Server.Controller.GetInstance().GetAllDocumentsByUserId(userId);
-            List<ServiceDocument> returnList = new List<ServiceDocument>();
-            for (int i = 0; i < serverList.Count; i++)
+            List<ServiceDocument> returnList = null;
+            if (serverList != null)
             {
-                returnList.Add((ServiceDocument)serverList[i]);
+                returnList = new List<ServiceDocument>();
+                for (int i = 0; i < serverList.Count; i++)
+                {
+                    returnList.Add((ServiceDocument)serverList[i]);
+                }
             }
             return returnList;
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return Server.Controller.GetInstance().GetDocumentContent(path);
+            return Server.Controller.GetInstance().GetDocumentContent(directoryPath, filename);
+        }
+
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
+        {
+            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+            return stringArray;
+        }
+
+        public int GetDocumentId(int userId, String title)
+        {
+            return Server.Controller.GetInstance().GetDocumentId(userId, title);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Client
             InitializeComponent();
         }
 
-        public String Title
+        public String DocumentTitle
         {
             get;
             private set;
@@ -32,8 +32,15 @@ namespace Client
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
             //if anything in
-            Title = textBoxTitle.Text;
-            this.Close();
+            if (textBoxTitle.Text.Length > 0)
+            {
+                DocumentTitle = textBoxTitle.Text;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Enter document name", "Creation error");
+            }
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

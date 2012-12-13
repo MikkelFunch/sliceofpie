@@ -33,12 +33,30 @@ namespace Server
             }
             return instance;
         }
-
+        /*
         public void AddDocument(String name, int userId, int folderId, String content)
         {
             String documentPath = fsh.GetDocumentPath(userId, folderId);
             fsh.WriteToFile(documentPath, name, content);
             dao.AddDocument(name, userId, documentPath);
+            int documentId = GetDocumentIdByPath(documentPath, name);
+            
+        }*/
+
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
+        {
+            String documentPath = fsh.GetDocumentPath(userId, folderId);
+            dao.AddDocument(name, userId, documentPath);
+            int documentId = GetDocumentIdByPath(documentPath, name);
+            fsh.WriteToFile(documentPath, name, content, documentId);
+            
+            
+            AddUserDocument(userId, documentId, folderId);
+        }
+
+        public int GetDocumentIdByPath(String directoryPath, String filename)
+        {
+            return dao.GetDocumentIdByPath(directoryPath, filename);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
@@ -47,7 +65,7 @@ namespace Server
             Document document = dao.GetDocument(documentId);
             String filepath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
-            fsh.WriteToFile(filepath, filename, content);
+            fsh.WriteToFile(filepath, filename, content, documentId);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
@@ -116,9 +134,9 @@ namespace Server
             return dao.GetAllDocumentsByUserId(userId);
         }
 
-        public String GetDocumentContent(String path)
+        public String GetDocumentContent(String directoryPath, String filename)
         {
-            return dao.GetDocumentContent(path);
+            return fsh.GetDocumentContent(directoryPath, filename);
         }
 
         public void AddUserDocument(int userId, int documentId, int folderId)
@@ -144,6 +162,59 @@ namespace Server
         public List<Folder> GetFoldersByRootId(int parentId)
         {
             return dao.GetFoldersByRootId(parentId);
+        }
+
+        public bool DocumentHasRevision(int documentId)
+        {
+            return dao.DocumentHasRevision(documentId);
+        }
+
+        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] latest)
+        {
+            //Document found with the given id
+            if (GetDocument(documentId) != null)
+            {
+                //No conflict
+                if (!DocumentHasRevision(documentId) || GetLatestDocumentRevision(documentId, 1).First<Documentrevision>().creationTime == baseDocCreationTime)
+                {
+                    AddDocumentRevision(editorId, documentId, content);
+                    return null;
+                }
+                //Conflict
+                else
+                {
+                    String[][] returnArray = new String[4][];
+                    String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
+                    String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
+                    returnArray[0] = mergedLines[0];
+                    returnArray[1] = mergedLines[1];
+                    returnArray[2] = mergedLines[2];
+                    Documentrevision latestDoc = GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+                    returnArray[3] = Model.GetInstance().GetContentAsStringArray(latestDoc.id);
+                    return returnArray;
+                }
+            }
+            //No document found with the given id.
+            else
+            {
+                AddDocumentWithUserDocument(title, editorId, folderId, content);
+                return null;
+            }
+        }
+
+        public int GetRootFolderId(int userId)
+        {
+            return dao.GetRootFolderId(userId);
+        }
+
+        public string GetDocumentContent(string filepath)
+        {
+            return fsh.GetDocumentContent(filepath);
+        }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            return dao.GetDocumentId(userId, title);
         }
     }
 }

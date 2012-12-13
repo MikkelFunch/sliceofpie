@@ -31,9 +31,9 @@
 
             <!-- Top buttons definitions -->
             <StackPanel Orientation="Horizontal">
-                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" />
-                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click"/>
-                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" />
+                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" IsEnabled="False" />
+                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False"/>
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" IsEnabled="False"/>
             </StackPanel>
                 
             <!-- Bottom buttons -->
@@ -52,15 +52,22 @@
         
         <!-- Center grid -->
         <Grid Name="gridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27*" />
+                <RowDefinition Height="384*" />
+            </Grid.RowDefinitions>
             <!-- Center grid definitions-->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="700" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.5*" />
             </Grid.ColumnDefinitions>
-
+            
             <!-- Center grid components -->
-            <RichTextBox Name="richTextBox" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" />
+            <RichTextBox Name="richTextBox" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="2" />
+            <RichTextBox Name="richTextBoxMerged" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Visibility="Hidden" Grid.RowSpan="2" />
+            <Label Content="Server version" Grid.Column="1" Height="27" HorizontalAlignment="Left" Margin="0,0,0,0" Name="labelServer" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Label Content="Merged version" Grid.Column="1" Height="27" HorizontalAlignment="Right" Margin="0,0,0,0" Name="labelMerge" VerticalAlignment="Top" Visibility="Hidden"/>
         </Grid>
         <!-- Center grid end-->
 
@@ -69,7 +76,7 @@
         <Menu Name="topMenu" IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,0">
             <!-- Menu items -->
             <MenuItem Header="_File ">
-                <MenuItem Header="_Login" Click="LoginItem_Click" />
+                <MenuItem Header="_Login" Click="LoginItem_Click" Name="menuItemLogin"/>
                 <MenuItem Header="Register new _user" Click="RegisterItem_Click" />
                 <MenuItem Header="_New document" Click="NewDocumentItem_Click"/>
             </MenuItem>
@@ -90,16 +97,16 @@
                     <Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4" />
                 </TextBlock>
                 <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
-                <Label Content="Current document: None" Height="28" Name="labelOpenDocument" Margin="120,0,0,0"/>
+                <Label Content="Current document:" Height="28" Name="labelOpenDocument" Margin="120,0,0,0"/>
             </StackPanel>
             
             <!-- Buttons to the right side -->
             
-            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
-            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
+            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" IsEnabled="False"/>
+            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click" IsEnabled="False">
                 <Image Source="Resources/img_icon.gif" />
             </Button>
-            <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click"/>
+            <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click" IsEnabled="True"/>
             <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right" IsEnabled="False"/>
         </Grid>
             <!-- Button menu end -->

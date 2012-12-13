@@ -23,10 +23,10 @@ namespace Client
         /// <summary>
         /// path to the current users documents folder on the system
         /// </summary>
-        private String RootFolder
+        public String RootFolder
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -95,7 +95,6 @@ namespace Client
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 id = proxy.GetUserByEmailAndPass(email, pass);
-                RootFolderID = proxy.GetRootFolderId(id);
             }
             if (id != -1)
             {
@@ -104,6 +103,11 @@ namespace Client
                 Email = email;
                 RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Email;
                 Directory.CreateDirectory(RootFolder);
+
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    RootFolderID = proxy.GetRootFolderId(id);
+                }
             }
             return id;
         }
@@ -112,7 +116,7 @@ namespace Client
         {
             CurrentDocumentPath = RootFolder + "\\" + title + ".txt";
             File.Create(CurrentDocumentPath).Close();
-            SaveDocument(document);
+            SaveDocumentToFile(document);
         }
 
         /// <summary>
@@ -127,8 +131,18 @@ namespace Client
         /// </returns>
         public object[] RetrieveMetadata()
         {
+            return RetrieveMetadataFromFile(CurrentDocumentPath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">Path to the file for which you want metadata</param>
+        /// <returns></returns>
+        public object[] RetrieveMetadataFromFile(String path)
+        {
             String content;
-            using (StreamReader stream = new StreamReader(File.OpenRead(CurrentDocumentPath)))
+            using (StreamReader stream = new StreamReader(File.OpenRead(path)))
             {
                 content = stream.ReadToEnd();
             }
@@ -149,9 +163,14 @@ namespace Client
             }
         }
 
-        private String GetMetadata()
+
+        private Object[] RetrieveMetadataFromFile(String directorypath, String filename)
         {
-            object[] metadata = RetrieveMetadata();
+            return (RetrieveMetadataFromFile(directorypath + "\\" + filename + ".txt"));
+        }
+
+        private String GetMetadataFromObjectArray(Object[] metadata)
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
             sb.Append("docid " + (int)metadata[0]);
@@ -182,26 +201,14 @@ namespace Client
             return sb.ToString();
         }
 
-        public FlowDocument CreateDocumentWithoutMetadata(String content)
+        public FlowDocument CreateFlowDocumentWithoutMetadata(String content)
         {
             content = content.Substring(content.IndexOf('<'));
             return (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
         }
 
-        public void SaveDocument(FlowDocument document)
+        public void SaveDocumentToFile(FlowDocument document, String metadata)
         {
-            String metadata;
-
-            //check if document contains metadata
-            if (new TextRange(document.ContentStart, document.ContentEnd).Text.StartsWith("["))
-            { //contains metadata
-                metadata = GetMetadata();
-            }
-            else //does not containt metadata
-            {
-                metadata = GenerateMetadata();
-            }
-
             StringBuilder content = new StringBuilder();
             content.Append(metadata); //metadata
             content.AppendLine(); //blank line
@@ -212,6 +219,21 @@ namespace Client
             {
                 sw.Write(content.ToString());
             }
+        }
+
+        /// <summary>
+        /// When a file is being saved
+        /// </summary>
+        /// <param name="document"></param>
+        public void SaveDocumentToFile(FlowDocument document)
+        {
+            Object[] metadata = RetrieveMetadata();
+            String metadataString;
+            if(metadata != null)
+                metadataString = GetMetadataFromObjectArray(metadata);
+            else
+                metadataString = GenerateMetadata();
+            SaveDocumentToFile(document, metadataString);
         }
 
         public void DownloadComplete(BitmapImage image)
@@ -260,6 +282,17 @@ namespace Client
                             }
                             else
                             {
+                                //currentDoc.creationTime;
+                                //get local corresponsing document
+
+
+
+
+                                //check if it is same base
+                                //if it is -> check if online version is newer
+                                //// if it is -> user online version
+                                //// if it is not -> sync local version
+                                //if it is not -> single sync the document
                                 //Document already exits.
                                 //Make user single sync this document.
                             }
@@ -268,6 +301,19 @@ namespace Client
                     else
                     {
                         //No documents found by this userId
+                        List<String> files = new List<String>();
+                        foreach (String file in Directory.GetFiles(RootFolder))
+                        {
+                            AddDocumentToServer(proxy, RootFolder, file);
+                        }
+
+                        foreach (String dir in Directory.GetDirectories(RootFolder))
+                        {
+                            foreach (String file in Directory.GetFiles(dir))
+                            {
+                                AddDocumentToServer(proxy, dir, file);
+                            }
+                        }
                     }
                 }
             }
@@ -277,7 +323,20 @@ namespace Client
             }
         }
 
-        public void SyncDocument(FlowDocument document)
+        private void AddDocumentToServer(ServiceReference.Service1Client proxy, String dir, String file)
+        {
+            String content;
+            using (StreamReader reader = new StreamReader(file))
+            {
+                content = reader.ReadToEnd();
+            }
+            Object[] metadata = RetrieveMetadataFromFile(file);
+            int index = file.IndexOf(dir + "\\");
+            String filename = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") -1));
+            proxy.AddDocumentWithUserDocument(filename, UserID, (int)metadata[3], content);
+        }
+
+        public String[][] SyncDocument(FlowDocument document)
         {
             //Metadata
             //0: docid -> docid 11
@@ -287,27 +346,55 @@ namespace Client
 
             int documentID = (int)metadata[0];
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
-            
+
             StringBuilder sb = new StringBuilder();
-            sb.Append(GetMetadata());
+            sb.Append(GetMetadataFromObjectArray(metadata));
             sb.AppendLine();
-            sb.Append(System.Windows.Markup.XamlWriter.Save(document));
+            String content = System.Windows.Markup.XamlWriter.Save(document);
+            sb.Append(content);
 
 
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
-                ServiceReference.ServiceDocumentrevision responseDocument = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle);
-                if (responseDocument == null)
+                String[][] responseArrays = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                if (responseArrays == null)
                 {
+                    if (documentID == 0)
+                    {
+                        documentID = proxy.GetDocumentId(UserID, CurrentDocumentTitle);
+                    }
                     //save document with new metadata - basedocument
-                    SaveDocument(document);
+                    SaveDocumentToFile(document,GenerateNewMetaData(documentID,UserID,RootFolderID));
                 }
                 else
                 {
-                    //conflict
-                    //merge da shiat
+                    return responseArrays;
                 }
             }
+            return null;
+        }
+
+        private String GenerateNewMetaData(int docid, int userid, int folderid)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            sb.Append("docid " + docid);
+            sb.Append("|");
+            sb.Append("userid " + userid);
+            sb.Append("|");
+            sb.Append("timestamp " + DateTime.UtcNow);
+            sb.Append("|");
+            sb.Append("fid " + folderid);
+            sb.Append("]");
+
+            return sb.ToString();
+        }
+
+
+        public void LogoutUser()
+        {
+            RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
+            UserID = -1;
         }
     }
 }

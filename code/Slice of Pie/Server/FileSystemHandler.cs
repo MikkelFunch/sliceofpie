@@ -50,7 +50,7 @@ namespace Server
             return sb.ToString();
         }
 
-        public void WriteToFile(String directoryPath, String filename, String content)
+        public void WriteToFile(String directoryPath, String filename, String content, int documentId)
         {
             String filepath = directoryPath + "\\" + filename + ".txt";
             if (!File.Exists(directoryPath))
@@ -58,10 +58,14 @@ namespace Server
                 CreateDirectory(directoryPath);
                 CreateFile(filepath);
             }
-            using(StreamWriter sw = new StreamWriter(File.OpenWrite(filepath)))
-                {
-                    sw.Write(content);
-                }
+            int startIndex = content.IndexOf("docid") + 5;
+            int endIndex = content.IndexOf("|");
+            content = content.Remove(startIndex, endIndex - startIndex);
+            content = content.Insert(startIndex, " " + documentId.ToString());
+            using (StreamWriter sw = new StreamWriter(File.OpenWrite(filepath)))
+            {
+                sw.Write(content);
+            }
         }
 
         public void CreateFile(String filePath)
@@ -72,6 +76,26 @@ namespace Server
         public void CreateDirectory(String directoryPath)
         {
             Directory.CreateDirectory(directoryPath);
+        }
+
+        public String GetDocumentContent(String directoryPath, String filename)
+        {
+            String content = null;
+            using (StreamReader reader = new StreamReader(directoryPath + "\\" + filename + ".txt"))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
+        }
+
+        public string GetDocumentContent(string filepath)
+        {
+            String content = null;
+            using (StreamReader reader = new StreamReader(filepath))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
         }
     }
 }

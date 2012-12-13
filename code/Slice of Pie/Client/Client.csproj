@@ -70,10 +70,12 @@
     <Compile Include="GUI\NewDocumentDialog.xaml.cs">
       <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IPersitence.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PersistentStorage.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="Service References\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -139,16 +141,13 @@
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceDocumentrevision.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceFolder.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Service1.wsdl" />
+    <None Include="Service References\ServiceReference\Service11.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\img_icon.gif" />
