@@ -334,9 +334,8 @@ namespace Server
         /// Gets the latest documents revisions from a document.
         /// </summary>
         /// <param name="documentId">The id of the document</param>
-        /// /// <param name="count">The number of document revisions to return</param>
         /// <returns>The latest document revision</returns>
-        public List<Documentrevision> GetLatestDocumentRevision(int documentId, int count)
+        public List<Documentrevision> GetLatestDocumentRevisions(int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -344,23 +343,8 @@ namespace Server
                                         where dr.documentId == documentId
                                         orderby dr.creationTime descending
                                         select dr;
-
-                List<Documentrevision> documentRevisionList = new List<Documentrevision>();
-                int i = 1;
-                foreach (Documentrevision dr in documentRevisions)
-                {
-                    if (i <= count)
-                    {
-                        documentRevisionList.Add(dr);
-                        i++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                return documentRevisionList;
+                List<Documentrevision> returnList = documentRevisions.ToList<Documentrevision>();
+                return returnList;
             }
         }
 
