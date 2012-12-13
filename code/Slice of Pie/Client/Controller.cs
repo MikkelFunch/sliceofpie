@@ -55,10 +55,10 @@ namespace Client
         /// <param name="passUnencrypted1">unencrypted first password</param>
         /// <param name="passUnencrypted2">unencrypted second password</param>
         /// <returns>Wheter the creation of the user was successful</returns>
-        public Boolean RegisterUser(string email, string passUnencrypted1, string passUnencrypted2)
+        public int RegisterUser(string email, string passUnencrypted1, string passUnencrypted2)
         {
             //boolean which will be returned
-            Boolean successful = false;
+            int successful = -1;
 
             //Check if something have been entered as email - WE DO NOT CHECK THAT IT IS AN EMAIL
             if (email.Length > 0)
@@ -68,7 +68,7 @@ namespace Client
                 {
                     //Register user
                     successful = model.RegisterUser(email, passUnencrypted1);
-                    if (!successful) //if the user already exsist
+                    if (successful == -1) //if the user already exsist
                     {
                         System.Windows.MessageBox.Show("User aldready exsists", "Creation error");
                     }
@@ -147,7 +147,7 @@ namespace Client
             }
         }
 
-        private void UpdateExplorerView()
+        public void UpdateExplorerView()
         {
             TreeViewModel.GetInstance().LoadFilesAndFolders(gui.ExplorerTree.Items);
         }
@@ -200,6 +200,12 @@ namespace Client
         public void SaveMergedDocument(FlowDocument document)
         {
             model.SaveMergedDocument(document);
+        }
+
+        public void CreateFolder(String folderName, String path)
+        {
+            model.CreateFolder(folderName, path);
+            UpdateExplorerView();
         }
     }
 }

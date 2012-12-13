@@ -78,9 +78,9 @@ namespace Client
             private set;
         }
 
-        public Boolean RegisterUser(string email, string passUnencrypted)
+        public int RegisterUser(string email, string passUnencrypted)
         {
-            Boolean successful = false;
+            int successful = -1;
             string pass = Security.EncryptPassword(passUnencrypted);
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
@@ -349,15 +349,11 @@ namespace Client
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
 
             StringBuilder sb = new StringBuilder();
-            //sb.Append(GetMetadataFromObjectArray(metadata));
             String newMetadata = GenerateNewMetadata(documentID, UserID, RootFolderID);
             sb.Append(newMetadata);
             sb.AppendLine();
             String content = System.Windows.Markup.XamlWriter.Save(document);
             sb.Append(content);
-
-
-
 
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
@@ -443,6 +439,18 @@ namespace Client
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 proxy.AddDocumentRevision(UserID, documentid, content);
+            }
+        }
+
+        public void CreateFolder(string folderName, string path)
+        {
+            if (path == null)
+            {
+                Directory.CreateDirectory(RootFolder + "\\" + folderName);
+            }
+            else
+            {
+                Directory.CreateDirectory(path + "\\" + folderName);
             }
         }
     }

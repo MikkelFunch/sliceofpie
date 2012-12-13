@@ -67,8 +67,14 @@
     <Compile Include="GUI\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\MoveFileDialog.xaml.cs">
+      <DependentUpon>MoveFileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\NewDocumentDialog.xaml.cs">
       <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\NewFolderDialog.xaml.cs">
+      <DependentUpon>NewFolderDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="IPersitence.cs" />
     <Compile Include="Model.cs" />
@@ -91,7 +97,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\MoveFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\NewDocumentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\NewFolderDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,7 +161,7 @@
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Service11.wsdl" />
+    <None Include="Service References\ServiceReference\Service1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\img_icon.gif" />

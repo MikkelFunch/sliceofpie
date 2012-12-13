@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Threading;
+using Client.GUI;
 
 namespace Client
 {
@@ -277,6 +278,35 @@ namespace Client
             buttonSaveDocument.Click -= buttonSaveMergedDocument_Click;
             buttonSaveDocument.Click += new RoutedEventHandler(buttonSaveDocument_Click);
             buttonSaveDocument.Content = "Save document";
+        }
+
+        private void buttonNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+            NewFolderDialog newDia = new NewFolderDialog();
+            newDia.ShowDialog();
+            String folderName = newDia.FolderTitle;
+
+            String path = null;
+
+            if (ExplorerTree.SelectedItem != null)
+            {
+                if (!((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+                {
+                    path = ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString();
+                }
+            }
+
+            controller.CreateFolder(folderName, path);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+            {
+                MoveFileDialog movDia = new MoveFileDialog();
+                movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
+                movDia.ShowDialog();
+            }
         }
     }
 }

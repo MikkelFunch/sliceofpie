@@ -1,0 +1,17 @@
+﻿<Window x:Class="Client.GUI.MoveFileDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MoveFileDialog" Height="184" Width="208" Loaded="Window_Loaded">
+    <Grid>
+        <StackPanel>
+            <Label Content="Move document: " Height="28" Margin="2,0,0,0"/>
+            <Label Content="example.txt" Height="28" Name="labelDocumentName" Margin="20,0,8,0"/>
+            <Label Content="to folder:" Height="28" Margin="2,0,0,0"/>
+            <ComboBox Height="23" Name="comboBoxFolders" Width="170" HorizontalAlignment="Left" Margin="8,0,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Content="Move" Name="buttonMove" Width="75" Height="24" Click="buttonMove_Click" IsDefault="True" Margin="8,0,4,0"/>
+                <Button Content="Cancel" Name="buttonCancel" Width="75" Height="24" Click="buttonCancel_Click" Margin="4,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

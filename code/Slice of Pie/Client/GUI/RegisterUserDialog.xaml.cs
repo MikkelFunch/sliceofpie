@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.GUI
 {
     /// <summary>
     /// Interaction logic for RegisterUserDialog.xaml
@@ -30,7 +30,7 @@ namespace Client
             string passUnencrypted1 = passwordBox1.Password;
             string passUnencrypted2 = passwordBox2.Password;
 
-            if (Controller.GetInstance().RegisterUser(email, passUnencrypted1, passUnencrypted2))
+            if (Controller.GetInstance().RegisterUser(email, passUnencrypted1, passUnencrypted2) != -1)
             {
                 this.Cursor = Cursors.Arrow;
                 this.Close();
