@@ -50,7 +50,7 @@ namespace TestProject
         /// <summary>
         /// Test for AddDocument and GetDocument. Has AddUserGetUserTest as dependency.
         /// </summary>
-        [TestMethod()]
+        /*[TestMethod()]
         public void AddDocumentGetDocumentTest()
         {
             string email = "test";
@@ -61,7 +61,7 @@ namespace TestProject
             PersistentStorage.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
             Document d = PersistentStorage.GetInstance().GetDocument(name);
             Assert.AreEqual(d.name, name);
-        }
+        }*/
 
         /// <summary>
         /// Test for AddFolder and GetFolder. Has AddUserGetUserTest as dependency.
@@ -82,7 +82,7 @@ namespace TestProject
         /// <summary>
         /// Tests AddUserdocument and GetUserdocument. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
         /// </summary>
-        [TestMethod()]
+        /*[TestMethod()]
         public void AddUserdocumentGetUserdocumentTest()
         {
             ///User 1
@@ -105,12 +105,12 @@ namespace TestProject
             Assert.AreEqual(ud.folderId, u2.rootFolderId);
             Assert.AreEqual(ud.documentId, d.id);
             Assert.AreEqual(ud.userId, u2.id);
-        }
+        }*/
 
         /// <summary>
         /// Tests AddDocumentRevision and GetDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
         /// </summary>
-        [TestMethod()]
+        /*[TestMethod()]
         public void AddDocumentRevisionGetDocumentRevisionsTest()
         {
             //User
@@ -127,12 +127,12 @@ namespace TestProject
             List<Documentrevision> drlist = PersistentStorage.GetInstance().GetDocumentRevisions(d.id);
             Assert.AreEqual(drlist[0].documentId, d.id);
             Assert.AreEqual(drlist[0].editorId, u.id);
-        }
+        }*/
 
         /// <summary>
         /// Tests AddDocumentRevision and GetLatestDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
         /// </summary>
-        [TestMethod()]
+        /*[TestMethod()]
         public void GetLatestDocumentRevisionTest()
         {
             //User
@@ -159,7 +159,7 @@ namespace TestProject
             List<Documentrevision> drlist = PersistentStorage.GetInstance().GetLatestDocumentRevision(d.id, 1);
             Documentrevision dr = drlist[0];
             Assert.AreEqual(dr.editorId, u2.id);
-        }
+        }*/
 
         /// <summary>
         /// Tests GetFolderByParentId. Has AddUserGetUserTest and AddFolderGetFolder as dependency.

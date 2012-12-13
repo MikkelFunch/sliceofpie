@@ -270,7 +270,8 @@ namespace Client
                             String path = currentDoc.path.Substring(index);
                             String fullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + path;
                             if (!File.Exists(fullPath + "\\" + currentDoc.name))
-                            {
+                            {//file does not exsits - save file locally
+                                
                                 Directory.CreateDirectory(fullPath);
                                 using (FileStream stream = File.Create(fullPath + "\\" + currentDoc.name + ".txt"))
                                 {
@@ -348,10 +349,14 @@ namespace Client
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(GetMetadataFromObjectArray(metadata));
+            //sb.Append(GetMetadataFromObjectArray(metadata));
+            String newMetadata = GenerateNewMetadata(documentID, UserID, RootFolderID);
+            sb.Append(newMetadata);
             sb.AppendLine();
             String content = System.Windows.Markup.XamlWriter.Save(document);
             sb.Append(content);
+
+
 
 
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
@@ -364,7 +369,7 @@ namespace Client
                         documentID = proxy.GetDocumentId(UserID, CurrentDocumentTitle);
                     }
                     //save document with new metadata - basedocument
-                    SaveDocumentToFile(document,GenerateNewMetaData(documentID,UserID,RootFolderID));
+                    SaveDocumentToFile(document, ReplaceDocumentIDInMetadata(newMetadata,documentID));
                 }
                 else
                 {
@@ -374,7 +379,16 @@ namespace Client
             return null;
         }
 
-        private String GenerateNewMetaData(int docid, int userid, int folderid)
+        private String ReplaceDocumentIDInMetadata(String metadata, int documentid)
+        {
+            int startIndex = metadata.IndexOf("docid") + 5;
+            int endIndex = metadata.IndexOf("|");
+            metadata = metadata.Remove(startIndex, endIndex - startIndex);
+            metadata = metadata.Insert(startIndex, " " + documentid.ToString());
+            return metadata;
+        }
+
+        private String GenerateNewMetadata(int docid, int userid, int folderid)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
@@ -383,6 +397,22 @@ namespace Client
             sb.Append("userid " + userid);
             sb.Append("|");
             sb.Append("timestamp " + DateTime.UtcNow);
+            sb.Append("|");
+            sb.Append("fid " + folderid);
+            sb.Append("]");
+
+            return sb.ToString();
+        }
+
+        private String GenerateMetadataString(int docid, int userid, int folderid, DateTime timestamp)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            sb.Append("docid " + docid);
+            sb.Append("|");
+            sb.Append("userid " + userid);
+            sb.Append("|");
+            sb.Append("timestamp " + timestamp);
             sb.Append("|");
             sb.Append("fid " + folderid);
             sb.Append("]");
