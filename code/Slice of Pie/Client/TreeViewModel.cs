@@ -120,8 +120,7 @@ namespace Client
         {
             TreeViewItem item = (TreeViewItem)sender;
             String text = File.ReadAllText(item.Tag.ToString()); //IOException, if file is used by another program
-            Controller.GetInstance().SetOpenDocument(text, item.Header.ToString());
-            Model.GetInstance().CurrentDocumentPath = item.Tag.ToString();
+            Controller.GetInstance().SetOpenDocument(text, item.Header.ToString(), item.Tag.ToString());
         }
     }
 }

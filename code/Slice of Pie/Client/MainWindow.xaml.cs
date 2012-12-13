@@ -77,8 +77,8 @@ namespace Client
                 /*
                 //Create a new source refrenceing the image locally
                 Uri newSource = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\" + Security.EncryptPassword(url) + ".jpg", UriKind.RelativeOrAbsolute);
-
-             
+                
+                
                 //create bitmapimage refrencing the local source
                 BitmapImage localImage = new BitmapImage(newSource);
                 //Create the image which will be shown in gui
@@ -124,6 +124,7 @@ namespace Client
             menuItemLogin.Header = "Log in";
             menuItemLogin.Click -= LogoutItem_Click;
             menuItemLogin.Click += new RoutedEventHandler(LoginItem_Click);
+            richTextBox.Document = new FlowDocument();
         }
 
         /// <summary>
@@ -135,7 +136,6 @@ namespace Client
             buttonDelete.IsEnabled = loggedin;
             buttonHistory.IsEnabled = loggedin;
             buttonNewFolder.IsEnabled = loggedin;
-            buttonSaveDocument.IsEnabled = loggedin;
             buttonSync.IsEnabled = loggedin;
             buttonSyncAll.IsEnabled = loggedin;
             buttonImage.IsEnabled = loggedin;
@@ -163,8 +163,10 @@ namespace Client
             docDia.ShowDialog();
 
             String title = docDia.DocumentTitle;
-            if(title != null && title.Length > 0)
+            if (title != null && title.Length > 0)
+            {
                 controller.CreateDocument(title);
+            }
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace Client
 {
@@ -103,21 +104,22 @@ namespace Client
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Wrong email or password", "Unable to login");
+                    MessageBox.Show("Wrong email or password", "Unable to login");
                 }
             }
             else
             {
-                System.Windows.MessageBox.Show("Enter email and password", "Login error");
+                MessageBox.Show("Enter email and password", "Login error");
             }
             return successful;
         }
 
 
-        public void SetOpenDocument(String content, String title)
+        public void SetOpenDocument(String content, String title, String documentPath)
         {
             //try catch in case of corrupted file
-            FlowDocument doc = model.CreateDocumentWithoutMetadata(content);
+            Model.GetInstance().CurrentDocumentPath = documentPath;
+            FlowDocument doc = model.CreateFlowDocumentWithoutMetadata(content);
             gui.richTextBox.Document = doc;
             gui.labelOpenDocument.Content = "Current document: " + title;
             model.CurrentDocumentTitle = title;
@@ -127,14 +129,22 @@ namespace Client
         {
             FlowDocument emptyDoc = new FlowDocument();
             model.CreateDocument(title, emptyDoc);
-            SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title);
+            String documentPath = model.RootFolder + "\\" + title + ".txt";
+            SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title, documentPath);
             UpdateExplorerView();
         }
 
         public void SaveDocument(FlowDocument document)
         {
-            model.SaveDocument(document);
-            UpdateExplorerView();
+            if (model.CurrentDocumentPath != null && model.CurrentDocumentPath.Length > 0)
+            {
+                model.SaveDocumentToFile(document);
+                UpdateExplorerView();
+            }
+            else
+            {
+                MessageBox.Show("No document open", "Document save error");
+            }
         }
 
         private void UpdateExplorerView()
@@ -183,6 +193,7 @@ namespace Client
         public void Logout()
         {
             model.LogoutUser();
+            SetOpenDocument(System.Windows.Markup.XamlWriter.Save(new FlowDocument()), "", "");
             UpdateExplorerView();
         }
     }

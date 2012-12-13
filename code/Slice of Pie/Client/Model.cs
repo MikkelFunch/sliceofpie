@@ -23,10 +23,10 @@ namespace Client
         /// <summary>
         /// path to the current users documents folder on the system
         /// </summary>
-        private String RootFolder
+        public String RootFolder
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Client
         {
             CurrentDocumentPath = RootFolder + "\\" + title + ".txt";
             File.Create(CurrentDocumentPath).Close();
-            SaveDocument(document);
+            SaveDocumentToFile(document);
         }
 
         /// <summary>
@@ -196,26 +196,14 @@ namespace Client
             return sb.ToString();
         }
 
-        public FlowDocument CreateDocumentWithoutMetadata(String content)
+        public FlowDocument CreateFlowDocumentWithoutMetadata(String content)
         {
             content = content.Substring(content.IndexOf('<'));
             return (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
         }
 
-        public void SaveDocument(FlowDocument document)
+        public void SaveDocumentToFile(FlowDocument document, String metadata)
         {
-            String metadata;
-
-            //check if document contains metadata
-            if (new TextRange(document.ContentStart, document.ContentEnd).Text.StartsWith("["))
-            { //contains metadata
-                metadata = GetMetadata();
-            }
-            else //does not containt metadata
-            {
-                metadata = GenerateMetadata();
-            }
-
             StringBuilder content = new StringBuilder();
             content.Append(metadata); //metadata
             content.AppendLine(); //blank line
@@ -226,6 +214,18 @@ namespace Client
             {
                 sw.Write(content.ToString());
             }
+        }
+
+        /// <summary>
+        /// When a new file is being saved
+        /// </summary>
+        /// <param name="document"></param>
+        public void SaveDocumentToFile(FlowDocument document)
+        {
+            String metadata;
+            metadata = GenerateMetadata();
+
+            SaveDocumentToFile(document, metadata);
         }
 
         public void DownloadComplete(BitmapImage image)
@@ -274,6 +274,17 @@ namespace Client
                             }
                             else
                             {
+                                //currentDoc.creationTime;
+                                //get local corresponsing document
+
+
+
+
+                                //check if it is same base
+                                //if it is -> check if online version is newer
+                                //// if it is -> user online version
+                                //// if it is not -> sync local version
+                                //if it is not -> single sync the document
                                 //Document already exits.
                                 //Make user single sync this document.
                             }
@@ -314,7 +325,7 @@ namespace Client
             Object[] metadata = RetrieveMetadata(file);
             int index = file.IndexOf(dir + "\\");
             String filename = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") -1));
-            proxy.AddDocument(filename, UserID, (int)metadata[3], content);
+            proxy.AddDocumentWithUserDocument(filename, UserID, (int)metadata[3], content);
         }
 
         public String[][] SyncDocument(FlowDocument document)
@@ -340,8 +351,12 @@ namespace Client
                 String[][] responseArrays = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                 if (responseArrays == null)
                 {
+                    if (documentID == 0)
+                    {
+                        documentID = proxy.GetDocumentId(UserID, CurrentDocumentTitle);
+                    }
                     //save document with new metadata - basedocument
-                    SaveDocument(document);
+                    SaveDocumentToFile(document,GenerateNewMetaData(documentID,UserID,RootFolderID));
                 }
                 else
                 {
@@ -351,7 +366,24 @@ namespace Client
             return null;
         }
 
-        internal void LogoutUser()
+        private String GenerateNewMetaData(int docid, int userid, int folderid)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            sb.Append("docid " + docid);
+            sb.Append("|");
+            sb.Append("userid " + userid);
+            sb.Append("|");
+            sb.Append("timestamp " + DateTime.UtcNow);
+            sb.Append("|");
+            sb.Append("fid " + folderid);
+            sb.Append("]");
+
+            return sb.ToString();
+        }
+
+
+        public void LogoutUser()
         {
             RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
             UserID = -1;
