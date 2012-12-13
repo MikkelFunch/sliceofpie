@@ -156,7 +156,7 @@ namespace TestProject
             PersistentStorage.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
             PersistentStorage.GetInstance().AddDocumentRevision(u1.id, d.id, "Newtestcontentedited");
             PersistentStorage.GetInstance().AddDocumentRevision(u2.id, d.id, "Newtestcontenteditedagain");
-            List<Documentrevision> drlist = PersistentStorage.GetInstance().GetLatestDocumentRevision(d.id, 1);
+            List<Documentrevision> drlist = PersistentStorage.GetInstance().GetLatestDocumentRevisions(d.id);
             Documentrevision dr = drlist[0];
             Assert.AreEqual(dr.editorId, u2.id);
         }

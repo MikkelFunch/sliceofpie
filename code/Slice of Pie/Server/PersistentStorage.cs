@@ -61,7 +61,9 @@ namespace Server
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
-            DateTime creationTime = DateTime.UtcNow;
+            int startIndex = content.IndexOf("timestamp") + 10;
+            int endIndex = content.LastIndexOf("|");
+            DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
             Document document = dao.GetDocument(documentId);
             String filepath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
@@ -154,9 +156,9 @@ namespace Server
             return dao.GetDocumentRevisions(documentId);
         }
 
-        public List<Documentrevision> GetLatestDocumentRevision(int documentId, int count)
+        public List<Documentrevision> GetLatestDocumentRevisions(int documentId)
         {
-            return dao.GetLatestDocumentRevision(documentId, count);
+            return dao.GetLatestDocumentRevisions(documentId);
         }
 
         public List<Folder> GetFoldersByRootId(int parentId)
@@ -175,7 +177,8 @@ namespace Server
             if (GetDocument(documentId) != null)
             {
                 //No conflict
-                if (!DocumentHasRevision(documentId) || GetLatestDocumentRevision(documentId, 1).First<Documentrevision>().creationTime == baseDocCreationTime)
+                if (!DocumentHasRevision(documentId) ||
+                    (DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
                 {
                     AddDocumentRevision(editorId, documentId, content);
                     return null;
@@ -189,8 +192,8 @@ namespace Server
                     returnArray[0] = mergedLines[0];
                     returnArray[1] = mergedLines[1];
                     returnArray[2] = mergedLines[2];
-                    Documentrevision latestDoc = GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
-                    returnArray[3] = Model.GetInstance().GetContentAsStringArray(latestDoc.id);
+                    Documentrevision latestDoc = GetLatestDocumentRevisions(documentId)[0];
+                    returnArray[3] = Model.GetInstance().GetContentAsStringArray(documentId);
                     return returnArray;
                 }
             }
