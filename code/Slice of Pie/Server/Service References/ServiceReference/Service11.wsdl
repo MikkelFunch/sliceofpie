@@ -32,7 +32,7 @@
           <xs:sequence />
         </xs:complexType>
       </xs:element>
-      <xs:element name="AddDocument">
+      <xs:element name="AddDocumentWithUserDocument">
         <xs:complexType>
           <xs:sequence>
             <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
@@ -42,7 +42,7 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="AddDocumentResponse">
+      <xs:element name="AddDocumentWithUserDocumentResponse">
         <xs:complexType>
           <xs:sequence />
         </xs:complexType>
@@ -246,6 +246,21 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="GetDocumentId">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="userId" type="xs:int" />
+            <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDocumentIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDocumentIdResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType" />
@@ -350,11 +365,11 @@
   <wsdl:message name="IService1_AddFolder_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddFolderResponse" />
   </wsdl:message>
-  <wsdl:message name="IService1_AddDocument_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddDocument" />
+  <wsdl:message name="IService1_AddDocumentWithUserDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddDocumentWithUserDocument" />
   </wsdl:message>
-  <wsdl:message name="IService1_AddDocument_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddDocumentResponse" />
+  <wsdl:message name="IService1_AddDocumentWithUserDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddDocumentWithUserDocumentResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_AddDocumentRevision_InputMessage">
     <wsdl:part name="parameters" element="tns:AddDocumentRevision" />
@@ -440,6 +455,12 @@
   <wsdl:message name="IService1_SyncDocument_OutputMessage">
     <wsdl:part name="parameters" element="tns:SyncDocumentResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_GetDocumentId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentId" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetDocumentId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="AddUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUser" message="tns:IService1_AddUser_InputMessage" />
@@ -449,9 +470,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddFolder" message="tns:IService1_AddFolder_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddFolderResponse" message="tns:IService1_AddFolder_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddDocument">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddDocument" message="tns:IService1_AddDocument_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddDocumentResponse" message="tns:IService1_AddDocument_OutputMessage" />
+    <wsdl:operation name="AddDocumentWithUserDocument">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddDocumentWithUserDocument" message="tns:IService1_AddDocumentWithUserDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddDocumentWithUserDocumentResponse" message="tns:IService1_AddDocumentWithUserDocument_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddDocumentRevision">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddDocumentRevision" message="tns:IService1_AddDocumentRevision_InputMessage" />
@@ -509,6 +530,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/SyncDocument" message="tns:IService1_SyncDocument_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/SyncDocumentResponse" message="tns:IService1_SyncDocument_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetDocumentId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDocumentId" message="tns:IService1_GetDocumentId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDocumentIdResponse" message="tns:IService1_GetDocumentId_OutputMessage" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -530,8 +555,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddDocument">
-      <soap:operation soapAction="http://tempuri.org/IService1/AddDocument" style="document" />
+    <wsdl:operation name="AddDocumentWithUserDocument">
+      <soap:operation soapAction="http://tempuri.org/IService1/AddDocumentWithUserDocument" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -658,6 +683,15 @@
     </wsdl:operation>
     <wsdl:operation name="SyncDocument">
       <soap:operation soapAction="http://tempuri.org/IService1/SyncDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentId">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetDocumentId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

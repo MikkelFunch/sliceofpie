@@ -28,7 +28,6 @@ namespace Client
             InitializeComponent();
             controller = Controller.GetInstance();
             controller.SetGui(this);
-
         }
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
@@ -78,8 +77,8 @@ namespace Client
                 /*
                 //Create a new source refrenceing the image locally
                 Uri newSource = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\" + Security.EncryptPassword(url) + ".jpg", UriKind.RelativeOrAbsolute);
-
-             
+                
+                
                 //create bitmapimage refrencing the local source
                 BitmapImage localImage = new BitmapImage(newSource);
                 //Create the image which will be shown in gui
@@ -107,8 +106,39 @@ namespace Client
             {
                 BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png",UriKind.Relative));
                 OnlineImage.Source = bitmap;
-                buttonSync.IsEnabled = true;
+                ChangeActiveButtons(true);
+
+                menuItemLogin.Header = "Log out";
+                menuItemLogin.Click -= LoginItem_Click;
+                menuItemLogin.Click += new RoutedEventHandler(LogoutItem_Click);
             }
+        }
+
+        private void LogoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            controller.Logout();
+            BitmapImage bitmap = new BitmapImage(new Uri("Resources\\redndot.png", UriKind.Relative));
+            OnlineImage.Source = bitmap;
+            ChangeActiveButtons(false);
+
+            menuItemLogin.Header = "Log in";
+            menuItemLogin.Click -= LogoutItem_Click;
+            menuItemLogin.Click += new RoutedEventHandler(LoginItem_Click);
+            richTextBox.Document = new FlowDocument();
+        }
+
+        /// <summary>
+        /// Change active buttons on login and logout
+        /// </summary>
+        /// <param name="loggedin">Wheter the user is logged in</param>
+        private void ChangeActiveButtons(Boolean loggedin)
+        {
+            buttonDelete.IsEnabled = loggedin;
+            buttonHistory.IsEnabled = loggedin;
+            buttonNewFolder.IsEnabled = loggedin;
+            buttonSync.IsEnabled = loggedin;
+            buttonSyncAll.IsEnabled = loggedin;
+            buttonImage.IsEnabled = loggedin;
         }
 
         private void RegisterItem_Click(object sender, RoutedEventArgs e)
@@ -133,8 +163,10 @@ namespace Client
             docDia.ShowDialog();
 
             String title = docDia.DocumentTitle;
-
-            controller.CreateDocument(title);
+            if (title != null && title.Length > 0)
+            {
+                controller.CreateDocument(title);
+            }
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)
