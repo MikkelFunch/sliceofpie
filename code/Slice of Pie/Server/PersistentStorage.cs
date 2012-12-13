@@ -33,7 +33,7 @@ namespace Server
             }
             return instance;
         }
-
+        /*
         public void AddDocument(String name, int userId, int folderId, String content)
         {
             String documentPath = fsh.GetDocumentPath(userId, folderId);
@@ -41,14 +41,16 @@ namespace Server
             dao.AddDocument(name, userId, documentPath);
             int documentId = GetDocumentIdByPath(documentPath, name);
             
-        }
+        }*/
 
         public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
         {
             String documentPath = fsh.GetDocumentPath(userId, folderId);
-            fsh.WriteToFile(documentPath, name, content);
             dao.AddDocument(name, userId, documentPath);
             int documentId = GetDocumentIdByPath(documentPath, name);
+            fsh.WriteToFile(documentPath, name, content, documentId);
+            
+            
             AddUserDocument(userId, documentId, folderId);
         }
 
@@ -63,7 +65,7 @@ namespace Server
             Document document = dao.GetDocument(documentId);
             String filepath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
-            fsh.WriteToFile(filepath, filename, content);
+            fsh.WriteToFile(filepath, filename, content, documentId);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
