@@ -63,9 +63,8 @@ namespace Server
                         AppendLines(merged, latest, n, LastIndexOf(latest));
                         n = LastIndexOf(latest) + 1;
                     }
-
                     //Remaining lines are deleted in the latest document. Ends loop.
-                    if (!IsEndOfDocument(original, o) && IsEndOfDocument(latest, n))
+                    else
                     {
                         fillIntervalWithText(deletions, o, original.Length-1, "d");
 
