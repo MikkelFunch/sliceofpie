@@ -213,12 +213,17 @@ namespace Client
             richTextBoxMerged.Visibility = Visibility.Visible;
             Grid.SetRow(richTextBox, 1);
             Grid.SetRow(richTextBoxMerged, 1);
+            richTextBox.IsReadOnly = true;
 
             labelMerge.Visibility = Visibility.Visible;
             labelServer.Visibility = Visibility.Visible;
 
-            richTextBox.Document = InsertIntoRichtextbox(null,response[2]) ;
+            richTextBox.Document = InsertIntoRichtextbox(response[3],response[2]) ;
             richTextBoxMerged.Document = InsertIntoRichtextbox(response[0], response[1]);
+
+            buttonSaveDocument.Click -= buttonSaveDocument_Click;
+            buttonSaveDocument.Click += new RoutedEventHandler(buttonSaveMergedDocument_Click);
+            buttonSaveDocument.Content = "Save merged";
         }
 
 
@@ -231,18 +236,47 @@ namespace Client
                 switch (lineChanges[i])
                 {
                     case "i": 
-                        Background = new SolidColorBrush(Colors.Green);
+                        p.Background = new SolidColorBrush(Colors.Green);
                         break;
                     case "d": 
-                        Background = new SolidColorBrush(Colors.Red);
+                        p.Background = new SolidColorBrush(Colors.Red);
                         break;
                     default:
-                        Background = new SolidColorBrush(Colors.White);
+                        p.Background = new SolidColorBrush(Colors.White);
                         break;
                 }
                 doc.Blocks.Add(p);
             }
+            doc.Blocks.Add(new Paragraph(new Run("")));
             return doc;
+        }
+
+        private void buttonSaveMergedDocument_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange textRange = new TextRange(richTextBoxMerged.Document.ContentStart, richTextBoxMerged.Document.ContentEnd);
+            String[] pureContent = textRange.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            FlowDocument mergedDocument = new FlowDocument();
+            foreach (String s in pureContent)
+            {
+                Paragraph p = new Paragraph(new Run(s));
+                mergedDocument.Blocks.Add(p);
+            }
+
+            controller.SaveMergedDocument(mergedDocument);
+            richTextBox.Document = mergedDocument;
+
+            richTextBox.Width = double.NaN;
+            richTextBoxMerged.Visibility = Visibility.Hidden;
+            Grid.SetRow(richTextBox, 0);
+            Grid.SetRow(richTextBoxMerged, 0);
+            richTextBox.IsReadOnly = false;
+
+            labelMerge.Visibility = Visibility.Hidden;
+            labelServer.Visibility = Visibility.Hidden;
+
+            buttonSaveDocument.Click -= buttonSaveMergedDocument_Click;
+            buttonSaveDocument.Click += new RoutedEventHandler(buttonSaveDocument_Click);
+            buttonSaveDocument.Content = "Save document";
         }
     }
 }

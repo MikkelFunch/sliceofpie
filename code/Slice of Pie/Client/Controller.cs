@@ -196,5 +196,10 @@ namespace Client
             SetOpenDocument(System.Windows.Markup.XamlWriter.Save(new FlowDocument()), "", "");
             UpdateExplorerView();
         }
+
+        public void SaveMergedDocument(FlowDocument document)
+        {
+            model.SaveMergedDocument(document);
+        }
     }
 }

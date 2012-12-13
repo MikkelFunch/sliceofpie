@@ -361,7 +361,8 @@ namespace Client
 
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
-                String[][] responseArrays = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                String pureContent = new TextRange(document.ContentStart, document.ContentEnd).Text;
+                String[][] responseArrays = proxy.SyncDocument(UserID, documentID, RootFolderID, baseDocumentCreationTime, sb.ToString(), CurrentDocumentTitle, pureContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                 if (responseArrays == null)
                 {
                     if (documentID == 0)
@@ -425,6 +426,24 @@ namespace Client
         {
             RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
             UserID = -1;
+        }
+
+        public void SaveMergedDocument(FlowDocument document)
+        {
+            Object[] oldMetadata = RetrieveMetadataFromFile(CurrentDocumentPath);
+            int documentid = (int)oldMetadata[0];
+            int userid = UserID;
+            DateTime timestamp = DateTime.UtcNow;
+            int folderid = (int)oldMetadata[3];
+
+            String metadata = GenerateMetadataString(documentid, userid, folderid, timestamp);
+            String xamlContent = System.Windows.Markup.XamlWriter.Save(document);
+            String content = metadata + xamlContent;
+
+            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+            {
+                proxy.AddDocumentRevision(UserID, documentid, content);
+            }
         }
     }
 }
