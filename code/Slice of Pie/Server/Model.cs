@@ -153,16 +153,32 @@ namespace Server
         public string[] GetContentAsStringArray(int documentId)
         {
             Documentrevision latestDoc = PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId)[0];
-            Document orignalDoc = PersistentStorage.GetInstance().GetDocument(documentId);
+            Document originalDoc = PersistentStorage.GetInstance().GetDocumentById(documentId);
             DateTime timestamp = latestDoc.creationTime;
             String timestampString = timestamp.ToString().Replace(':', '.');
-            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path + "\\" + orignalDoc.name + "_revision_" + timestampString + ".txt");
+            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
             content = content.Substring(content.IndexOf('<')); //Remove metadata
             FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
             TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);
             String pureContent = textRange.Text; //The "pure" content of the flowdocument i.e. what the user has written
             String[] returnArray = pureContent.Split(new String[] {"\r\n", "\n"}, StringSplitOptions.None);
             return returnArray;
+        }
+
+        public String[] GetContentAsStringArray(Documentrevision documentRevision)
+        {
+            Document originalDoc = PersistentStorage.GetInstance().GetDocumentById(documentRevision.documentId);
+            DateTime timestamp = documentRevision.creationTime;
+            String timestampString = timestamp.ToString().Replace(':', '.');
+            String content = PersistentStorage.GetInstance().GetDocumentContent(documentRevision.path + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
+            content = content.Substring(content.IndexOf('<')); //Remove metadata
+            FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
+            TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);
+            String pureContent = textRange.Text; //The "pure" content of the flowdocument i.e. what the user has written
+            String[] returnArray = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
+            return returnArray;
+
+
         }
     }
 }

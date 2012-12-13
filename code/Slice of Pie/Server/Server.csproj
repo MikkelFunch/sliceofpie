@@ -89,7 +89,7 @@
     <None Include="Service References\ServiceReference\Server.ServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Service11.wsdl" />
+    <None Include="Service References\ServiceReference\Service1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

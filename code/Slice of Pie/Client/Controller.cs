@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Client
 {
-    class Controller
+    public class Controller
     {
         //Singleton instance of controller
         private static Controller instance;

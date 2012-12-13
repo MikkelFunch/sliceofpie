@@ -61,6 +61,20 @@
           <xs:sequence />
         </xs:complexType>
       </xs:element>
+      <xs:element name="SaveMergedDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="editorId" type="xs:int" />
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveMergedDocumentResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
       <xs:element name="GetUserByEmailAndPass">
         <xs:complexType>
           <xs:sequence>
@@ -377,6 +391,12 @@
   <wsdl:message name="IService1_AddDocumentRevision_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddDocumentRevisionResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_SaveMergedDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveMergedDocument" />
+  </wsdl:message>
+  <wsdl:message name="IService1_SaveMergedDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveMergedDocumentResponse" />
+  </wsdl:message>
   <wsdl:message name="IService1_GetUserByEmailAndPass_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByEmailAndPass" />
   </wsdl:message>
@@ -478,6 +498,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddDocumentRevision" message="tns:IService1_AddDocumentRevision_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddDocumentRevisionResponse" message="tns:IService1_AddDocumentRevision_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SaveMergedDocument">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/SaveMergedDocument" message="tns:IService1_SaveMergedDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/SaveMergedDocumentResponse" message="tns:IService1_SaveMergedDocument_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetUserByEmailAndPass">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetUserByEmailAndPass" message="tns:IService1_GetUserByEmailAndPass_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetUserByEmailAndPassResponse" message="tns:IService1_GetUserByEmailAndPass_OutputMessage" />
@@ -566,6 +590,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddDocumentRevision">
       <soap:operation soapAction="http://tempuri.org/IService1/AddDocumentRevision" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveMergedDocument">
+      <soap:operation soapAction="http://tempuri.org/IService1/SaveMergedDocument" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

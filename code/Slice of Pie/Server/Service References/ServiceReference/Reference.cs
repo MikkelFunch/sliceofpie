@@ -308,6 +308,9 @@ namespace Server.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentRevision", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionResponse")]
         void AddDocumentRevision(int editorId, int documentId, string content);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SaveMergedDocument", ReplyAction="http://tempuri.org/IService1/SaveMergedDocumentResponse")]
+        void SaveMergedDocument(int editorId, int documentId, string content);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserByEmailAndPass", ReplyAction="http://tempuri.org/IService1/GetUserByEmailAndPassResponse")]
         int GetUserByEmailAndPass(string email, string pass);
         
@@ -392,6 +395,10 @@ namespace Server.ServiceReference {
         
         public void AddDocumentRevision(int editorId, int documentId, string content) {
             base.Channel.AddDocumentRevision(editorId, documentId, content);
+        }
+        
+        public void SaveMergedDocument(int editorId, int documentId, string content) {
+            base.Channel.SaveMergedDocument(editorId, documentId, content);
         }
         
         public int GetUserByEmailAndPass(string email, string pass) {

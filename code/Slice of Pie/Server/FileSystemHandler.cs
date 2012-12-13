@@ -45,7 +45,7 @@ namespace Server
                 }
                 folder = PersistentStorage.GetInstance().GetFolder((int)folder.parentFolderId);
             }
-            String userEmail = PersistentStorage.GetInstance().GetUser(userId).email;
+            String userEmail = PersistentStorage.GetInstance().GetUserById(userId).email;
             sb.Insert(0, "D:\\SliceOfPieDocuments\\sliceofpie\\" + userEmail);
             return sb.ToString();
         }
