@@ -42,7 +42,7 @@ namespace TestProject
             string email = "test";
             string password = "098F6BCD4621D373CADE4E832627B4F6";
             PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
+            User u = PersistentStorage.GetInstance().GetUserByEmail(email);
             Assert.AreEqual(u.email, email);
             Assert.AreEqual(u.password, password);
         }
@@ -71,11 +71,11 @@ namespace TestProject
         {
             string email = "test";
             string password = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
+            DAO.GetInstance().AddUser(email, password);
+            User u = PersistentStorage.GetInstance().GetUserByEmail(email);
             string name = "testFolder";
-            PersistentStorage.GetInstance().AddFolder(name, u.rootFolderId);
-            Folder f = PersistentStorage.GetInstance().GetFolder(name);
+            int folderId = DAO.GetInstance().AddFolder(name, u.rootFolderId);
+            Folder f = PersistentStorage.GetInstance().GetFolder(folderId);
             Assert.AreEqual(f.name, name);
         }
 
@@ -171,7 +171,7 @@ namespace TestProject
             string email = "test";
             string password = "098F6BCD4621D373CADE4E832627B4F6";
             PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
+            User u = PersistentStorage.GetInstance().GetUserByEmail(email);
             //Folders
             string name1 = "testFolder1";
             string name2 = "testFolder2";
