@@ -131,7 +131,7 @@ namespace Client
         /// </returns>
         public object[] RetrieveMetadata()
         {
-            return RetrieveMetadata(CurrentDocumentPath);
+            return RetrieveMetadataFromFile(CurrentDocumentPath);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Client
         /// </summary>
         /// <param name="path">Path to the file for which you want metadata</param>
         /// <returns></returns>
-        public object[] RetrieveMetadata(String path)
+        public object[] RetrieveMetadataFromFile(String path)
         {
             String content;
             using (StreamReader stream = new StreamReader(File.OpenRead(path)))
@@ -163,9 +163,14 @@ namespace Client
             }
         }
 
-        private String GetMetadata()
+
+        private Object[] RetrieveMetadataFromFile(String directorypath, String filename)
         {
-            object[] metadata = RetrieveMetadata();
+            return (RetrieveMetadataFromFile(directorypath + "\\" + filename + ".txt"));
+        }
+
+        private String GetMetadataFromObjectArray(Object[] metadata)
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
             sb.Append("docid " + (int)metadata[0]);
@@ -217,15 +222,18 @@ namespace Client
         }
 
         /// <summary>
-        /// When a new file is being saved
+        /// When a file is being saved
         /// </summary>
         /// <param name="document"></param>
         public void SaveDocumentToFile(FlowDocument document)
         {
-            String metadata;
-            metadata = GenerateMetadata();
-
-            SaveDocumentToFile(document, metadata);
+            Object[] metadata = RetrieveMetadata();
+            String metadataString;
+            if(metadata != null)
+                metadataString = GetMetadataFromObjectArray(metadata);
+            else
+                metadataString = GenerateMetadata();
+            SaveDocumentToFile(document, metadataString);
         }
 
         public void DownloadComplete(BitmapImage image)
@@ -322,7 +330,7 @@ namespace Client
             {
                 content = reader.ReadToEnd();
             }
-            Object[] metadata = RetrieveMetadata(file);
+            Object[] metadata = RetrieveMetadataFromFile(file);
             int index = file.IndexOf(dir + "\\");
             String filename = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") -1));
             proxy.AddDocumentWithUserDocument(filename, UserID, (int)metadata[3], content);
@@ -340,7 +348,7 @@ namespace Client
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(GetMetadata());
+            sb.Append(GetMetadataFromObjectArray(metadata));
             sb.AppendLine();
             String content = System.Windows.Markup.XamlWriter.Save(document);
             sb.Append(content);

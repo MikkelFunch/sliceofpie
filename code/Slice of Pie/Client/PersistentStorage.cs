@@ -30,5 +30,20 @@ namespace Client
             }
             return instance;
         }
+
+        private void SaveDocumentToFile()
+        {
+
+        }
+
+        private void SyncDocument()
+        {
+
+        }
+
+        private void CreateDocument()
+        {
+
+        }
     }
 }
