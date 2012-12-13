@@ -350,5 +350,11 @@ namespace Client
             }
             return null;
         }
+
+        internal void LogoutUser()
+        {
+            RootFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
+            UserID = -1;
+        }
     }
 }

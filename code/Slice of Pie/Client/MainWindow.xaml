@@ -31,9 +31,9 @@
 
             <!-- Top buttons definitions -->
             <StackPanel Orientation="Horizontal">
-                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" />
-                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click"/>
-                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" />
+                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" IsEnabled="False" />
+                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False"/>
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" IsEnabled="False"/>
             </StackPanel>
                 
             <!-- Bottom buttons -->
@@ -76,7 +76,7 @@
         <Menu Name="topMenu" IsMainMenu="True" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,0">
             <!-- Menu items -->
             <MenuItem Header="_File ">
-                <MenuItem Header="_Login" Click="LoginItem_Click" />
+                <MenuItem Header="_Login" Click="LoginItem_Click" Name="menuItemLogin"/>
                 <MenuItem Header="Register new _user" Click="RegisterItem_Click" />
                 <MenuItem Header="_New document" Click="NewDocumentItem_Click"/>
             </MenuItem>
@@ -102,11 +102,11 @@
             
             <!-- Buttons to the right side -->
             
-            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" />
-            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click">
+            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" IsEnabled="False"/>
+            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click" IsEnabled="False">
                 <Image Source="Resources/img_icon.gif" />
             </Button>
-            <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click"/>
+            <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click" IsEnabled="False"/>
             <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right" IsEnabled="False"/>
         </Grid>
             <!-- Button menu end -->
