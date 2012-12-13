@@ -7,9 +7,9 @@ namespace Server
 {
     public partial class User
     {
-        public static explicit operator WcfServiceLibrary.ServiceUser(Server.User u)
+        public static explicit operator ServiceReference.ServiceUser(Server.User u)
         {
-            WcfServiceLibrary.ServiceUser user = new WcfServiceLibrary.ServiceUser();
+            ServiceReference.ServiceUser user = new ServiceReference.ServiceUser();
             user.email = u.email;
             user.id = u.id;
             user.password = u.password;
@@ -17,7 +17,7 @@ namespace Server
             return user;
         }
 
-        public static explicit operator Server.User(WcfServiceLibrary.ServiceUser su)
+        public static explicit operator Server.User(ServiceReference.ServiceUser su)
         {
             Server.User user = new Server.User();
             user.email = su.email;

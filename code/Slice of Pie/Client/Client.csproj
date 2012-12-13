@@ -145,7 +145,7 @@
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Service1.wsdl" />
+    <None Include="Service References\ServiceReference\Service11.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\img_icon.gif" />

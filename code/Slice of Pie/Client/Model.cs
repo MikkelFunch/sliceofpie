@@ -314,7 +314,7 @@ namespace Client
             Object[] metadata = RetrieveMetadata(file);
             int index = file.IndexOf(dir + "\\");
             String filename = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") -1));
-            proxy.AddDocument(filename, UserID, (int)metadata[3], content);
+            proxy.AddDocumentWithUserDocument(filename, UserID, (int)metadata[3], content);
         }
 
         public String[][] SyncDocument(FlowDocument document)

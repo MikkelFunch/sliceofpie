@@ -40,6 +40,15 @@ namespace Server
             fsh.WriteToFile(documentPath, name, content);
             dao.AddDocument(name, userId, documentPath);
             int documentId = GetDocumentIdByPath(documentPath, name);
+            
+        }
+
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
+        {
+            String documentPath = fsh.GetDocumentPath(userId, folderId);
+            fsh.WriteToFile(documentPath, name, content);
+            dao.AddDocument(name, userId, documentPath);
+            int documentId = GetDocumentIdByPath(documentPath, name);
             AddUserDocument(userId, documentId, folderId);
         }
 
@@ -160,30 +169,34 @@ namespace Server
 
         public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] latest)
         {
-            //No conflict
-            if (!DocumentHasRevision(documentId))
+            //Document found with the given id
+            if (GetDocument(documentId) != null)
             {
-                AddDocument(title, editorId, folderId, content);
-                return null;
+                //No conflict
+                if (!DocumentHasRevision(documentId) || GetLatestDocumentRevision(documentId, 1).First<Documentrevision>().creationTime == baseDocCreationTime)
+                {
+                    AddDocumentRevision(editorId, documentId, content);
+                    return null;
+                }
+                //Conflict
+                else
+                {
+                    String[][] returnArray = new String[4][];
+                    String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
+                    String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
+                    returnArray[0] = mergedLines[0];
+                    returnArray[1] = mergedLines[1];
+                    returnArray[2] = mergedLines[2];
+                    Documentrevision latestDoc = GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
+                    returnArray[3] = Model.GetInstance().GetContentAsStringArray(latestDoc.id);
+                    return returnArray;
+                }
             }
-            //No conflict
-            else if(GetLatestDocumentRevision(documentId, 1).First<Documentrevision>().creationTime == baseDocCreationTime)
-            {
-                AddDocumentRevision(editorId, documentId, content);
-                return null;
-            }
-            //Conflict
+            //No document found with the given id.
             else
             {
-                String[][] returnArray = new String[4][];
-                String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
-                String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
-                returnArray[0] = mergedLines[0];
-                returnArray[1] = mergedLines[1];
-                returnArray[2] = mergedLines[2];
-                Documentrevision latestDoc = GetLatestDocumentRevision(documentId, 1).First<Documentrevision>();
-                returnArray[3] = Model.GetInstance().GetContentAsStringArray(latestDoc.id);
-                return returnArray;
+                AddDocumentWithUserDocument(title, editorId, folderId, content);
+                return null;
             }
         }
 
@@ -195,6 +208,11 @@ namespace Server
         public string GetDocumentContent(string filepath)
         {
             return fsh.GetDocumentContent(filepath);
+        }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            return dao.GetDocumentId(userId, title);
         }
     }
 }

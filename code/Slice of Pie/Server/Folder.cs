@@ -7,16 +7,16 @@ namespace Server
 {
     public partial class Folder
     {
-        public static explicit operator WcfServiceLibrary.ServiceFolder(Server.Folder f)
+        public static explicit operator ServiceReference.ServiceFolder(Server.Folder f)
         {
-            WcfServiceLibrary.ServiceFolder folder = new WcfServiceLibrary.ServiceFolder();
+            ServiceReference.ServiceFolder folder = new ServiceReference.ServiceFolder();
             folder.id = f.id;
             folder.name = f.name;
             folder.parentFolderId = f.parentFolderId;
             return folder;
         }
 
-        public static explicit operator Server.Folder(WcfServiceLibrary.ServiceFolder sf)
+        public static explicit operator Server.Folder(ServiceReference.ServiceFolder sf)
         {
             Server.Folder folder = new Server.Folder();
             folder.id = sf.id;

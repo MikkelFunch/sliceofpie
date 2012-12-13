@@ -18,10 +18,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost/WcfService/Service1.svc?singleWsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://10.25.255.215/WcfService/Service1.svc?singleWsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="366d4431-5ce8-4e88-be96-f7249f9c323a" SourceId="1" SourceUrl="http://localhost/WcfService/Service1.svc?singleWsdl" />
+    <MetadataFile FileName="Service11.wsdl" MetadataType="Wsdl" ID="efe44269-bdcf-40b9-8e6c-e4d379a4721e" SourceId="1" SourceUrl="http://10.25.255.215/WcfService/Service1.svc?singleWsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

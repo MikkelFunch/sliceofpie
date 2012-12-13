@@ -19,7 +19,7 @@ namespace WcfService
         void AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        void AddDocument(String name, int userId, int folderId, String content);
+        void AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
 
         [OperationContract]
         void AddDocumentRevision(int editorId, int documentId, String content);
@@ -62,6 +62,9 @@ namespace WcfService
 
         [OperationContract]
         String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
+
+        [OperationContract]
+        int GetDocumentId(int userId, String title);
     }
 
     [DataContract]

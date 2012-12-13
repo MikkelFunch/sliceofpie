@@ -70,11 +70,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\WcfServiceLibrary\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,54 +83,19 @@
     <None Include="Service References\ServiceReference\Server.ServiceReference.ServiceDocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Server.ServiceReference.ServiceDocumentrevision.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ServiceReference\Server.ServiceReference.ServiceFolder.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Server.ServiceReference.ServiceUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\Service1.wsdl" />
-    <None Include="Service References\WcfServiceLibrary\Server.WcfServiceLibrary.ServiceDocument.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WcfServiceLibrary\Server.WcfServiceLibrary.ServiceFolder.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WcfServiceLibrary\Server.WcfServiceLibrary.ServiceUser.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WcfServiceLibrary\service.wsdl" />
-    <None Include="Service References\WcfServiceLibrary\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WcfServiceLibrary\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\WcfServiceLibrary\WcfServiceLibrary.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\ServiceReference\Service11.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ServiceReference\" />
-    <WCFMetadataStorage Include="Service References\WcfServiceLibrary\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceLibrary\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceLibrary\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WcfServiceLibrary\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ServiceReference\configuration91.svcinfo" />
