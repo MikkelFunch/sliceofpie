@@ -39,6 +39,11 @@ namespace WcfService
             Server.Controller.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
+        public void SaveMergedDocument(int editorId, int documentId, String content)
+        {
+            Server.Controller.GetInstance().SaveMergedDocument(editorId, documentId, content);
+        }
+
         public int GetUserByEmailAndPass(String email, String pass)
         {
             return Server.Controller.GetInstance().GetUser(email, pass);

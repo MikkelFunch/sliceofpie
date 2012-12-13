@@ -71,6 +71,18 @@ namespace Server
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
+        public void SaveMergedDocument(int editorId, int documentId, string content)
+        {
+            int startIndex = content.IndexOf("timestamp") + 10;
+            int endIndex = content.LastIndexOf("|");
+            DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
+            Document document = dao.GetDocument(documentId);
+            String filepath = document.path;
+            String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
+            fsh.WriteToFile(filepath, filename, content, documentId);
+            dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
+        }
+
         public void AddUser(String email, String password)
         {
             dao.AddUser(email, password);
@@ -193,7 +205,7 @@ namespace Server
                     returnArray[1] = mergedLines[1];
                     returnArray[2] = mergedLines[2];
                     Documentrevision latestDoc = GetLatestDocumentRevisions(documentId)[0];
-                    returnArray[3] = Model.GetInstance().GetContentAsStringArray(documentId);
+                    returnArray[3] = original;
                     return returnArray;
                 }
             }

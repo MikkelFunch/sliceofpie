@@ -77,6 +77,11 @@ namespace Server
             PersistentStorage.GetInstance().AddDocumentRevision(editorId, documentId, content);
         }
 
+        public void SaveMergedDocument(int editorId, int documentId, string content)
+        {
+            PersistentStorage.GetInstance().SaveMergedDocument(editorId, documentId, content);
+        }
+
         public int GetUser(String email, String pass)
         {
             return PersistentStorage.GetInstance().GetUser(email, pass);

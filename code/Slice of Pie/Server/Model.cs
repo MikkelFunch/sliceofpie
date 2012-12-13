@@ -154,12 +154,15 @@ namespace Server
         {
             Documentrevision latestDoc = PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId)[0];
             Document orignalDoc = PersistentStorage.GetInstance().GetDocument(documentId);
-            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path + "\\" + orignalDoc.name + ".txt");
+            DateTime timestamp = latestDoc.creationTime;
+            String timestampString = timestamp.ToString().Replace(':', '.');
+            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path + "\\" + orignalDoc.name + "_revision_" + timestampString + ".txt");
             content = content.Substring(content.IndexOf('<')); //Remove metadata
             FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
             TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);
             String pureContent = textRange.Text; //The "pure" content of the flowdocument i.e. what the user has written
-            return pureContent.Split(new String[] {"\r\n", "\n"}, StringSplitOptions.None);
+            String[] returnArray = pureContent.Split(new String[] {"\r\n", "\n"}, StringSplitOptions.None);
+            return returnArray;
         }
     }
 }

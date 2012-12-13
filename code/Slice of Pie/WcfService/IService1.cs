@@ -25,6 +25,9 @@ namespace WcfService
         void AddDocumentRevision(int editorId, int documentId, String content);
 
         [OperationContract]
+        void SaveMergedDocument(int editorId, int documentId, String content);
+
+        [OperationContract]
         int GetUserByEmailAndPass(String email, String pass);
 
         [OperationContract]
