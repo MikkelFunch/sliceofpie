@@ -29,9 +29,9 @@ namespace WcfService
         /// <param name="userId">The id of the user that creates the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
         /// <param name="content">The content of the document</param>
-        public void AddDocument(String name, int userId, int folderId, String content)
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
         {
-            Server.Controller.GetInstance().AddDocument(name, userId, folderId, content);
+            Server.Controller.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
@@ -112,17 +112,12 @@ namespace WcfService
         public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
         {
             String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
-
-
             return stringArray;
-            /*
-            Server.Documentrevision documentRevision = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title);
-            ServiceDocumentrevision serviceDoc = null;
-            if (documentRevision != null)
-            {
-                serviceDoc = (ServiceDocumentrevision)documentRevision;
-            }
-            return serviceDoc;*/
-        }      
+        }
+
+        public int GetDocumentId(int userId, String title)
+        {
+            return Server.Controller.GetInstance().GetDocumentId(userId, title);
+        }
     }
 }

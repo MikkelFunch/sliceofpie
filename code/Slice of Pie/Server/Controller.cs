@@ -67,9 +67,9 @@ namespace Server
         /// <param name="userId">The id of the user that creates the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
         /// <param name="content">The content of the document</param>
-        public void AddDocument(String name, int userId, int folderId, String content)
+        public void AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
         {
-            PersistentStorage.GetInstance().AddDocument(name, userId, folderId, content);
+            PersistentStorage.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
         }
 
         public void AddDocumentRevision(int editorId, int documentId, String content)
@@ -140,6 +140,11 @@ namespace Server
         public int GetRootFolderId(int userId)
         {
             return PersistentStorage.GetInstance().GetRootFolderId(userId);
+        }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            return PersistentStorage.GetInstance().GetDocumentId(userId, title);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace Server
 {
     public partial class Document
     {
-        public static explicit operator WcfServiceLibrary.ServiceDocument(Document d)
+        public static explicit operator ServiceReference.ServiceDocument(Document d)
         {
-            WcfServiceLibrary.ServiceDocument doc = new WcfServiceLibrary.ServiceDocument();
+            ServiceReference.ServiceDocument doc = new ServiceReference.ServiceDocument();
             doc.creationTime = d.creationTime;
             doc.creatorId = d.creatorId;
             doc.id = d.id;
@@ -18,7 +18,7 @@ namespace Server
             return doc;
         }
 
-        public static explicit operator Server.Document(WcfServiceLibrary.ServiceDocument sd)
+        public static explicit operator Server.Document(ServiceReference.ServiceDocument sd)
         {
             Server.Document doc = new Server.Document();
             doc.creationTime = sd.creationTime;

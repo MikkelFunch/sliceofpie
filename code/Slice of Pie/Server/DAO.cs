@@ -598,5 +598,16 @@ namespace Server
                 return document.First<Document>().id;
             }
         }
+
+        public int GetDocumentId(int userId, string title)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var document = from d in context.Documents
+                               where d.creatorId == userId && d.name == title
+                               select d;
+                return document.First<Document>().id;
+            }
+        }
     }
 }
