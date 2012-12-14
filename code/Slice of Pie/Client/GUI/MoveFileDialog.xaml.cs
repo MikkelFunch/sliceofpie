@@ -29,7 +29,7 @@ namespace Client.GUI
             ComboBoxItem item = new ComboBoxItem();
             item.Content = "Root folder";
             comboBoxFolders.Items.Add(item);
-            populateComboBox(Model.GetInstance().RootFolder);
+            populateComboBox(Session.GetInstance().RootFolderPath);
 
             labelDocumentName.Content = SelectedItem.Header;
         }
@@ -40,7 +40,7 @@ namespace Client.GUI
             {
                 populateComboBox(dirPath);
                 ComboBoxItem item = new ComboBoxItem();
-                item.Content = dirPath.Remove(0, Model.GetInstance().RootFolder.Length);
+                item.Content = dirPath.Remove(0, Session.GetInstance().RootFolderPath.Length);
                 comboBoxFolders.Items.Add(item);
             }
         }
@@ -53,9 +53,9 @@ namespace Client.GUI
 
         private void buttonMove_Click(object sender, RoutedEventArgs e)
         {
-            if(comboBoxFolders.SelectedItem != null)
+            if (comboBoxFolders.SelectedItem != null)
             {
-                File.Move(SelectedItem.Tag.ToString(), Model.GetInstance().RootFolder + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt");
+                File.Move(SelectedItem.Tag.ToString(), Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt");
                 Controller.GetInstance().UpdateExplorerView();
 
                 this.Close();

@@ -76,19 +76,21 @@
     <Compile Include="GUI\NewFolderDialog.xaml.cs">
       <DependentUpon>NewFolderDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IPersitence.cs" />
+    <Compile Include="LocalPersistenceHandler.cs" />
+    <Compile Include="Metadata.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PersistentStorage.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="Service References\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Session.cs" />
     <Compile Include="TreeViewModel.cs" />
+    <Compile Include="WebPersistenceHandler.cs" />
     <Page Include="GUI\ImageURLDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
