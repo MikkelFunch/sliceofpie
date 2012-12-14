@@ -67,9 +67,9 @@ namespace Server
         /// <param name="userId">The id of the user who created the document</param>
         /// <param name="folderId">The id of the folder in which the document lies</param>
         /// <param name="content">The xaml + metadata content of the document</param>
-        public int AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
+        public int AddDocumentWithUserDocument(String name, int userId, String filepath, String content)
         {
-            return PersistentStorage.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
+            return PersistentStorage.GetInstance().AddDocumentWithUserDocument(name, userId, filepath, content);
         }
 
         /// <summary>
@@ -220,9 +220,9 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] original)
         {
-            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, filepath, baseDocCreationTime, content, title, original);
         }
 
         /// <summary>
@@ -241,10 +241,10 @@ namespace Server
         /// </summary>
         /// <param name="userId">The id of the user</param>
         /// <param name="documentId">The id of the document</param>
-        /// /// <param name="folderId">The id of the folder</param>
-        public void AddUserDocument(int userId, int documentId, int folderId)
+        /// /// <param name="filepath">The path to the file</param>
+        public void AddUserDocument(int userId, int documentId, String filepath)
         {
-            PersistentStorage.GetInstance().AddUserDocument(userId, documentId, folderId);
+            PersistentStorage.GetInstance().AddUserDocument(userId, documentId, filepath);
         }
 
         public string GetLatestDocumentContent(int documentId)

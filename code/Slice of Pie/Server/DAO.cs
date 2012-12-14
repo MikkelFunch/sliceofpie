@@ -121,9 +121,9 @@ namespace Server
         /// </summary>
         /// <param name="name">The name of the document</param>
         /// <param name="userId">The id of the user who created the document</param>
-        /// <param name="documentPath">The path to the document</param>
+        /// <param name="filepath">The path to the file</param>
         /// <returns>The id of the created document</returns>
-        public int AddDocument(String name, int userId, String documentPath)
+        public int AddDocument(String name, int userId, String directoryPath)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
@@ -131,7 +131,7 @@ namespace Server
                 document.name = name;
                 document.creatorId = userId;
                 document.creationTime = DateTime.UtcNow;
-                document.path = documentPath;
+                document.path = directoryPath;
                 context.Documents.AddObject(document);
                 context.SaveChanges();
                 return document.id;
@@ -164,8 +164,9 @@ namespace Server
         /// <param name="userId">The id of the user</param>
         /// <param name="documentId">The id of the document</param>
         /// <param name="folderId">the id of the folder</param>
-        public void AddUserDocument(int userId, int documentId, int folderId)
+        public void AddUserDocument(int userId, int documentId, String filepath)
         {
+            int folderId = GetFolderIdByFilePath(userId, filepath);
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 Userdocument userDocument = new Userdocument();
@@ -439,8 +440,8 @@ namespace Server
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var userdocs = from ud in context.Userdocuments
-                              where ud.userId == userId
-                              select ud;
+                               where ud.userId == userId
+                               select ud;
                 if (userdocs.Count<Userdocument>() > 0)
                 {
                     return userdocs.ToList();
@@ -529,8 +530,8 @@ namespace Server
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var folder = from f in context.Folders
-                              where f.parentFolderId == parentFolderId && f.name == name
-                              select f;
+                             where f.parentFolderId == parentFolderId && f.name == name
+                             select f;
                 if (folder.Count<Folder>() > 0)
                 {
                     return folder.First<Folder>().id;
@@ -539,17 +540,60 @@ namespace Server
             }
         }
 
-        public void AlterUserDocument(int userId, int documentId, int folderId)
+        public void AlterUserDocument(int userId, int documentId, String filepath)
         {
+            int folderId = GetFolderIdByFilePath(userId, filepath);
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var userdocuments = from ud in context.Userdocuments
-                                   where ud.userId == userId && ud.documentId == documentId
-                                   select ud;
+                                    where ud.userId == userId && ud.documentId == documentId
+                                    select ud;
                 Userdocument userdocument = userdocuments.First<Userdocument>();
                 userdocument.folderId = folderId;
                 context.SaveChanges();
             }
+        }
+
+        private int GetFolderIdByFilePath(int userId, String filepath)
+        {
+            filepath += "\\";
+            User user = GetUserById(userId);
+            int indexStart = filepath.IndexOf(user.email) + user.email.Length;
+            int indexEnd = filepath.LastIndexOf("\\");
+            String relativeDirPath = filepath.Substring(indexStart, indexEnd - indexStart);
+            String[] folderNames = relativeDirPath.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+            int parentFolderId = user.rootFolderId;
+
+            foreach (string s in folderNames)
+            {
+                int folderId = FolderExists(parentFolderId, s);
+                if (folderId != -1)
+                {
+                    parentFolderId = folderId;
+                }
+                else
+                {
+                    parentFolderId = AddFolder(s, parentFolderId);
+                }
+            }
+            return parentFolderId;
+        }
+
+        public String GetFullDirectoryPath(int userId, String filepath)
+        {
+            User user = GetUserById(userId);
+            int indexStart = filepath.IndexOf(user.email) + user.email.Length;
+            int indexEnd = filepath.LastIndexOf("\\");
+            String relativeDirectory = filepath.Substring(indexStart, indexEnd - indexStart);
+            String directoryPath = "D:\\SliceOfPieDocuments\\sliceofpie\\" + user.email + relativeDirectory;
+            return directoryPath;
+        }
+
+        public String GetRootDirectoryPath(int userId, String filepath)
+        {
+            User user = GetUserById(userId);
+            String directoryPath = "D:\\SliceOfPieDocuments\\sliceofpie\\" + user.email;
+            return directoryPath;
         }
     }
 }

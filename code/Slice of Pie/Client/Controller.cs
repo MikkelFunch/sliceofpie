@@ -310,7 +310,7 @@ namespace Client
                 else //No documents found by this userId
                 { //loop through all the users folders and add all files to the server
                     List<String> files = new List<String>();
-                    foreach (String file in Directory.GetFiles(session.RootFolderPath))
+                    foreach (String file in Directory.GetFiles(session.RootFolderPath)) //!!!!!!!!!!!!!!!!If the rootfolder doesn't exist, an exception is thrown
                     {
                         AddDocumentToServer(file);
                     }
