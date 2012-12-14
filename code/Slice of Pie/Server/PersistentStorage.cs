@@ -56,7 +56,7 @@ namespace Server
         {
             return dao.AddFolder(name, parentFolderId);
         }
-        
+
         /// <summary>
         /// Adds a document and links a user to the added document
         /// </summary>
@@ -64,13 +64,16 @@ namespace Server
         /// <param name="userId">The id of the user who created the document</param>
         /// <param name="folderId">The id of the folder in which the document lies</param>
         /// <param name="content">The xaml + metadata content of the document</param>
-        public int AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
+        public int AddDocumentWithUserDocument(String name, int userId, String filepath, String content)
         {
-            String documentPath = fsh.GetDocumentPath(userId, folderId);
-            int documentId = dao.AddDocument(name, userId, documentPath);
-            fsh.WriteToFile(documentPath, name, content, documentId);
-            
-            AddUserDocument(userId, documentId, folderId);
+            String fullDirectoryPath = dao.GetFullDirectoryPath(userId, filepath);
+            String rootDirectoryPath = dao.GetRootDirectoryPath(userId, filepath);
+            CreateDirectoriesAndReturnLatestId(userId, fullDirectoryPath);
+            int documentId = dao.AddDocument(name, userId, rootDirectoryPath);
+            filepath = rootDirectoryPath + "\\" + name + ".txt";
+            fsh.WriteToFile(filepath, content, documentId);
+
+            AddUserDocument(userId, documentId, fullDirectoryPath);
             return documentId;
         }
 
@@ -86,9 +89,10 @@ namespace Server
             int endIndex = content.LastIndexOf("|");
             DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
             Document document = dao.GetDocumentById(documentId);
-            String filepath = document.path;
+            String directoryPath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
-            fsh.WriteToFile(filepath, filename, content, documentId);
+            String filepath = directoryPath + "\\" + filename;
+            fsh.WriteToFile(filepath, content, documentId);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
@@ -104,9 +108,10 @@ namespace Server
             int endIndex = content.LastIndexOf("|");
             DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
             Document document = dao.GetDocumentById(documentId);
-            String filepath = document.path;
+            String directoryPath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
-            fsh.WriteToFile(filepath, filename, content, documentId);
+            String filepath = directoryPath + "\\" + filename;
+            fsh.WriteToFile(filepath, content, documentId);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
         }
 
@@ -236,7 +241,7 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] latest)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] latest)
         {
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
@@ -246,7 +251,7 @@ namespace Server
                     (DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
                 {
                     AddDocumentRevision(editorId, documentId, content);
-                    dao.AlterUserDocument(editorId, documentId, folderId);
+                    dao.AlterUserDocument(editorId, documentId, filepath);
                     return null;
                 }
                 Documentrevision latestDocByUser = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
@@ -255,7 +260,7 @@ namespace Server
                     String[][] returnArray = new String[1][];
                     Documentrevision latestDocumentRevision = GetLatestDocumentRevisions(documentId)[0];
                     Document originalDocument = dao.GetDocumentById(documentId);
-                    String filepath = latestDocumentRevision.path + "\\" + originalDocument.name + ".txt";
+                    filepath = latestDocumentRevision.path + "\\" + originalDocument.name + ".txt";
                     //String latestContentWithoutMetadata = latestContent.Substring(latestContent.IndexOf("<"));
                     //returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocumentRevision);
                     returnArray[0][0] = GetLatestDocumentContent(documentId);
@@ -288,7 +293,7 @@ namespace Server
             //No document found with the given id.
             else
             {
-                AddDocumentWithUserDocument(title, editorId, folderId, content);
+                AddDocumentWithUserDocument(title, editorId, filepath, content);
                 return null;
             }
         }
@@ -310,9 +315,9 @@ namespace Server
         /// <param name="userId">The Id of the user</param>
         /// <param name="documentId">The id of the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
-        public void AddUserDocument(int userId, int documentId, int folderId)
+        public void AddUserDocument(int userId, int documentId, String filepath)
         {
-            dao.AddUserDocument(userId, documentId, folderId);
+            dao.AddUserDocument(userId, documentId, filepath);
         }
 
         public Userdocument GetUserdocument(int userId, int documentId)
@@ -369,6 +374,35 @@ namespace Server
         public int FolderExists(int parentFolderId, string name)
         {
             return dao.FolderExists(parentFolderId, name);
+        }
+
+        /// <summary>
+        /// Create the necessary directories to store a document.
+        /// The int returned is the id of the last folder.
+        /// folder1\folder2\folder3 would return the id of folder3.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="directoryPath"></param>
+        /// <returns></returns>
+        public int CreateDirectoriesAndReturnLatestId(int userId, String directoryPath)
+        {
+            User user = GetUserById(userId);
+            int parentFolderId = user.rootFolderId;
+            directoryPath = directoryPath.Substring(directoryPath.IndexOf(user.email)) + user.email.Length;
+            String[] folderNames = directoryPath.Split(new String[] { "\\" }, StringSplitOptions.None);
+            foreach (string s in folderNames)
+            {
+                int folderId = FolderExists(parentFolderId, s);
+                if (folderId != -1)
+                {
+                    parentFolderId = folderId;
+                }
+                else
+                {
+                    parentFolderId = AddFolder(s, parentFolderId);
+                }
+            }
+            return parentFolderId;
         }
     }
 }

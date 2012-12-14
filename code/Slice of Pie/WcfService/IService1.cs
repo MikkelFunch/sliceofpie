@@ -19,7 +19,7 @@ namespace WcfService
         int AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        int AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
+        int AddDocumentWithUserDocument(String name, int userId, String filepath, String content);
 
         [OperationContract]
         void AddDocumentRevision(int editorId, int documentId, String content);
@@ -64,13 +64,13 @@ namespace WcfService
         String GetLatestDocumentContent(int documentId);
 
         [OperationContract]
-        String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
+        String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] original);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);
 
         [OperationContract]
-        void AddUserDocument(int userId, int documentId, int folderId);
+        void AddUserDocument(int userId, int documentId, String filepath);
 
         [OperationContract]
         int FolderExists(int parentFolderId, String name);

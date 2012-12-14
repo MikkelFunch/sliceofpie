@@ -50,10 +50,11 @@ namespace Server
             return sb.ToString();
         }
 
-        public void WriteToFile(String directoryPath, String filename, String content, int documentId)
+        public void WriteToFile(String filepath, String content, int documentId)
         {
-            String filepath = directoryPath + "\\" + filename + ".txt";
-            if (!File.Exists(directoryPath))
+            int directoryLength = filepath.LastIndexOf("\\");
+            String directoryPath = filepath.Substring(0, directoryLength);
+            if (!File.Exists(filepath))
             {
                 CreateDirectory(directoryPath);
                 CreateFile(filepath);
@@ -62,7 +63,7 @@ namespace Server
             int endIndex = content.IndexOf("|");
             content = content.Remove(startIndex, endIndex - startIndex);
             content = content.Insert(startIndex, " " + documentId.ToString());
-            using (StreamWriter sw = new StreamWriter(File.OpenWrite(filepath)))
+            using (StreamWriter sw = new StreamWriter(filepath))
             {
                 sw.Write(content);
             }
