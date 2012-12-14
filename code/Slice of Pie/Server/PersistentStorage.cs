@@ -200,13 +200,13 @@ namespace Server
         }
 
         /// <summary>
-        /// Get all documents of a specific user
+        /// Get all userdocuments of a specific user
         /// </summary>
         /// <param name="userId">The id of the user</param>
-        /// <returns>All documents this user is subscribed to</returns>
-        public List<Document> GetAllDocumentsByUserId(int userId)
+        /// <returns>All userdocuments this user is subscribed to</returns>
+        public List<Userdocument> GetAllUserDocumentsByUserId(int userId)
         {
-            return dao.GetAllDocumentsByUserId(userId);
+            return dao.GetAllUserDocumentsByUserId(userId);
         }
 
         /// <summary>
@@ -246,9 +246,21 @@ namespace Server
                     (DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
                 {
                     AddDocumentRevision(editorId, documentId, content);
+                    dao.AlterUserDocument(editorId, documentId, folderId);
                     return null;
                 }
                 Documentrevision latestDocByUser = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
+                if (latestDocByUser == null)
+                { //User hasn't made any changes. No conflict
+                    String[][] returnArray = new String[1][];
+                    Documentrevision latestDocumentRevision = GetLatestDocumentRevisions(documentId)[0];
+                    Document originalDocument = dao.GetDocumentById(documentId);
+                    String filepath = latestDocumentRevision.path + "\\" + originalDocument.name + ".txt";
+                    //String latestContentWithoutMetadata = latestContent.Substring(latestContent.IndexOf("<"));
+                    //returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocumentRevision);
+                    returnArray[0][0] = GetLatestDocumentContent(documentId);
+                    return returnArray;
+                }
                 Document originalDoc = dao.GetDocumentById(latestDocByUser.documentId);
                 String latestDocContent = fsh.GetDocumentContent(latestDocByUser.path + "\\" + originalDoc.name + ".txt");
                 latestDocContent = latestDocContent.Substring(latestDocContent.IndexOf("<")); //Remove metadata
@@ -298,7 +310,7 @@ namespace Server
         /// <param name="userId">The Id of the user</param>
         /// <param name="documentId">The id of the document</param>
         /// <param name="folderId">The id of the folder in which the document is located</param>
-        private void AddUserDocument(int userId, int documentId, int folderId)
+        public void AddUserDocument(int userId, int documentId, int folderId)
         {
             dao.AddUserDocument(userId, documentId, folderId);
         }
@@ -328,15 +340,35 @@ namespace Server
             return dao.DocumentHasRevision(documentId);
         }
 
-        
-
-        
-
         public string GetDocumentContent(string filepath)
         {
             return fsh.GetDocumentContent(filepath);
         }
 
-        
+        public string GetLatestDocumentContent(int documentId)
+        {
+            List<Documentrevision> latestDocumentRevisions = GetLatestDocumentRevisions(documentId);
+            Document originalDocument = GetDocumentById(documentId);
+            String documentContent;
+            if (latestDocumentRevisions.Count > 0)
+            {
+                Documentrevision latestDocumentRevision = latestDocumentRevisions[0];
+                String creationTime = latestDocumentRevision.creationTime.ToString().Replace(":", ".");
+                String filepath = originalDocument.path + "\\" + originalDocument.name + "_revision_" + creationTime + ".txt";
+                documentContent = GetDocumentContent(filepath);
+            }
+            else
+            {
+                String creationTime = originalDocument.creationTime.ToString().Replace(":", ".");
+                String filepath = originalDocument.path + "\\" + originalDocument.name + ".txt";
+                documentContent = GetDocumentContent(filepath);
+            }
+            return documentContent;
+        }
+
+        public int FolderExists(int parentFolderId, string name)
+        {
+            return dao.FolderExists(parentFolderId, name);
+        }
     }
 }

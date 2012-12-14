@@ -55,16 +55,56 @@ namespace WcfService
         void DeleteDocument(int documentId);
 
         [OperationContract]
-        List<ServiceDocument> GetAllDocumentsByUserId(int userId);
+        List<ServiceUserdocument> GetAllUserDocumentsByUserId(int userId);
 
         [OperationContract]
         String GetDocumentContent(String directoryPath, String filename);
+
+        [OperationContract]
+        String GetLatestDocumentContent(int documentId);
 
         [OperationContract]
         String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);
+
+        [OperationContract]
+        void AddUserDocument(int userId, int documentId, int folderId);
+
+        [OperationContract]
+        int FolderExists(int parentFolderId, String name);
+    }
+
+    [DataContract]
+    public class ServiceUserdocument
+    {
+        [DataMember]
+        public int userId { get; set; }
+
+        [DataMember]
+        public int documentId { get; set; }
+
+        [DataMember]
+        public int folderId { get; set; }
+
+        public static explicit operator ServiceUserdocument(Server.Userdocument ud)
+        {
+            ServiceUserdocument doc = new ServiceUserdocument();
+            doc.userId = ud.userId;
+            doc.documentId = ud.documentId;
+            doc.folderId = ud.folderId;
+            return doc;
+        }
+
+        public static explicit operator Server.Userdocument(ServiceUserdocument ud)
+        {
+            Server.Userdocument doc = new Server.Userdocument();
+            doc.userId = ud.userId;
+            doc.documentId = ud.documentId;
+            doc.folderId = ud.folderId;
+            return doc;
+        }
     }
 
     [DataContract]

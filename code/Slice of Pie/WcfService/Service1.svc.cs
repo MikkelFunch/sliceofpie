@@ -158,20 +158,20 @@ namespace WcfService
         }
 
         /// <summary>
-        /// Get all documents of a specific user
+        /// Get all userdocuments of a specific user
         /// </summary>
         /// <param name="userId">The id of the user</param>
-        /// <returns>All documents this user is subscribed to</returns>
-        public List<ServiceDocument> GetAllDocumentsByUserId(int userId)
+        /// <returns>All userdocuments this user is subscribed to</returns>
+        public List<ServiceUserdocument> GetAllUserDocumentsByUserId(int userId)
         {
-            List<Server.Document> serverList = Server.Controller.GetInstance().GetAllDocumentsByUserId(userId);
-            List<ServiceDocument> returnList = null;
+            List<Server.Userdocument> serverList = Server.Controller.GetInstance().GetAllUserDocumentsByUserId(userId);
+            List<ServiceUserdocument> returnList = null;
             if (serverList != null)
             {
-                returnList = new List<ServiceDocument>();
+                returnList = new List<ServiceUserdocument>();
                 for (int i = 0; i < serverList.Count; i++)
                 {
-                    returnList.Add((ServiceDocument)serverList[i]);
+                    returnList.Add((ServiceUserdocument)serverList[i]);
                 }
             }
             return returnList;
@@ -186,6 +186,11 @@ namespace WcfService
         public String GetDocumentContent(String directoryPath, String filename)
         {
             return Server.Controller.GetInstance().GetDocumentContent(directoryPath, filename);
+        }
+
+        public String GetLatestDocumentContent(int documentId)
+        {
+            return Server.Controller.GetInstance().GetLatestDocumentContent(documentId);
         }
 
         /// <summary>
@@ -219,6 +224,22 @@ namespace WcfService
         public int GetDocumentId(int userId, String title)
         {
             return Server.Controller.GetInstance().GetDocumentId(userId, title);
+        }
+
+        /// <summary>
+        /// Subscribes a user to a document
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="folderId">The id of the folder</param>
+        public void AddUserDocument(int userId, int documentId, int folderId)
+        {
+            Server.Controller.GetInstance().AddUserDocument(userId, documentId, folderId);
+        }
+
+        public int FolderExists(int parentFolderId, String name)
+        {
+            return Server.Controller.GetInstance().FolderExists(parentFolderId, name);
         }
     }
 }

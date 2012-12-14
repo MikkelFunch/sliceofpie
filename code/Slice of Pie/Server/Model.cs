@@ -170,7 +170,7 @@ namespace Server
             Document originalDoc = PersistentStorage.GetInstance().GetDocumentById(documentRevision.documentId);
             DateTime timestamp = documentRevision.creationTime;
             String timestampString = timestamp.ToString().Replace(':', '.');
-            String content = PersistentStorage.GetInstance().GetDocumentContent(documentRevision.path + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
+            String content = PersistentStorage.GetInstance().GetDocumentContent(originalDoc.path + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
             content = content.Substring(content.IndexOf('<')); //Remove metadata
             FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
             TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);

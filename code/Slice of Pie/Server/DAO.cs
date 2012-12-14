@@ -430,20 +430,20 @@ namespace Server
         }
 
         /// <summary>
-        /// Get all documents of a specific user
+        /// Get all userdocuments of a specific user
         /// </summary>
         /// <param name="userId">The id of the user</param>
-        /// <returns>All documents this user is subscribed to</returns>
-        public List<Document> GetAllDocumentsByUserId(int userId)
+        /// <returns>All userdocuments this user is subscribed to</returns>
+        public List<Userdocument> GetAllUserDocumentsByUserId(int userId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                var docs = from ud in context.Userdocuments
-                           join d in context.Documents on ud.documentId equals d.id
-                           select d;
-                if (docs.Count<Document>() > 0)
+                var userdocs = from ud in context.Userdocuments
+                              where ud.userId == userId
+                              select ud;
+                if (userdocs.Count<Userdocument>() > 0)
                 {
-                    return docs.ToList();
+                    return userdocs.ToList();
                 }
                 else
                 {
@@ -516,7 +516,39 @@ namespace Server
                                        where dr.editorId == userId && dr.documentId == documentId
                                        orderby dr.creationTime descending
                                        select dr;
-                return documentRevision.ToList<Documentrevision>()[0];
+                if (documentRevision.Count<Documentrevision>() > 0)
+                {
+                    return documentRevision.ToList<Documentrevision>()[0];
+                }
+                return null;
+            }
+        }
+
+        public int FolderExists(int parentFolderId, string name)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var folder = from f in context.Folders
+                              where f.parentFolderId == parentFolderId && f.name == name
+                              select f;
+                if (folder.Count<Folder>() > 0)
+                {
+                    return folder.First<Folder>().id;
+                }
+                return -1;
+            }
+        }
+
+        public void AlterUserDocument(int userId, int documentId, int folderId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var userdocuments = from ud in context.Userdocuments
+                                   where ud.userId == userId && ud.documentId == documentId
+                                   select ud;
+                Userdocument userdocument = userdocuments.First<Userdocument>();
+                userdocument.folderId = folderId;
+                context.SaveChanges();
             }
         }
     }
