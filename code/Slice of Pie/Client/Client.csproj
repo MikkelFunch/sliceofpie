@@ -76,19 +76,24 @@
     <Compile Include="GUI\NewFolderDialog.xaml.cs">
       <DependentUpon>NewFolderDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IPersitence.cs" />
+    <Compile Include="GUI\ShareDocumentDialog.xaml.cs">
+      <DependentUpon>ShareDocumentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LocalPersistenceHandler.cs" />
+    <Compile Include="Metadata.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PersistentStorage.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="Service References\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Session.cs" />
     <Compile Include="TreeViewModel.cs" />
+    <Compile Include="WebPersistenceHandler.cs" />
     <Page Include="GUI\ImageURLDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\NewFolderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ShareDocumentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,6 +168,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference\Client.ServiceReference.ServiceUserdocument.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Service1.wsdl" />

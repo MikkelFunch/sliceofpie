@@ -292,6 +292,83 @@ namespace Client.ServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceUserdocument", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class ServiceUserdocument : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int documentIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int folderIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int userIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int documentId {
+            get {
+                return this.documentIdField;
+            }
+            set {
+                if ((this.documentIdField.Equals(value) != true)) {
+                    this.documentIdField = value;
+                    this.RaisePropertyChanged("documentId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int folderId {
+            get {
+                return this.folderIdField;
+            }
+            set {
+                if ((this.folderIdField.Equals(value) != true)) {
+                    this.folderIdField = value;
+                    this.RaisePropertyChanged("folderId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int userId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                if ((this.userIdField.Equals(value) != true)) {
+                    this.userIdField = value;
+                    this.RaisePropertyChanged("userId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService1")]
     public interface IService1 {
@@ -338,17 +415,26 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteDocument", ReplyAction="http://tempuri.org/IService1/DeleteDocumentResponse")]
         void DeleteDocument(int documentId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllDocumentsByUserId", ReplyAction="http://tempuri.org/IService1/GetAllDocumentsByUserIdResponse")]
-        Client.ServiceReference.ServiceDocument[] GetAllDocumentsByUserId(int userId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllUserDocumentsByUserId", ReplyAction="http://tempuri.org/IService1/GetAllUserDocumentsByUserIdResponse")]
+        Client.ServiceReference.ServiceUserdocument[] GetAllUserDocumentsByUserId(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentContent", ReplyAction="http://tempuri.org/IService1/GetDocumentContentResponse")]
         string GetDocumentContent(string directoryPath, string filename);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetLatestDocumentContent", ReplyAction="http://tempuri.org/IService1/GetLatestDocumentContentResponse")]
+        string GetLatestDocumentContent(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
         string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         int GetDocumentId(int userId, string title);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUserDocument", ReplyAction="http://tempuri.org/IService1/AddUserDocumentResponse")]
+        void AddUserDocument(int userId, int documentId, int folderId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/FolderExists", ReplyAction="http://tempuri.org/IService1/FolderExistsResponse")]
+        int FolderExists(int parentFolderId, string name);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -434,12 +520,16 @@ namespace Client.ServiceReference {
             base.Channel.DeleteDocument(documentId);
         }
         
-        public Client.ServiceReference.ServiceDocument[] GetAllDocumentsByUserId(int userId) {
-            return base.Channel.GetAllDocumentsByUserId(userId);
+        public Client.ServiceReference.ServiceUserdocument[] GetAllUserDocumentsByUserId(int userId) {
+            return base.Channel.GetAllUserDocumentsByUserId(userId);
         }
         
         public string GetDocumentContent(string directoryPath, string filename) {
             return base.Channel.GetDocumentContent(directoryPath, filename);
+        }
+        
+        public string GetLatestDocumentContent(int documentId) {
+            return base.Channel.GetLatestDocumentContent(documentId);
         }
         
         public string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
@@ -448,6 +538,14 @@ namespace Client.ServiceReference {
         
         public int GetDocumentId(int userId, string title) {
             return base.Channel.GetDocumentId(userId, title);
+        }
+        
+        public void AddUserDocument(int userId, int documentId, int folderId) {
+            base.Channel.AddUserDocument(userId, documentId, folderId);
+        }
+        
+        public int FolderExists(int parentFolderId, string name) {
+            return base.Channel.FolderExists(parentFolderId, name);
         }
     }
 }

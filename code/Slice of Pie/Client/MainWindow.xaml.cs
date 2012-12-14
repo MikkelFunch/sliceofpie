@@ -105,7 +105,7 @@ namespace Client
             logDialog.ShowDialog();
             if (logDialog.Online)
             {
-                BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png",UriKind.Relative));
+                BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png", UriKind.Relative));
                 OnlineImage.Source = bitmap;
                 ChangeActiveButtons(true);
 
@@ -117,7 +117,7 @@ namespace Client
 
         private void LogoutItem_Click(object sender, RoutedEventArgs e)
         {
-            controller.Logout();
+            controller.LogoutUser();
             BitmapImage bitmap = new BitmapImage(new Uri("Resources\\redndot.png", UriKind.Relative));
             OnlineImage.Source = bitmap;
             ChangeActiveButtons(false);
@@ -166,17 +166,19 @@ namespace Client
             String title = docDia.DocumentTitle;
             if (title != null && title.Length > 0)
             {
-                controller.CreateDocument(title);
+                controller.CreateNewDocumentFile(title);
             }
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)
         {
-            controller.SaveDocument(richTextBox.Document);
+            controller.SaveDocumentToFile(richTextBox.Document);
         }
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
+            //MOVE NETWORK CHECKS TO CONTROLLER!
+            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncDocument(richTextBox.Document);
@@ -190,6 +192,8 @@ namespace Client
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
             this.Cursor = Cursors.Wait;
+            //MOVE NETWORK CHECKS TO CONTROLLER!
+            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncAllDocuments();
@@ -219,7 +223,7 @@ namespace Client
             labelMerge.Visibility = Visibility.Visible;
             labelServer.Visibility = Visibility.Visible;
 
-            richTextBox.Document = InsertIntoRichtextbox(response[3],response[2]) ;
+            richTextBox.Document = InsertIntoRichtextbox(response[3], response[2]);
             richTextBoxMerged.Document = InsertIntoRichtextbox(response[0], response[1]);
 
             buttonSaveDocument.Click -= buttonSaveDocument_Click;
@@ -231,15 +235,15 @@ namespace Client
         private FlowDocument InsertIntoRichtextbox(String[] content, String[] lineChanges)
         {
             FlowDocument doc = new FlowDocument();
-            for(int i = 0; i < content.Length; i++)
+            for (int i = 0; i < content.Length; i++)
             {
                 Paragraph p = new Paragraph(new Run(content[i]));
                 switch (lineChanges[i])
                 {
-                    case "i": 
+                    case "i":
                         p.Background = new SolidColorBrush(Colors.Green);
                         break;
-                    case "d": 
+                    case "d":
                         p.Background = new SolidColorBrush(Colors.Red);
                         break;
                     default:
@@ -299,14 +303,27 @@ namespace Client
             controller.CreateFolder(folderName, path);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MoveFileItem_Click(object sender, RoutedEventArgs e)
         {
             if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
             {
                 MoveFileDialog movDia = new MoveFileDialog();
                 movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
                 movDia.ShowDialog();
+
+                if (movDia.ToPath != null && movDia.ToPath.Length > 0)
+                {
+                    controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
+                }
             }
+        }
+
+        private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
+        {
+            ShareDocumentDialog shareDia = new ShareDocumentDialog();
+            shareDia.ShowDialog();
+            string email = shareDia.Email;
+            controller.ShareDocument(email);
         }
     }
 }

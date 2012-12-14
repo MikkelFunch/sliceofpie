@@ -14,7 +14,7 @@ namespace Client
         private static TreeViewModel instance;
         public static TreeViewModel GetInstance()
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new TreeViewModel();
             }
@@ -28,8 +28,8 @@ namespace Client
             items.Clear();
             String folderPath = "";
             //Get path to the current users files
-            if (Model.UserID != -1)
-                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Model.Email;//Model.User.email;
+            if (Session.GetInstance().UserID != -1)
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Session.GetInstance().Email;//Model.User.email;
             else
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
             //Create a DirectoryInfo for that folder
@@ -107,7 +107,7 @@ namespace Client
                 //Create a treeviewitem to represent the file
                 TreeViewItem subItem = new TreeViewItem();
                 //Set the header to be the name of the file without .txt
-                subItem.Header = file.Name.Substring(0, (file.Name.Length-4));
+                subItem.Header = file.Name.Substring(0, (file.Name.Length - 4));
                 //Set tag to the full path to the folder
                 subItem.Tag = file.FullName;
                 subItem.MouseDoubleClick += new MouseButtonEventHandler(OpenDocment);
