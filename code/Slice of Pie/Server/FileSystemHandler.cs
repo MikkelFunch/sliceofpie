@@ -80,12 +80,7 @@ namespace Server
 
         public String GetDocumentContent(String directoryPath, String filename)
         {
-            String content = null;
-            using (StreamReader reader = new StreamReader(directoryPath + "\\" + filename + ".txt"))
-            {
-                content = reader.ReadToEnd();
-            }
-            return content;
+            return GetDocumentContent(directoryPath + "\\" + filename + ".txt");
         }
 
         public string GetDocumentContent(string filepath)

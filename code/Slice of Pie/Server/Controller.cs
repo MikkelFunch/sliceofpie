@@ -184,13 +184,13 @@ namespace Server
         }
 
         /// <summary>
-        /// Get all documents of a specific user
+        /// Get all userdocuments of a specific user
         /// </summary>
         /// <param name="userId">The id of the user</param>
-        /// <returns>All documents this user is subscribed to</returns>
-        public List<Document> GetAllDocumentsByUserId(int userId)
+        /// <returns>All userdocuments this user is subscribed to</returns>
+        public List<Userdocument> GetAllUserDocumentsByUserId(int userId)
         {
-            return PersistentStorage.GetInstance().GetAllDocumentsByUserId(userId);
+            return PersistentStorage.GetInstance().GetAllUserDocumentsByUserId(userId);
         }
 
         /// <summary>
@@ -234,6 +234,27 @@ namespace Server
         public int GetDocumentId(int userId, string title)
         {
             return PersistentStorage.GetInstance().GetDocumentId(userId, title);
-        }   
+        }
+
+        /// <summary>
+        /// Subscribes a user to a document
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// /// <param name="folderId">The id of the folder</param>
+        public void AddUserDocument(int userId, int documentId, int folderId)
+        {
+            PersistentStorage.GetInstance().AddUserDocument(userId, documentId, folderId);
+        }
+
+        public string GetLatestDocumentContent(int documentId)
+        {
+            return PersistentStorage.GetInstance().GetLatestDocumentContent(documentId);
+        }
+
+        public int FolderExists(int parentFolderId, string name)
+        {
+            return PersistentStorage.GetInstance().FolderExists(parentFolderId, name);
+        }
     }
 }
