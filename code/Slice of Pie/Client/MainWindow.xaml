@@ -31,7 +31,7 @@
 
             <!-- Top buttons definitions -->
             <StackPanel Orientation="Horizontal">
-                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" IsEnabled="False" />
+                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonNewFolder" IsEnabled="False" Click="buttonNewFolder_Click" />
                 <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False"/>
                 <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,0,2,0" Name="buttonDelete" IsEnabled="False"/>
             </StackPanel>
@@ -79,6 +79,7 @@
                 <MenuItem Header="_Login" Click="LoginItem_Click" Name="menuItemLogin"/>
                 <MenuItem Header="Register new _user" Click="RegisterItem_Click" />
                 <MenuItem Header="_New document" Click="NewDocumentItem_Click"/>
+                <MenuItem Header="_Move document" Click="MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit " />
             <MenuItem Header="_View " />

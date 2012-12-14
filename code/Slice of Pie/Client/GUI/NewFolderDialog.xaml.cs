@@ -14,32 +14,31 @@ using System.Windows.Shapes;
 namespace Client.GUI
 {
     /// <summary>
-    /// Interaction logic for NewDocumentDialog.xaml
+    /// Interaction logic for NewFolderDialog.xaml
     /// </summary>
-    public partial class NewDocumentDialog : Window
+    public partial class NewFolderDialog : Window
     {
-        public NewDocumentDialog()
+        public NewFolderDialog()
         {
             InitializeComponent();
         }
 
-        public String DocumentTitle
+        public String FolderTitle
         {
             get;
-            private set;
+            set;
         }
 
-        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        private void buttonCreate_Click(object sender, RoutedEventArgs e)
         {
-            //if anything in
-            if (textBoxTitle.Text.Length > 0)
+            if (textboxTitle.Text.Length > 0)
             {
-                DocumentTitle = textBoxTitle.Text;
+                FolderTitle = textboxTitle.Text;
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Enter document name", "Creation error");
+                MessageBox.Show("Enter folder name", "Folder name error");
             }
         }
 
@@ -50,7 +49,7 @@ namespace Client.GUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            textBoxTitle.Focus();
+            textboxTitle.Focus();
         }
     }
 }

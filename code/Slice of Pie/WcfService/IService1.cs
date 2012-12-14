@@ -13,16 +13,19 @@ namespace WcfService
     public interface IService1
     {
         [OperationContract]
-        Boolean AddUser(String email, String password);
+        int AddUser(String email, String password);
 
         [OperationContract]
-        void AddFolder(String name, int parentFolderId);
+        int AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        void AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
+        int AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
 
         [OperationContract]
         void AddDocumentRevision(int editorId, int documentId, String content);
+
+        [OperationContract]
+        void SaveMergedDocument(int editorId, int documentId, String content);
 
         [OperationContract]
         int GetUserByEmailAndPass(String email, String pass);
@@ -41,9 +44,6 @@ namespace WcfService
 
         [OperationContract]
         ServiceDocument GetDocumentById(int documentId);
-
-        [OperationContract]
-        ServiceDocument GetDocumentByName(String name);
 
         [OperationContract]
         void DeleteFolder(int folderId);

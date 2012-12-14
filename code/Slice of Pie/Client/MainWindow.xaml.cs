@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Threading;
+using Client.GUI;
 
 namespace Client
 {
@@ -104,7 +105,7 @@ namespace Client
             logDialog.ShowDialog();
             if (logDialog.Online)
             {
-                BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png",UriKind.Relative));
+                BitmapImage bitmap = new BitmapImage(new Uri("Resources\\greendot.png", UriKind.Relative));
                 OnlineImage.Source = bitmap;
                 ChangeActiveButtons(true);
 
@@ -116,7 +117,7 @@ namespace Client
 
         private void LogoutItem_Click(object sender, RoutedEventArgs e)
         {
-            controller.Logout();
+            controller.LogoutUser();
             BitmapImage bitmap = new BitmapImage(new Uri("Resources\\redndot.png", UriKind.Relative));
             OnlineImage.Source = bitmap;
             ChangeActiveButtons(false);
@@ -165,17 +166,19 @@ namespace Client
             String title = docDia.DocumentTitle;
             if (title != null && title.Length > 0)
             {
-                controller.CreateDocument(title);
+                controller.CreateNewDocumentFile(title);
             }
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)
         {
-            controller.SaveDocument(richTextBox.Document);
+            controller.SaveDocumentToFile(richTextBox.Document);
         }
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
+            //MOVE NETWORK CHECKS TO CONTROLLER!
+            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncDocument(richTextBox.Document);
@@ -189,6 +192,8 @@ namespace Client
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
             this.Cursor = Cursors.Wait;
+            //MOVE NETWORK CHECKS TO CONTROLLER!
+            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
                 controller.SyncAllDocuments();
@@ -213,36 +218,99 @@ namespace Client
             richTextBoxMerged.Visibility = Visibility.Visible;
             Grid.SetRow(richTextBox, 1);
             Grid.SetRow(richTextBoxMerged, 1);
+            richTextBox.IsReadOnly = true;
 
             labelMerge.Visibility = Visibility.Visible;
             labelServer.Visibility = Visibility.Visible;
 
-            richTextBox.Document = InsertIntoRichtextbox(null,response[2]) ;
+            richTextBox.Document = InsertIntoRichtextbox(response[3], response[2]);
             richTextBoxMerged.Document = InsertIntoRichtextbox(response[0], response[1]);
+
+            buttonSaveDocument.Click -= buttonSaveDocument_Click;
+            buttonSaveDocument.Click += new RoutedEventHandler(buttonSaveMergedDocument_Click);
+            buttonSaveDocument.Content = "Save merged";
         }
 
 
         private FlowDocument InsertIntoRichtextbox(String[] content, String[] lineChanges)
         {
             FlowDocument doc = new FlowDocument();
-            for(int i = 0; i < content.Length; i++)
+            for (int i = 0; i < content.Length; i++)
             {
                 Paragraph p = new Paragraph(new Run(content[i]));
                 switch (lineChanges[i])
                 {
-                    case "i": 
-                        Background = new SolidColorBrush(Colors.Green);
+                    case "i":
+                        p.Background = new SolidColorBrush(Colors.Green);
                         break;
-                    case "d": 
-                        Background = new SolidColorBrush(Colors.Red);
+                    case "d":
+                        p.Background = new SolidColorBrush(Colors.Red);
                         break;
                     default:
-                        Background = new SolidColorBrush(Colors.White);
+                        p.Background = new SolidColorBrush(Colors.White);
                         break;
                 }
                 doc.Blocks.Add(p);
             }
+            doc.Blocks.Add(new Paragraph(new Run("")));
             return doc;
+        }
+
+        private void buttonSaveMergedDocument_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange textRange = new TextRange(richTextBoxMerged.Document.ContentStart, richTextBoxMerged.Document.ContentEnd);
+            String[] pureContent = textRange.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            FlowDocument mergedDocument = new FlowDocument();
+            foreach (String s in pureContent)
+            {
+                Paragraph p = new Paragraph(new Run(s));
+                mergedDocument.Blocks.Add(p);
+            }
+
+            controller.SaveMergedDocument(mergedDocument);
+            richTextBox.Document = mergedDocument;
+
+            richTextBox.Width = double.NaN;
+            richTextBoxMerged.Visibility = Visibility.Hidden;
+            Grid.SetRow(richTextBox, 0);
+            Grid.SetRow(richTextBoxMerged, 0);
+            richTextBox.IsReadOnly = false;
+
+            labelMerge.Visibility = Visibility.Hidden;
+            labelServer.Visibility = Visibility.Hidden;
+
+            buttonSaveDocument.Click -= buttonSaveMergedDocument_Click;
+            buttonSaveDocument.Click += new RoutedEventHandler(buttonSaveDocument_Click);
+            buttonSaveDocument.Content = "Save document";
+        }
+
+        private void buttonNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+            NewFolderDialog newDia = new NewFolderDialog();
+            newDia.ShowDialog();
+            String folderName = newDia.FolderTitle;
+
+            String path = null;
+
+            if (ExplorerTree.SelectedItem != null)
+            {
+                if (!((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+                {
+                    path = ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString();
+                }
+            }
+
+            controller.CreateFolder(folderName, path);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+            {
+                MoveFileDialog movDia = new MoveFileDialog();
+                movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
+                movDia.ShowDialog();
+            }
         }
     }
 }

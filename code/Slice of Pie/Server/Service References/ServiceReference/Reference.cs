@@ -302,11 +302,14 @@ namespace Server.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddFolder", ReplyAction="http://tempuri.org/IService1/AddFolderResponse")]
         void AddFolder(string name, int parentFolderId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocument", ReplyAction="http://tempuri.org/IService1/AddDocumentResponse")]
-        void AddDocument(string name, int userId, int folderId, string content);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentWithUserDocument", ReplyAction="http://tempuri.org/IService1/AddDocumentWithUserDocumentResponse")]
+        void AddDocumentWithUserDocument(string name, int userId, int folderId, string content);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentRevision", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionResponse")]
         void AddDocumentRevision(int editorId, int documentId, string content);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SaveMergedDocument", ReplyAction="http://tempuri.org/IService1/SaveMergedDocumentResponse")]
+        void SaveMergedDocument(int editorId, int documentId, string content);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserByEmailAndPass", ReplyAction="http://tempuri.org/IService1/GetUserByEmailAndPassResponse")]
         int GetUserByEmailAndPass(string email, string pass);
@@ -346,6 +349,9 @@ namespace Server.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
         string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
+        int GetDocumentId(int userId, string title);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -383,12 +389,16 @@ namespace Server.ServiceReference {
             base.Channel.AddFolder(name, parentFolderId);
         }
         
-        public void AddDocument(string name, int userId, int folderId, string content) {
-            base.Channel.AddDocument(name, userId, folderId, content);
+        public void AddDocumentWithUserDocument(string name, int userId, int folderId, string content) {
+            base.Channel.AddDocumentWithUserDocument(name, userId, folderId, content);
         }
         
         public void AddDocumentRevision(int editorId, int documentId, string content) {
             base.Channel.AddDocumentRevision(editorId, documentId, content);
+        }
+        
+        public void SaveMergedDocument(int editorId, int documentId, string content) {
+            base.Channel.SaveMergedDocument(editorId, documentId, content);
         }
         
         public int GetUserByEmailAndPass(string email, string pass) {
@@ -441,6 +451,10 @@ namespace Server.ServiceReference {
         
         public string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
             return base.Channel.SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+        }
+        
+        public int GetDocumentId(int userId, string title) {
+            return base.Channel.GetDocumentId(userId, title);
         }
     }
 }

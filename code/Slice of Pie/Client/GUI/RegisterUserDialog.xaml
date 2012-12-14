@@ -1,4 +1,4 @@
-﻿<Window x:Class="Client.RegisterUserDialog"
+﻿<Window x:Class="Client.GUI.RegisterUserDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="RegisterUserDialog" Height="233" Width="206" ResizeMode="NoResize" Loaded="Window_Loaded">

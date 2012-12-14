@@ -1,4 +1,4 @@
-﻿<Window x:Class="Client.LoginDialog"
+﻿<Window x:Class="Client.GUI.LoginDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Login" Height="166" Width="188" Loaded="Window_Loaded" >

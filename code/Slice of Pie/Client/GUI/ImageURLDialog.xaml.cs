@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.GUI
 {
     /// <summary>
     /// Interaction logic for ImageURLDialog.xaml

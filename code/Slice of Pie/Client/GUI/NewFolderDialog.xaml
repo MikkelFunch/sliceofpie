@@ -1,0 +1,15 @@
+﻿<Window x:Class="Client.GUI.NewFolderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New folder" Height="132" Width="263" Loaded="Window_Loaded" >
+    <Grid>
+        <StackPanel HorizontalAlignment="Left">
+            <Label Content="Enter folder name:"/>
+            <TextBox Name="textboxTitle" Width="210" Margin="8,0,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Name="buttonCreate" Content="Create" Margin="8,0,4,0" Width="58" IsDefault="True" Click="buttonCreate_Click" />
+                <Button Name="buttonCancel" Content="Cancel" Margin="8,0,4,0" Width="58" Click="buttonCancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
