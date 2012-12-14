@@ -303,14 +303,27 @@ namespace Client
             controller.CreateFolder(folderName, path);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MoveFileItem_Click(object sender, RoutedEventArgs e)
         {
             if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
             {
                 MoveFileDialog movDia = new MoveFileDialog();
                 movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
                 movDia.ShowDialog();
+
+                if (movDia.ToPath != null && movDia.ToPath.Length > 0)
+                {
+                    controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
+                }
             }
+        }
+
+        private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
+        {
+            ShareDocumentDialog shareDia = new ShareDocumentDialog();
+            shareDia.ShowDialog();
+            string email = shareDia.Email;
+            controller.ShareDocument(email);
         }
     }
 }

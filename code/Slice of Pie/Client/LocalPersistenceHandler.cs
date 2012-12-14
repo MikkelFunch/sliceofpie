@@ -81,7 +81,7 @@ namespace Client
         public void SaveDocumentToFile(string content, string path)
         {
             //Create the file and write the content to it.
-            using (StreamWriter sw = new StreamWriter(File.OpenWrite(path))) //when no document has been chosen/opened, path is not set
+            using (StreamWriter sw = new StreamWriter(path, false)) //when no document has been chosen/opened, path is not set
             {
                 sw.Write(content.ToString());
             }
@@ -121,7 +121,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Get content from the given filepath
+        /// Get metadata + xamlcontent from the given filepath
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -137,6 +137,22 @@ namespace Client
             }
 
             return content;
+        }
+
+        public void ReplaceMetadataStringInFile(string filePath, string metadata)
+        {
+            string fileContent = GetFileContent(filePath);
+            fileContent = fileContent.Substring(fileContent.IndexOf("<"));
+            SaveDocumentToFile(metadata + fileContent, filePath);
+        }
+
+        public void MoveFileToFolder(string fromPath, string toPath)
+        {
+            File.Move(fromPath, toPath);
+            Object[] metadataArray = Metadata.RetrieveMetadataFromFile(toPath);
+            metadataArray[3] = 0;
+            String metadataString = Metadata.GetMetadataStringFromObjectArray(metadataArray);
+            ReplaceMetadataStringInFile(toPath, metadataString);
         }
     }
 }

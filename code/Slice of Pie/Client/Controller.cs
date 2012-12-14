@@ -178,6 +178,30 @@ namespace Client
             UpdateExplorerView();
         }
 
+        public void ShareDocument(string email)
+        {
+            if (email != null && email.Length > 0)
+            {
+                ServiceReference.ServiceUser shareUser = null;
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    shareUser = proxy.GetUserByEmail(email);
+                }
+                if (shareUser != null)
+                {
+                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                    {
+                        proxy.AddUserDocument(shareUser.id, session.CurrentDocumentID, shareUser.rootFolderId);
+                    }
+                    MessageBox.Show("Document shared with " + shareUser.email, "Share success");
+                }
+                else
+                {
+                    MessageBox.Show("User does not exist", "Email error");
+                }
+            }
+        }
+
         #endregion
 
         #region LocalPersistence
@@ -247,53 +271,40 @@ namespace Client
         {
             if (session.UserID != -1) //Check if user is logged in
             {
-                ServiceReference.ServiceDocument[] documents;
+                ServiceReference.ServiceUserdocument[] documents;
                 //Connect to webservice
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
                     //Retrieve all documents the users documents
-                    documents = proxy.GetAllDocumentsByUserId(session.UserID);
+                    documents = proxy.GetAllUserDocumentsByUserId(session.UserID);
                 }
                 if (documents != null) //check if any documents is found
                 {
                     //For each document found
-                    foreach (ServiceReference.ServiceDocument currentDoc in documents)
+                    foreach (ServiceReference.ServiceUserdocument currentDoc in documents)
                     {
-                        //Check if a corresponding file exists locally
-                        int indexStart = currentDoc.path.IndexOf("sliceofpie");
-                        String relativePath = currentDoc.path.Substring(indexStart);
-                        String fullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + relativePath;
-                        if (!File.Exists(fullPath)) //If the file does not exist
+                        String relativeDirPath = FetchRelativeFilePath(currentDoc);
+                        String dirPath = session.RootFolderPath + "\\" + relativeDirPath;
+                        ServiceReference.ServiceDocument documentReference = null;
+
+                        using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                         {
-                            String content;
-                            //Connect to webservice
-                            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                            {
-                                //Get the content of the file on the server
-                                content = proxy.GetDocumentContent(currentDoc.path, currentDoc.name);
-                            }
-                            //Create the directories needed?
-                            Directory.CreateDirectory(fullPath);
-                            //Create a document locally with the content
-                            localPersistence.SaveDocumentToFile(content, fullPath);
+                            //Get the original document from the server
+                            documentReference = proxy.GetDocumentById(currentDoc.documentId);
                         }
-                        else //a matching file exsist
+                        String filePath = dirPath + "\\" + documentReference.name + ".txt";
+
+                        String content;
+                        //Connect to webservæice
+                        using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                         {
-                            //currentDoc.creationTime;
-                            //get local corresponsing document
-
-
-
-                            //check if it is the same document id
-                            //if it is -> delete the other document, as it will not be in the database and the database is the overruler
-                            //check if it is same base
-                            //if it is -> check if online version is newer
-                            //// if it is -> user online version
-                            //// if it is not -> sync local version
-                            //if it is not -> single sync the document
-                            //Document already exits.
-                            //Make user single sync this document.
+                            //Get the content of the file on the server
+                            content = proxy.GetLatestDocumentContent(documentReference.id);
                         }
+                        //Create the directories needed?
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        //Create a document locally with the content
+                        localPersistence.SaveDocumentToFile(content, filePath);
                     }
                 }
                 else //No documents found by this userId
@@ -319,6 +330,38 @@ namespace Client
             }
 
             UpdateExplorerView();
+        }
+
+        private string FetchRelativeFilePath(ServiceReference.ServiceUserdocument doc)
+        {
+            StringBuilder sb = new StringBuilder();
+            ServiceReference.ServiceFolder folder = null;
+
+            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+            {
+                folder = proxy.GetFolder(doc.folderId);
+            }
+
+            while (folder != null || folder.parentFolderId != null)
+            {
+                if (folder.parentFolderId == null)
+                {
+                    break;
+                }
+                else
+                {
+                    sb.Insert(0, "\\" + folder.name);
+                }
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    folder = proxy.GetFolder((int)folder.parentFolderId);
+                }
+            }
+
+            String userEmail = session.Email;
+            sb.Insert(0, "");
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -353,9 +396,44 @@ namespace Client
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
             int folderID = (int)metadata[3];
 
+            String metadataString = null;
+
+            if (folderID == 0)
+            {
+                string filePath = session.CurrentDocumentPath;
+                int indexStart = session.RootFolderPath.Length;
+                int indexEnd = filePath.LastIndexOf("\\");
+                string relativeDirPath = filePath.Substring(indexStart,indexEnd - indexStart);
+                
+                String[] folderNames = relativeDirPath.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                int parentFolderId = session.RootFolderID;
+
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    foreach (string s in folderNames)
+                    {
+                        int folderId = proxy.FolderExists(parentFolderId, s);
+                        if (folderId != -1)
+                        {
+                            parentFolderId = folderId;
+                        }
+                        else
+                        {
+                            parentFolderId = proxy.AddFolder(s, parentFolderId);
+                        }
+                    }
+                    folderID = parentFolderId;
+                }
+                metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, baseDocumentCreationTime, parentFolderId);
+                localPersistence.ReplaceMetadataStringInFile(filePath, metadataString);
+            }
+
             StringBuilder sb = new StringBuilder();
-            String newMetadata = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow, folderID);
-            sb.Append(newMetadata);
+            if (metadataString == null)
+            {
+                metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow, folderID);
+            }
+            sb.Append(metadataString);
             sb.AppendLine();
             //generate xaml for the document
             String xaml = System.Windows.Markup.XamlWriter.Save(document);
@@ -383,7 +461,12 @@ namespace Client
                     }
                 }
                 //save document with new metadata - basedocument
-                localPersistence.SaveDocumentToFile(document, Metadata.ReplaceDocumentIDInMetadata(newMetadata, documentID));
+                localPersistence.SaveDocumentToFile(document, Metadata.ReplaceDocumentIDInMetadata(metadataString, documentID));
+                session.CurrentDocumentID = documentID;
+            }
+            else if (responseArrays.Length == 1)
+            {
+                localPersistence.SaveDocumentToFile(responseArrays[0][0], session.CurrentDocumentPath);
             }
             else //if there is a conflict
             {
@@ -407,8 +490,25 @@ namespace Client
             {
                 proxy.AddDocumentRevision(session.UserID, documentid, content);
             }
+            localPersistence.SaveDocumentToFile(content, session.CurrentDocumentPath);
         }
 
         #endregion
+
+        public void MoveFileToFolder(string fromPath, string toPath)
+        {
+            if (fromPath != null && fromPath.Length > 0 && toPath != null && toPath.Length > 0)
+            {
+                localPersistence.MoveFileToFolder(fromPath, toPath);
+
+                //In case you move the currently opened document
+                if (fromPath == session.CurrentDocumentPath)
+                {
+                    session.CurrentDocumentPath = toPath;
+                }
+
+                UpdateExplorerView();
+            }
+        }
     }
 }

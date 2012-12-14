@@ -51,12 +51,24 @@ namespace Client.GUI
             set;
         }
 
+        public String FromPath
+        {
+            get;
+            set;
+        }
+
+        public String ToPath
+        {
+            get;
+            set;
+        }
+
         private void buttonMove_Click(object sender, RoutedEventArgs e)
         {
             if (comboBoxFolders.SelectedItem != null)
             {
-                File.Move(SelectedItem.Tag.ToString(), Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt");
-                Controller.GetInstance().UpdateExplorerView();
+                FromPath = SelectedItem.Tag.ToString();
+                ToPath = Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt";
 
                 this.Close();
             }
