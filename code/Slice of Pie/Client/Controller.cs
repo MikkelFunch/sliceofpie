@@ -146,10 +146,10 @@ namespace Client
                     session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + email;
                     Directory.CreateDirectory(session.RootFolderPath);
 
-                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                    /*using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                     {
                         session.RootFolderID = proxy.GetRootFolderId(userid);
-                    }
+                    }*/
                 }
                 if (userid != -1)
                 {
@@ -191,7 +191,7 @@ namespace Client
                 {
                     using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                     {
-                        proxy.AddUserDocument(shareUser.id, session.CurrentDocumentID, shareUser.rootFolderId);
+                        proxy.AddUserDocument(shareUser.id, session.CurrentDocumentID, session.CurrentDocumentPath);
                     }
                     MessageBox.Show("Document shared with " + shareUser.email, "Share success");
                 }
@@ -367,21 +367,21 @@ namespace Client
         /// <summary>
         /// Add file to server
         /// </summary>
-        /// <param name="file">Path to the file which should be added to the server</param>
-        private void AddDocumentToServer(String file)
+        /// <param name="filePath">Path to the file which should be added to the server</param>
+        private void AddDocumentToServer(String filePath)
         {
             //load file content
-            String content = localPersistence.GetFileContent(file);
+            String content = localPersistence.GetFileContent(filePath);
             //get file metadata
-            Object[] metadata = Metadata.RetrieveMetadataFromFile(file);
+            //Object[] metadata = Metadata.RetrieveMetadataFromFile(file);
             //fetch filename
-            String fileName = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") - 1));
+            String fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1, (filePath.IndexOf(".txt") - filePath.LastIndexOf("\\") - 1));
 
             //Connect to webservice
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 //add document online
-                proxy.AddDocumentWithUserDocument(fileName, session.UserID, (int)metadata[3], content);
+                proxy.AddDocumentWithUserDocument(fileName, session.UserID, filePath, content);
             }
         }
 
@@ -394,45 +394,10 @@ namespace Client
             object[] metadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
             int documentID = (int)metadata[0];
             DateTime baseDocumentCreationTime = (DateTime)metadata[2];
-            int folderID = (int)metadata[3];
-
-            String metadataString = null;
-
-            if (folderID == 0)
-            {
-                string filePath = session.CurrentDocumentPath;
-                int indexStart = session.RootFolderPath.Length;
-                int indexEnd = filePath.LastIndexOf("\\");
-                string relativeDirPath = filePath.Substring(indexStart,indexEnd - indexStart);
-                
-                String[] folderNames = relativeDirPath.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
-                int parentFolderId = session.RootFolderID;
-
-                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                {
-                    foreach (string s in folderNames)
-                    {
-                        int folderId = proxy.FolderExists(parentFolderId, s);
-                        if (folderId != -1)
-                        {
-                            parentFolderId = folderId;
-                        }
-                        else
-                        {
-                            parentFolderId = proxy.AddFolder(s, parentFolderId);
-                        }
-                    }
-                    folderID = parentFolderId;
-                }
-                metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, baseDocumentCreationTime, parentFolderId);
-                localPersistence.ReplaceMetadataStringInFile(filePath, metadataString);
-            }
+            //int folderID = (int)metadata[3];
 
             StringBuilder sb = new StringBuilder();
-            if (metadataString == null)
-            {
-                metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow, folderID);
-            }
+            string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow);//, folderID);
             sb.Append(metadataString);
             sb.AppendLine();
             //generate xaml for the document
@@ -447,7 +412,7 @@ namespace Client
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 //push the current document
-                responseArrays = proxy.SyncDocument(session.UserID, documentID, folderID, baseDocumentCreationTime, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, baseDocumentCreationTime, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
             }
 
             if (responseArrays == null) //if there is no conflict
@@ -480,9 +445,9 @@ namespace Client
             int documentid = (int)oldMetadata[0];
             int userid = session.UserID;
             DateTime timestamp = DateTime.UtcNow;
-            int folderid = (int)oldMetadata[3];
+            //int folderid = (int)oldMetadata[3];
 
-            String metadata = Metadata.GenerateMetadataString(documentid, userid, timestamp, folderid);
+            String metadata = Metadata.GenerateMetadataString(documentid, userid, timestamp);//, folderid);
             String xamlContent = System.Windows.Markup.XamlWriter.Save(document);
             String content = metadata + xamlContent;
 

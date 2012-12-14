@@ -39,7 +39,7 @@
           <xs:sequence>
             <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="userId" type="xs:int" />
-            <xs:element minOccurs="0" name="folderId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
@@ -249,7 +249,7 @@
           <xs:sequence>
             <xs:element minOccurs="0" name="editorId" type="xs:int" />
             <xs:element minOccurs="0" name="documentId" type="xs:int" />
-            <xs:element minOccurs="0" name="folderId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="baseDocCreationTime" type="xs:dateTime" />
             <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
@@ -284,7 +284,7 @@
           <xs:sequence>
             <xs:element minOccurs="0" name="userId" type="xs:int" />
             <xs:element minOccurs="0" name="documentId" type="xs:int" />
-            <xs:element minOccurs="0" name="folderId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>

@@ -150,7 +150,7 @@ namespace Client
         {
             File.Move(fromPath, toPath);
             Object[] metadataArray = Metadata.RetrieveMetadataFromFile(toPath);
-            metadataArray[3] = 0;
+            //metadataArray[3] = 0;
             String metadataString = Metadata.GetMetadataStringFromObjectArray(metadataArray);
             ReplaceMetadataStringInFile(toPath, metadataString);
         }

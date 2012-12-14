@@ -380,7 +380,7 @@ namespace Client.ServiceReference {
         int AddFolder(string name, int parentFolderId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentWithUserDocument", ReplyAction="http://tempuri.org/IService1/AddDocumentWithUserDocumentResponse")]
-        int AddDocumentWithUserDocument(string name, int userId, int folderId, string content);
+        int AddDocumentWithUserDocument(string name, int userId, string filepath, string content);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentRevision", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionResponse")]
         void AddDocumentRevision(int editorId, int documentId, string content);
@@ -425,13 +425,13 @@ namespace Client.ServiceReference {
         string GetLatestDocumentContent(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original);
+        string[][] SyncDocument(int editorId, int documentId, string filepath, System.DateTime baseDocCreationTime, string content, string title, string[] original);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         int GetDocumentId(int userId, string title);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUserDocument", ReplyAction="http://tempuri.org/IService1/AddUserDocumentResponse")]
-        void AddUserDocument(int userId, int documentId, int folderId);
+        void AddUserDocument(int userId, int documentId, string filepath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/FolderExists", ReplyAction="http://tempuri.org/IService1/FolderExistsResponse")]
         int FolderExists(int parentFolderId, string name);
@@ -472,8 +472,8 @@ namespace Client.ServiceReference {
             return base.Channel.AddFolder(name, parentFolderId);
         }
         
-        public int AddDocumentWithUserDocument(string name, int userId, int folderId, string content) {
-            return base.Channel.AddDocumentWithUserDocument(name, userId, folderId, content);
+        public int AddDocumentWithUserDocument(string name, int userId, string filepath, string content) {
+            return base.Channel.AddDocumentWithUserDocument(name, userId, filepath, content);
         }
         
         public void AddDocumentRevision(int editorId, int documentId, string content) {
@@ -532,16 +532,16 @@ namespace Client.ServiceReference {
             return base.Channel.GetLatestDocumentContent(documentId);
         }
         
-        public string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
-            return base.Channel.SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+        public string[][] SyncDocument(int editorId, int documentId, string filepath, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
+            return base.Channel.SyncDocument(editorId, documentId, filepath, baseDocCreationTime, content, title, original);
         }
         
         public int GetDocumentId(int userId, string title) {
             return base.Channel.GetDocumentId(userId, title);
         }
         
-        public void AddUserDocument(int userId, int documentId, int folderId) {
-            base.Channel.AddUserDocument(userId, documentId, folderId);
+        public void AddUserDocument(int userId, int documentId, string filepath) {
+            base.Channel.AddUserDocument(userId, documentId, filepath);
         }
         
         public int FolderExists(int parentFolderId, string name) {

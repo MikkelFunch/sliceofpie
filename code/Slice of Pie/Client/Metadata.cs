@@ -43,9 +43,9 @@ namespace Client
                 int documentID = int.Parse(metadata[0].Substring(7));
                 int userID = int.Parse(metadata[1].Substring(7));
                 DateTime baseDocumentCreationTime = DateTime.Parse(metadata[2].Substring(10));
-                int folderID = int.Parse(metadata[3].Substring(4));
+                //int folderID = int.Parse(metadata[3].Substring(4));
 
-                return new object[] { documentID, userID, baseDocumentCreationTime, folderID };
+                return new object[] { documentID, userID, baseDocumentCreationTime };
             }
             else
             { //throw en exception, file corrupted
@@ -65,18 +65,7 @@ namespace Client
         /// <returns></returns>
         public static String GetMetadataStringFromObjectArray(Object[] metadata)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("[");
-            sb.Append("docid " + (int)metadata[0]);
-            sb.Append("|");
-            sb.Append("userid " + (int)metadata[1]);
-            sb.Append("|");
-            sb.Append("timestamp " + (DateTime)metadata[2]);
-            sb.Append("|");
-            sb.Append("fid " + (int)metadata[3]);
-            sb.Append("]");
-
-            return sb.ToString();
+            return GenerateMetadataString((int)metadata[0], (int)metadata[1], (DateTime)metadata[2]);//, (int)metadata[3]);
         }
 
         /// <summary>
@@ -91,18 +80,7 @@ namespace Client
         /// <returns>Returns a metadata string for a completely new document in a format ready to be placed into a file</returns>
         public static String GenerateMetadataStringForNewFile()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("[");
-            sb.Append("docid 0");
-            sb.Append("|");
-            sb.Append("userid " + Session.GetInstance().UserID);
-            sb.Append("|");
-            sb.Append("timestamp " + DateTime.UtcNow);
-            sb.Append("|");
-            sb.Append("fid " + Session.GetInstance().RootFolderID);
-            sb.Append("]");
-
-            return sb.ToString();
+            return GenerateMetadataString(0, Session.GetInstance().UserID, DateTime.UtcNow);//, -1);
         }
 
         /*public static String GenerateNewMetadata(int docid, int userid, int folderid)
@@ -129,7 +107,7 @@ namespace Client
         /// <param name="timestamp">Timestamp which will be inserted</param>
         /// <param name="folderid">Folder id which will be inserted</param>
         /// <returns>Returns a metadata string containing the given data</returns>
-        public static String GenerateMetadataString(int docid, int userid, DateTime timestamp, int folderid)
+        public static String GenerateMetadataString(int docid, int userid, DateTime timestamp)//, int folderid)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
@@ -138,8 +116,8 @@ namespace Client
             sb.Append("userid " + userid);
             sb.Append("|");
             sb.Append("timestamp " + timestamp);
-            sb.Append("|");
-            sb.Append("fid " + folderid);
+            //sb.Append("|");
+            //sb.Append("fid " + folderid);
             sb.Append("]");
 
             return sb.ToString();
