@@ -209,9 +209,8 @@ namespace Server
         /// </summary>
         /// <param name="editorId">The id of the user who's submitting his work</param>
         /// <param name="documentId">The id of the document</param>
-        /// <param name="folderId">The folder in which the document lies</param>
-        /// <param name="baseDocCreationTime">The creationTime of the document, this document is based on</param>
-        /// <param name="content">The xaml content of the new document</param>
+        /// <param name="filepath">The path to where the file lies on the client</param>
+        /// <param name="latestUserFileContent">The xaml content of the user latest document</param>
         /// <param name="title">The title of the document</param>
         /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
         /// <returns>Null if there's no mergeconflict.
@@ -220,9 +219,41 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String[] latest)
         {
-            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
+            PersistentStorage ps = PersistentStorage.GetInstance();
+            //Document found with the given id
+            if (GetDocumentById(documentId) != null)
+            {
+                bool hasRevisions = ps.DocumentHasRevision(documentId);
+
+                if (!hasRevisions)
+                {
+                    //No conflict
+                    return ps.SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
+                }
+
+                Documentrevision latestUserDocumentRevision = ps.GetLatestDocumentRevisionByUserId(editorId, documentId);
+                Documentrevision latestServerDocumentRevision = ps.GetLatestDocumentRevisions(documentId)[0];
+                String latestUserDocumentContent = ps.GetDocumentRevisionContent(latestUserDocumentRevision);
+                String latestServerDocumentContent = ps.GetDocumentRevisionContent(latestServerDocumentRevision);
+                if (latestUserDocumentContent == latestServerDocumentContent)
+                {
+                    //No conflict
+                    return ps.SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
+                }
+                else
+                {
+                    //Conflict
+                    return Model.GetInstance().SyncConflict(documentId, latest);
+                }
+            }
+            //No document found with the given id.
+            else
+            {
+                AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
+                return null;
+            }
         }
 
         /// <summary>
