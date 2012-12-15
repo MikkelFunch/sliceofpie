@@ -163,10 +163,10 @@ namespace Server
         /// </summary>
         /// <param name="userId">The id of the user</param>
         /// <param name="documentId">The id of the document</param>
-        /// <param name="folderId">the id of the folder</param>
-        public void AddUserDocument(int userId, int documentId, String filepath)
+        /// <param name="directoryPath">The path of the directory in which the document lies</param>
+        public void AddUserDocument(int userId, int documentId, String directoryPath)
         {
-            int folderId = GetFolderIdByFilePath(userId, filepath);
+            int folderId = GetFolderIdByDirectoryPath(userId, directoryPath);
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 Userdocument userDocument = new Userdocument();
@@ -542,7 +542,7 @@ namespace Server
 
         public void AlterUserDocument(int userId, int documentId, String filepath)
         {
-            int folderId = GetFolderIdByFilePath(userId, filepath);
+            int folderId = GetFolderIdByDirectoryPath(userId, filepath);
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var userdocuments = from ud in context.Userdocuments
@@ -554,13 +554,13 @@ namespace Server
             }
         }
 
-        private int GetFolderIdByFilePath(int userId, String filepath)
+        private int GetFolderIdByDirectoryPath(int userId, String directoryPath)
         {
-            filepath += "\\";
+            directoryPath += "\\";
             User user = GetUserById(userId);
-            int indexStart = filepath.IndexOf(user.email) + user.email.Length;
-            int indexEnd = filepath.LastIndexOf("\\");
-            String relativeDirPath = filepath.Substring(indexStart, indexEnd - indexStart);
+            int indexStart = directoryPath.IndexOf(user.email) + user.email.Length;
+            int indexEnd = directoryPath.LastIndexOf("\\");
+            String relativeDirPath = directoryPath.Substring(indexStart, indexEnd - indexStart);
             String[] folderNames = relativeDirPath.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
             int parentFolderId = user.rootFolderId;
 
@@ -594,6 +594,20 @@ namespace Server
             User user = GetUserById(userId);
             String directoryPath = "D:\\SliceOfPieDocuments\\sliceofpie\\" + user.email;
             return directoryPath;
+        }
+
+        public void AddUserDocumentInRoot(int userId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                User user = GetUserById(userId);
+                Userdocument userdocument = new Userdocument();
+                userdocument.documentId = documentId;
+                userdocument.folderId = user.rootFolderId;
+                userdocument.userId = userId;
+                context.Userdocuments.AddObject(userdocument);
+                context.SaveChanges();
+            }
         }
     }
 }

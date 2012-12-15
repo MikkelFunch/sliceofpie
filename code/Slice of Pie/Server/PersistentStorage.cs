@@ -86,11 +86,11 @@ namespace Server
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
             int startIndex = content.IndexOf("timestamp") + 10;
-            int endIndex = content.LastIndexOf("|");
+            int endIndex = content.LastIndexOf("]");
             DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
             Document document = dao.GetDocumentById(documentId);
             String directoryPath = document.path;
-            String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.');
+            String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.') + ".txt";
             String filepath = directoryPath + "\\" + filename;
             fsh.WriteToFile(filepath, content, documentId);
             dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
@@ -250,6 +250,8 @@ namespace Server
                 if (!DocumentHasRevision(documentId) ||
                     (DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
                 {
+                    int indexEnd = filepath.LastIndexOf("\\");
+                    filepath = filepath.Substring(0, indexEnd);
                     AddDocumentRevision(editorId, documentId, content);
                     dao.AlterUserDocument(editorId, documentId, filepath);
                     return null;
@@ -263,11 +265,11 @@ namespace Server
                     filepath = latestDocumentRevision.path + "\\" + originalDocument.name + ".txt";
                     //String latestContentWithoutMetadata = latestContent.Substring(latestContent.IndexOf("<"));
                     //returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocumentRevision);
-                    returnArray[0][0] = GetLatestDocumentContent(documentId);
+                    returnArray[0] = new string[] { GetLatestDocumentContent(documentId) };
                     return returnArray;
                 }
                 Document originalDoc = dao.GetDocumentById(latestDocByUser.documentId);
-                String latestDocContent = fsh.GetDocumentContent(latestDocByUser.path + "\\" + originalDoc.name + ".txt");
+                String latestDocContent = fsh.GetDocumentContent(latestDocByUser.path);// + "\\" + originalDoc.name + ".txt");
                 latestDocContent = latestDocContent.Substring(latestDocContent.IndexOf("<")); //Remove metadata
                 String contentWithoutMetadata = content.Substring(content.IndexOf("<")); //Remove metadata
                 //No conflict
@@ -388,8 +390,8 @@ namespace Server
         {
             User user = GetUserById(userId);
             int parentFolderId = user.rootFolderId;
-            directoryPath = directoryPath.Substring(directoryPath.IndexOf(user.email)) + user.email.Length;
-            String[] folderNames = directoryPath.Split(new String[] { "\\" }, StringSplitOptions.None);
+            directoryPath = directoryPath.Substring(directoryPath.IndexOf(user.email) + user.email.Length);
+            String[] folderNames = directoryPath.Split(new String[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in folderNames)
             {
                 int folderId = FolderExists(parentFolderId, s);
@@ -403,6 +405,11 @@ namespace Server
                 }
             }
             return parentFolderId;
+        }
+
+        public void AddUserDocumentInRoot(int userId, int documentId)
+        {
+            dao.AddUserDocumentInRoot(userId, documentId);
         }
     }
 }
