@@ -609,5 +609,21 @@ namespace Server
                 context.SaveChanges();
             }
         }
+
+        public Documentrevision GetUsersLatestDocumentRevision(int userId, int documentId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentrevisions = from dr in context.Documentrevisions
+                                                     where dr.editorId == userId && dr.documentId == documentId
+                                                     orderby dr.creationTime descending
+                                                     select dr;
+                if (documentrevisions.Count<Documentrevision>() > 0)
+                {
+                    return documentrevisions.ToList<Documentrevision>()[0];
+                }
+                return null;
+            }
+        }
     }
 }

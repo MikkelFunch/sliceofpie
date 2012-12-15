@@ -64,7 +64,7 @@ namespace WcfService
         String GetLatestDocumentContent(int documentId);
 
         [OperationContract]
-        String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] original);
+        String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);

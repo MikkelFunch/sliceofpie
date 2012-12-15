@@ -241,51 +241,26 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String latestUserFileContent, String title, String[] latest)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String[] latest)
         {
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
             {
-                //If a users local content is equal to his latest revision, there's no conflict
-
-
-                //No conflict
-                if (!DocumentHasRevision(documentId) ||
-                    (latestUserFileContent) == GetLatestDocumentContent(documentId))
-                    //(DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
-                {
+                bool hasRevisions = DocumentHasRevision(documentId);
+                Documentrevision latestUserDocumentRevision = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
+                Documentrevision latestServerDocumentRevision = dao.GetLatestDocumentRevisions(documentId)[0];
+                String latestUserDocumentContent = GetDocumentRevisionContent(latestUserDocumentRevision);
+                String latestServerDocumentContent = GetDocumentRevisionContent(latestServerDocumentRevision);
+                if(!hasRevisions || (latestUserDocumentContent == latestServerDocumentContent))
+                { //No conflict
                     int indexEnd = filepath.LastIndexOf("\\");
                     filepath = filepath.Substring(0, indexEnd);
                     AddDocumentRevision(editorId, documentId, latestUserFileContent);
                     dao.AlterUserDocument(editorId, documentId, filepath);
                     return null;
                 }
-                Documentrevision latestDocByUser = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
-                if (latestDocByUser != null && latestDocByUser.creationTime == baseDocCreationTime)
-                { //User hasn't made any changes. No conflict
-                    String[][] returnArray = new String[1][];
-                    Documentrevision latestDocumentRevision = GetLatestDocumentRevisions(documentId)[0];
-                    Document originalDocument = dao.GetDocumentById(documentId);
-                    filepath = latestDocumentRevision.path + "\\" + originalDocument.name + ".txt";
-                    //String latestContentWithoutMetadata = latestContent.Substring(latestContent.IndexOf("<"));
-                    //returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocumentRevision);
-                    returnArray[0] = new string[] { GetLatestDocumentContent(documentId) };
-                    return returnArray;
-                }
-                Document originalDoc = dao.GetDocumentById(latestDocByUser.documentId);
-                String latestDocContent = fsh.GetDocumentContent(latestDocByUser.path);// + "\\" + originalDoc.name + ".txt");
-                latestDocContent = latestDocContent.Substring(latestDocContent.IndexOf("<")); //Remove metadata
-                String contentWithoutMetadata = latestUserFileContent.Substring(latestUserFileContent.IndexOf("<")); //Remove metadata
-                //No conflict
-                if (latestDocContent == contentWithoutMetadata)
-                {
-                    String[][] returnArray = new String[1][];
-                    returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocByUser);
-                    return returnArray;
-                }
-                //Conflict
                 else
-                {
+                { //Conflict
                     String[][] returnArray = new String[4][];
                     String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
                     String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
@@ -414,6 +389,14 @@ namespace Server
         public void AddUserDocumentInRoot(int userId, int documentId)
         {
             dao.AddUserDocumentInRoot(userId, documentId);
+        }
+
+        public String GetDocumentRevisionContent(Documentrevision documentRevision)
+        {
+            Document originalDocument = GetDocumentById(documentRevision.documentId);
+            String creationTime = documentRevision.creationTime.ToString().Replace(":", ".");
+            String filepath = originalDocument.path + "\\" + originalDocument.name + "_revision_" + creationTime + ".txt";
+            return fsh.GetDocumentContent(filepath);
         }
     }
 }
