@@ -191,7 +191,7 @@ namespace Client
                 {
                     using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                     {
-                        proxy.AddUserDocument(shareUser.id, session.CurrentDocumentID, session.CurrentDocumentPath);
+                        proxy.AddUserDocumentInRoot(shareUser.id, session.CurrentDocumentID);
                     }
                     MessageBox.Show("Document shared with " + shareUser.email, "Share success");
                 }

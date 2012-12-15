@@ -308,6 +308,19 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="AddUserDocumentInRoot">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="userId" type="xs:int" />
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddUserDocumentInRootResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType" />
@@ -534,6 +547,12 @@
   <wsdl:message name="IService1_FolderExists_OutputMessage">
     <wsdl:part name="parameters" element="tns:FolderExistsResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocumentInRoot_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocumentInRoot" />
+  </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocumentInRoot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocumentInRootResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="AddUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUser" message="tns:IService1_AddUser_InputMessage" />
@@ -618,6 +637,10 @@
     <wsdl:operation name="FolderExists">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/FolderExists" message="tns:IService1_FolderExists_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/FolderExistsResponse" message="tns:IService1_FolderExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocumentInRoot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUserDocumentInRoot" message="tns:IService1_AddUserDocumentInRoot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddUserDocumentInRootResponse" message="tns:IService1_AddUserDocumentInRoot_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -804,6 +827,15 @@
     </wsdl:operation>
     <wsdl:operation name="FolderExists">
       <soap:operation soapAction="http://tempuri.org/IService1/FolderExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocumentInRoot">
+      <soap:operation soapAction="http://tempuri.org/IService1/AddUserDocumentInRoot" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
