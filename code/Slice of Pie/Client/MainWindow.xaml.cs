@@ -35,21 +35,27 @@ namespace Client
         {
             string url = null;
 
-            ImageURLDialog imDialog = new ImageURLDialog();
-            imDialog.ShowDialog();
+            ImageURLDialog imgDia = new ImageURLDialog();
+            imgDia.ShowDialog();
 
             //get inserted url
-            url = imDialog.URLString;
+            url = imgDia.URLString;
 
             //check if it is a valid url
             if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
             {
-                TextRange tr = new TextRange(
-                richTextBox.Selection.Start,
-                richTextBox.Selection.End);
+                //Create bitmapimage refrenceing the online link to download it
+                BitmapImage bitmap = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
+                //bitmap.DownloadCompleted += controller.GetDownloadCompleteEventHandler();
+                bitmap.DownloadCompleted += new EventHandler(controller.ImageDownloadComplete);
 
+                TextRange tr = new TextRange(richTextBox.Selection.Start,richTextBox.Selection.End);
                 tr.Text = "";
-                Run run = new Run("[" + url + "]");
+
+                int indexStart = url.LastIndexOf('/') + 1;
+                String fileName = url.Substring(indexStart);
+
+                Run run = new Run("[IMAGE:" + fileName + "]");
                 Hyperlink hlink = new Hyperlink(run, tr.Start);
                 hlink.NavigateUri = new Uri(url);
             }
@@ -96,8 +102,6 @@ namespace Client
                 richTextBox.Document.Blocks.Add(p);
             }*/
         }
-
-
 
         private void LoginItem_Click(object sender, RoutedEventArgs e)
         {
@@ -163,11 +167,7 @@ namespace Client
             NewDocumentDialog docDia = new NewDocumentDialog();
             docDia.ShowDialog();
 
-            String title = docDia.DocumentTitle;
-            if (title != null && title.Length > 0)
-            {
-                controller.CreateNewDocumentFile(title);
-            }
+            controller.CreateNewDocumentFile(docDia.DocumentTitle);
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)
@@ -177,38 +177,18 @@ namespace Client
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
-            //MOVE NETWORK CHECKS TO CONTROLLER!
-            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
-            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                controller.SyncDocument(richTextBox.Document);
-            }
-            else
-            {
-                //some error
-            }
+            controller.SyncDocument(richTextBox.Document);
         }
 
         private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
-            this.Cursor = Cursors.Wait;
-            //MOVE NETWORK CHECKS TO CONTROLLER!
-            //MAKE SURE THERE IS NO NEED FOR MORE NETWORK CHECKS - ALL METHOTDS REQUIREING NETWORK MUST START WITH IT
-            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                controller.SyncAllDocuments();
-            }
-            else
-            {
-                //no network
-            }
-            this.Cursor = Cursors.Arrow;
+            controller.SyncAllDocuments();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="response">0:server document, 1:merged document, 2:string[] with 3 arrays?</param>
+        /// <param name="response">0:new document, 1:insertions, 2:deletions, 3:old server document</param>
         public void SetupMergeView(String[][] response)
         {
             double centerGridWidth = (this.Width / 9) * 7;
@@ -309,11 +289,7 @@ namespace Client
                 MoveFileDialog movDia = new MoveFileDialog();
                 movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
                 movDia.ShowDialog();
-
-                if (movDia.ToPath != null && movDia.ToPath.Length > 0)
-                {
-                    controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
-                }
+                controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
             }
         }
 
@@ -321,8 +297,7 @@ namespace Client
         {
             ShareDocumentDialog shareDia = new ShareDocumentDialog();
             shareDia.ShowDialog();
-            string email = shareDia.Email;
-            controller.ShareDocument(email);
+            controller.ShareDocument(shareDia.Email);
         }
     }
 }

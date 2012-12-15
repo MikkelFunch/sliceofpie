@@ -104,7 +104,7 @@
             <!-- Buttons to the right side -->
             
             <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" IsEnabled="False"/>
-            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click" IsEnabled="False">
+            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click" IsEnabled="True">
                 <Image Source="Resources/img_icon.gif" />
             </Button>
             <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click" IsEnabled="True"/>
