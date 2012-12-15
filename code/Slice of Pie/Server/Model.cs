@@ -179,5 +179,26 @@ namespace Server
 
 
         }
+
+        /// <summary>
+        /// Syncs a document with the server, when there's a conflict
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
+        /// <returns>Array[0] = the merged document
+        /// Array[1] = insertions, same length as Array[0]
+        /// Array[2] = deletions, same length as Array[3]
+        /// Array[3] = the original document (server version)</returns>
+        public String[][] SyncConflict(int documentId, String[] latest)
+        {
+            String[][] returnArray = new String[4][];
+            String[] original = GetContentAsStringArray(documentId);
+            String[][] mergedLines = MergeDocuments(original, latest);
+            returnArray[0] = mergedLines[0];
+            returnArray[1] = mergedLines[1];
+            returnArray[2] = mergedLines[2];
+            returnArray[3] = original;
+            return returnArray;
+        }
     }
 }
