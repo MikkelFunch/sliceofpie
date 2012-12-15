@@ -43,12 +43,6 @@ namespace Client
             set;
         }
 
-        /*public int RootFolderID
-        {
-            get;
-            set;
-        }*/
-
         public string RootFolderPath
         {
             get;

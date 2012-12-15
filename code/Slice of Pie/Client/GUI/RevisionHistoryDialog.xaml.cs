@@ -23,7 +23,7 @@ namespace Client.GUI
             InitializeComponent();
         }
 
-        public ItemCollection Revisions
+        public String[][] Revisions
         {
             get;
             set;

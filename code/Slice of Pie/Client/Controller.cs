@@ -523,7 +523,7 @@ namespace Client
         /// [x][1]editor name
         /// [x][2]filecontent with metadata
         /// </returns>
-        public string[][] GetRevisionsWithContent(int documentId)
+        public string[][] GetAllDocumentRevisionsWithContent(int documentId)
         {
             string[][] returnArray;
             if (documentId != null && documentId > 0)
@@ -531,7 +531,7 @@ namespace Client
                 ServiceReference.ServiceDocument[] revisions = null;
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
-                    revisions = proxy.getla
+                    revisions = proxy.GetAllDocumentRevisionsByDocumentId(documentId);
                 }
 
                 //remove duplicates
@@ -541,15 +541,21 @@ namespace Client
                 
                 using(ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
-                    foreach (ServiceReference.ServiceDocument doc in revisions)
-	                {
+                    for(int i = 0; i < revisions.Length; i++)
+                    {
+                        ServiceReference.ServiceDocument doc = revisions[i];
+
                         string[] item = new string[3];
                         item[0] = doc.creationTime.ToString();
                         item[1] = proxy.GetUserById(doc.creatorId).email;
-                        item[2] = proxy.
+                        item[2] = proxy.GetDocumentContent(doc.path);
+                        
+                        returnArray[i] = item;
 	                }
                 }
             }
+
+            return returnArray;
         }
     }
 }

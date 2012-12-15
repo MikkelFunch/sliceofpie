@@ -214,7 +214,7 @@ namespace WcfService
             String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
             return stringArray;
         }
-        
+
         /// <summary>
         /// Get the id of a document
         /// </summary>
@@ -245,6 +245,16 @@ namespace WcfService
         public void AddUserDocumentInRoot(int userId, int documentId)
         {
             Server.Controller.GetInstance().AddUserDocumentInRoot(userId, documentId);
+        }
+
+        public List<ServiceDocumentrevision> GetAllDocumentRevisionsByDocumentId(int documentId)
+        {
+            List<ServiceDocumentrevision> list = new List<ServiceDocumentrevision>();
+            foreach (Server.Documentrevision doc in Server.Controller.GetInstance().GetAllDocumentRevisionsByDocumentId(documentId))
+            {
+                list.Add((ServiceDocumentrevision)doc);
+            }
+            return list;
         }
     }
 }

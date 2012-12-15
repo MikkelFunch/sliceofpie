@@ -261,8 +261,10 @@ namespace Client
         private void buttonHistory_Click(object sender, RoutedEventArgs e)
         {
             RevisionHistoryDialog revDia = new RevisionHistoryDialog();
-            
-            revDia.Revisions = controller.GetDocumentRevisions(documentid);
+
+            revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
+            revDia.DocumentName = Session.GetInstance().CurrentDocumentTitle;
+            revDia.EditorName = "";
             revDia.ShowDialog();
         }
     }

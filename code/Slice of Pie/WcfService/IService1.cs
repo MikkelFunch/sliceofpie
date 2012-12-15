@@ -77,6 +77,9 @@ namespace WcfService
 
         [OperationContract]
         void AddUserDocumentInRoot(int userId, int documentId);
+
+        [OperationContract]
+        List<ServiceDocumentrevision> GetAllDocumentRevisionsByDocumentId(int documentId);
     }
 
     [DataContract]

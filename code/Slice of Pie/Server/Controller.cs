@@ -292,5 +292,10 @@ namespace Server
         {
             PersistentStorage.GetInstance().AddUserDocumentInRoot(userId, documentId);
         }
+
+        public List<Documentrevision> GetAllDocumentRevisionsByDocumentId(int documentId)
+        {
+            return PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId);
+        }
     }
 }
