@@ -292,18 +292,204 @@ namespace Server.ServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceUserdocument", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class ServiceUserdocument : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int documentIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int folderIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int userIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int documentId {
+            get {
+                return this.documentIdField;
+            }
+            set {
+                if ((this.documentIdField.Equals(value) != true)) {
+                    this.documentIdField = value;
+                    this.RaisePropertyChanged("documentId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int folderId {
+            get {
+                return this.folderIdField;
+            }
+            set {
+                if ((this.folderIdField.Equals(value) != true)) {
+                    this.folderIdField = value;
+                    this.RaisePropertyChanged("folderId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int userId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                if ((this.userIdField.Equals(value) != true)) {
+                    this.userIdField = value;
+                    this.RaisePropertyChanged("userId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceDocumentrevision", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class ServiceDocumentrevision : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime creationTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int documentIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int editorIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int idField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string pathField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime creationTime {
+            get {
+                return this.creationTimeField;
+            }
+            set {
+                if ((this.creationTimeField.Equals(value) != true)) {
+                    this.creationTimeField = value;
+                    this.RaisePropertyChanged("creationTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int documentId {
+            get {
+                return this.documentIdField;
+            }
+            set {
+                if ((this.documentIdField.Equals(value) != true)) {
+                    this.documentIdField = value;
+                    this.RaisePropertyChanged("documentId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int editorId {
+            get {
+                return this.editorIdField;
+            }
+            set {
+                if ((this.editorIdField.Equals(value) != true)) {
+                    this.editorIdField = value;
+                    this.RaisePropertyChanged("editorId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int id {
+            get {
+                return this.idField;
+            }
+            set {
+                if ((this.idField.Equals(value) != true)) {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string path {
+            get {
+                return this.pathField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.pathField, value) != true)) {
+                    this.pathField = value;
+                    this.RaisePropertyChanged("path");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService1")]
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUser", ReplyAction="http://tempuri.org/IService1/AddUserResponse")]
-        bool AddUser(string email, string password);
+        int AddUser(string email, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddFolder", ReplyAction="http://tempuri.org/IService1/AddFolderResponse")]
-        void AddFolder(string name, int parentFolderId);
+        int AddFolder(string name, int parentFolderId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentWithUserDocument", ReplyAction="http://tempuri.org/IService1/AddDocumentWithUserDocumentResponse")]
-        void AddDocumentWithUserDocument(string name, int userId, int folderId, string content);
+        int AddDocumentWithUserDocument(string name, int userId, string filepath, string content);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentRevision", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionResponse")]
         void AddDocumentRevision(int editorId, int documentId, string content);
@@ -329,9 +515,6 @@ namespace Server.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentById", ReplyAction="http://tempuri.org/IService1/GetDocumentByIdResponse")]
         Server.ServiceReference.ServiceDocument GetDocumentById(int documentId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentByName", ReplyAction="http://tempuri.org/IService1/GetDocumentByNameResponse")]
-        Server.ServiceReference.ServiceDocument GetDocumentByName(string name);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteFolder", ReplyAction="http://tempuri.org/IService1/DeleteFolderResponse")]
         void DeleteFolder(int folderId);
         
@@ -341,17 +524,32 @@ namespace Server.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteDocument", ReplyAction="http://tempuri.org/IService1/DeleteDocumentResponse")]
         void DeleteDocument(int documentId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllDocumentsByUserId", ReplyAction="http://tempuri.org/IService1/GetAllDocumentsByUserIdResponse")]
-        Server.ServiceReference.ServiceDocument[] GetAllDocumentsByUserId(int userId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllUserDocumentsByUserId", ReplyAction="http://tempuri.org/IService1/GetAllUserDocumentsByUserIdResponse")]
+        Server.ServiceReference.ServiceUserdocument[] GetAllUserDocumentsByUserId(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentContent", ReplyAction="http://tempuri.org/IService1/GetDocumentContentResponse")]
         string GetDocumentContent(string directoryPath, string filename);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetLatestDocumentContent", ReplyAction="http://tempuri.org/IService1/GetLatestDocumentContentResponse")]
+        string GetLatestDocumentContent(int documentId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original);
+        string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string[] original);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         int GetDocumentId(int userId, string title);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUserDocument", ReplyAction="http://tempuri.org/IService1/AddUserDocumentResponse")]
+        void AddUserDocument(int userId, int documentId, string filepath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/FolderExists", ReplyAction="http://tempuri.org/IService1/FolderExistsResponse")]
+        int FolderExists(int parentFolderId, string name);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUserDocumentInRoot", ReplyAction="http://tempuri.org/IService1/AddUserDocumentInRootResponse")]
+        void AddUserDocumentInRoot(int userId, int documentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllDocumentRevisionsByDocumentId", ReplyAction="http://tempuri.org/IService1/GetAllDocumentRevisionsByDocumentIdResponse")]
+        Server.ServiceReference.ServiceDocumentrevision[] GetAllDocumentRevisionsByDocumentId(int documentId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -381,16 +579,16 @@ namespace Server.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public bool AddUser(string email, string password) {
+        public int AddUser(string email, string password) {
             return base.Channel.AddUser(email, password);
         }
         
-        public void AddFolder(string name, int parentFolderId) {
-            base.Channel.AddFolder(name, parentFolderId);
+        public int AddFolder(string name, int parentFolderId) {
+            return base.Channel.AddFolder(name, parentFolderId);
         }
         
-        public void AddDocumentWithUserDocument(string name, int userId, int folderId, string content) {
-            base.Channel.AddDocumentWithUserDocument(name, userId, folderId, content);
+        public int AddDocumentWithUserDocument(string name, int userId, string filepath, string content) {
+            return base.Channel.AddDocumentWithUserDocument(name, userId, filepath, content);
         }
         
         public void AddDocumentRevision(int editorId, int documentId, string content) {
@@ -425,10 +623,6 @@ namespace Server.ServiceReference {
             return base.Channel.GetDocumentById(documentId);
         }
         
-        public Server.ServiceReference.ServiceDocument GetDocumentByName(string name) {
-            return base.Channel.GetDocumentByName(name);
-        }
-        
         public void DeleteFolder(int folderId) {
             base.Channel.DeleteFolder(folderId);
         }
@@ -441,20 +635,40 @@ namespace Server.ServiceReference {
             base.Channel.DeleteDocument(documentId);
         }
         
-        public Server.ServiceReference.ServiceDocument[] GetAllDocumentsByUserId(int userId) {
-            return base.Channel.GetAllDocumentsByUserId(userId);
+        public Server.ServiceReference.ServiceUserdocument[] GetAllUserDocumentsByUserId(int userId) {
+            return base.Channel.GetAllUserDocumentsByUserId(userId);
         }
         
         public string GetDocumentContent(string directoryPath, string filename) {
             return base.Channel.GetDocumentContent(directoryPath, filename);
         }
         
-        public string[][] SyncDocument(int editorId, int documentId, int folderId, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
-            return base.Channel.SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+        public string GetLatestDocumentContent(int documentId) {
+            return base.Channel.GetLatestDocumentContent(documentId);
+        }
+        
+        public string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string[] original) {
+            return base.Channel.SyncDocument(editorId, documentId, filepath, content, title, original);
         }
         
         public int GetDocumentId(int userId, string title) {
             return base.Channel.GetDocumentId(userId, title);
+        }
+        
+        public void AddUserDocument(int userId, int documentId, string filepath) {
+            base.Channel.AddUserDocument(userId, documentId, filepath);
+        }
+        
+        public int FolderExists(int parentFolderId, string name) {
+            return base.Channel.FolderExists(parentFolderId, name);
+        }
+        
+        public void AddUserDocumentInRoot(int userId, int documentId) {
+            base.Channel.AddUserDocumentInRoot(userId, documentId);
+        }
+        
+        public Server.ServiceReference.ServiceDocumentrevision[] GetAllDocumentRevisionsByDocumentId(int documentId) {
+            return base.Channel.GetAllDocumentRevisionsByDocumentId(documentId);
         }
     }
 }

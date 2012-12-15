@@ -157,14 +157,19 @@ namespace WcfService
     [DataContract]
     public class ServiceDocumentrevision
     {
+        [DataMember]
         public int id { get; set; }
 
+        [DataMember]
         public int documentId { get; set; }
 
+        [DataMember]
         public DateTime creationTime { get; set; }
 
+        [DataMember]
         public String path { get; set; }
 
+        [DataMember]
         public int editorId { get; set; }
 
         public static explicit operator ServiceDocumentrevision(Server.Documentrevision dr)
