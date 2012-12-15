@@ -525,10 +525,10 @@ namespace Client
         /// </returns>
         public string[][] GetAllDocumentRevisionsWithContent(int documentId)
         {
-            string[][] returnArray;
-            if (documentId != null && documentId > 0)
+            string[][] returnArray = null;
+            if (documentId > 0)
             {
-                ServiceReference.ServiceDocument[] revisions = null;
+                ServiceReference.ServiceDocumentrevision[] revisions = null;
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
                     revisions = proxy.GetAllDocumentRevisionsByDocumentId(documentId);
@@ -543,12 +543,17 @@ namespace Client
                 {
                     for(int i = 0; i < revisions.Length; i++)
                     {
-                        ServiceReference.ServiceDocument doc = revisions[i];
+                        ServiceReference.ServiceDocumentrevision doc = revisions[i];
+                        ServiceReference.ServiceDocument originalDocument = proxy.GetDocumentById(doc.documentId);
+
+                        String creationTime = doc.creationTime.ToString().Replace(":", ".");
+                        String filename = originalDocument.name + "_revision_" + creationTime + ".txt";
+                        String content = proxy.GetDocumentContent(doc.path, filename);
 
                         string[] item = new string[3];
                         item[0] = doc.creationTime.ToString();
-                        item[1] = proxy.GetUserById(doc.creatorId).email;
-                        item[2] = proxy.GetDocumentContent(doc.path);
+                        item[1] = proxy.GetUserById(doc.editorId).email;
+                        item[2] = Metadata.RemoveMetadataFromFileContent(content);
                         
                         returnArray[i] = item;
 	                }

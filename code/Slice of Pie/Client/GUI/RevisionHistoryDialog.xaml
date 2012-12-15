@@ -17,6 +17,7 @@
         
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
             <Label Name="labelEditor" Content="Editor: " Grid.Column="1" Grid.Row="0"/>
+            <Label Name="labelCurrentTimeStamp" Content="Current time: " Grid.Column="1" Grid.Row="1"/>
         </StackPanel>
         
         <RichTextBox Name="richTextBoxCurrentRevision" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="1" />

@@ -137,5 +137,10 @@ namespace Client
             metadata = metadata.Insert(startIndex, " " + documentid.ToString());
             return metadata;
         }
+
+        public static String RemoveMetadataFromFileContent(string fileContent)
+        {
+            return fileContent.Substring(fileContent.IndexOf(']'));
+        }
     }
 }
