@@ -430,10 +430,6 @@ namespace Client
                 localPersistence.SaveDocumentToFile(document, Metadata.ReplaceDocumentIDInMetadata(metadataString, documentID));
                 session.CurrentDocumentID = documentID;
             }
-            else if (responseArrays.Length == 1)
-            {
-                localPersistence.SaveDocumentToFile(responseArrays[0][0], session.CurrentDocumentPath);
-            }
             else //if there is a conflict
             {
                 gui.SetupMergeView(responseArrays);

@@ -425,7 +425,7 @@ namespace Client.ServiceReference {
         string GetLatestDocumentContent(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        string[][] SyncDocument(int editorId, int documentId, string filepath, System.DateTime baseDocCreationTime, string content, string title, string[] original);
+        string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string[] original);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         int GetDocumentId(int userId, string title);
@@ -535,8 +535,8 @@ namespace Client.ServiceReference {
             return base.Channel.GetLatestDocumentContent(documentId);
         }
         
-        public string[][] SyncDocument(int editorId, int documentId, string filepath, System.DateTime baseDocCreationTime, string content, string title, string[] original) {
-            return base.Channel.SyncDocument(editorId, documentId, filepath, baseDocCreationTime, content, title, original);
+        public string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string[] original) {
+            return base.Channel.SyncDocument(editorId, documentId, filepath, content, title, original);
         }
         
         public int GetDocumentId(int userId, string title) {
