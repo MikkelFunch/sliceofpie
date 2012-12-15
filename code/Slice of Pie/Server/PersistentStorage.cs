@@ -232,7 +232,7 @@ namespace Server
         /// <param name="documentId">The id of the document</param>
         /// <param name="folderId">The folder in which the document lies</param>
         /// <param name="baseDocCreationTime">The creationTime of the document, this document is based on</param>
-        /// <param name="content">The xaml content of the new document</param>
+        /// <param name="latestUserFileContent">The xaml content of the new document</param>
         /// <param name="title">The title of the document</param>
         /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
         /// <returns>Null if there's no mergeconflict.
@@ -241,18 +241,22 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] latest)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String latestUserFileContent, String title, String[] latest)
         {
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
             {
+                //If a users local content is equal to his latest revision, there's no conflict
+
+
                 //No conflict
                 if (!DocumentHasRevision(documentId) ||
-                    (DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
+                    (latestUserFileContent) == GetLatestDocumentContent(documentId))
+                    //(DocumentHasRevision(documentId) && GetLatestDocumentRevisions(documentId)[0].creationTime == baseDocCreationTime))
                 {
                     int indexEnd = filepath.LastIndexOf("\\");
                     filepath = filepath.Substring(0, indexEnd);
-                    AddDocumentRevision(editorId, documentId, content);
+                    AddDocumentRevision(editorId, documentId, latestUserFileContent);
                     dao.AlterUserDocument(editorId, documentId, filepath);
                     return null;
                 }
@@ -271,7 +275,7 @@ namespace Server
                 Document originalDoc = dao.GetDocumentById(latestDocByUser.documentId);
                 String latestDocContent = fsh.GetDocumentContent(latestDocByUser.path);// + "\\" + originalDoc.name + ".txt");
                 latestDocContent = latestDocContent.Substring(latestDocContent.IndexOf("<")); //Remove metadata
-                String contentWithoutMetadata = content.Substring(content.IndexOf("<")); //Remove metadata
+                String contentWithoutMetadata = latestUserFileContent.Substring(latestUserFileContent.IndexOf("<")); //Remove metadata
                 //No conflict
                 if (latestDocContent == contentWithoutMetadata)
                 {
@@ -295,7 +299,7 @@ namespace Server
             //No document found with the given id.
             else
             {
-                AddDocumentWithUserDocument(title, editorId, filepath, content);
+                AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
                 return null;
             }
         }
