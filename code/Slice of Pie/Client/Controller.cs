@@ -413,7 +413,7 @@ namespace Client
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 //push the current document
-                responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, baseDocumentCreationTime, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
             }
 
             if (responseArrays == null) //if there is no conflict
