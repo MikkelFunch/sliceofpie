@@ -76,6 +76,9 @@
     <Compile Include="GUI\NewFolderDialog.xaml.cs">
       <DependentUpon>NewFolderDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\RevisionHistoryDialog.xaml.cs">
+      <DependentUpon>RevisionHistoryDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ShareDocumentDialog.xaml.cs">
       <DependentUpon>ShareDocumentDialog.xaml</DependentUpon>
     </Compile>
@@ -111,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\NewFolderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\RevisionHistoryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

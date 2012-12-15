@@ -25,26 +25,23 @@
                 <RowDefinition Height="30" />
                 <RowDefinition Height="3*" />
                 <RowDefinition Height="30" />
-                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <!-- Explorer grid components -->
 
             <!-- Top buttons definitions -->
             <StackPanel Orientation="Horizontal">
+                <Button Content="New Document" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewDocument" IsEnabled="True" Click="buttonNewDocument_Click" Height="24"/>
                 <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewFolder" IsEnabled="False" Click="buttonNewFolder_Click" Height="24" />
-                <Button Content="Sync all" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False" Height="24"/>
                 <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24"/>
             </StackPanel>
                 
             <!-- Bottom buttons -->
-            <Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,0,0,0" Name="button2" Grid.Row="2"/>
+            <Button Content="Sync all" HorizontalAlignment="Left" Margin="2,2,2,2" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False" Height="24" Grid.Column="0" Grid.Row="2"/>
+
 
             <!-- Explorer treeview -->
             <TreeView Grid.Row="1" HorizontalAlignment="Stretch" Name="ExplorerTree" VerticalAlignment="Stretch" AllowDrop="True" Loaded="ExplorerTree_Loaded" /> <!--MouseMove="ExplorerTree_MouseMove" DragOver="ExplorerTree_DragOver" Drop="ExplorerTree_Drop" > -->
-
-            <!-- Online treeview -->
-            <TreeView Grid.Row="3" HorizontalAlignment="Stretch" Name="OnlineTree" VerticalAlignment="Stretch" />
-
+            
             <!-- Explorer grid components end -->
         </Grid>
         <!-- Explorer grid end -->
@@ -53,8 +50,8 @@
         <!-- Center grid -->
         <Grid Name="gridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
             <Grid.RowDefinitions>
-                <RowDefinition Height="27*" />
-                <RowDefinition Height="384*" />
+                <RowDefinition Height="27" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <!-- Center grid definitions-->
             <Grid.ColumnDefinitions>
@@ -78,8 +75,6 @@
             <MenuItem Header="_File ">
                 <MenuItem Header="_Login" Name="menuItemLogin" Click="LoginItem_Click" />
                 <MenuItem Header="Register new _user" Click="RegisterItem_Click" />
-                <MenuItem Header="_New document" Click="NewDocumentItem_Click"/>
-                <MenuItem Header="_Move document" Click="MoveFileItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Edit " />
             <MenuItem Header="_View " />
@@ -97,19 +92,21 @@
                     <Label Content="Online: " />
                     <Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4" />
                 </TextBlock>
-                <Button Content="Button" HorizontalAlignment="Left" Margin="4,2,0,2" Name="button1" VerticalAlignment="Stretch" />
-                <Label Content="Current document:" Height="28" Name="labelOpenDocument" Margin="120,0,0,0"/>
             </StackPanel>
-            
+            <Label Content="Current document:" Height="28" Name="labelOpenDocument" Margin="225,0,0,0" />
+
+
             <!-- Buttons to the right side -->
-            
-            <Button Content="History" HorizontalAlignment="Right" Margin="0,2,4,2" Name="buttonHistory" VerticalAlignment="Stretch" IsEnabled="False"/>
-            <Button HorizontalAlignment="Right" Margin="0,2,54,2" Name="buttonImage" VerticalAlignment="Stretch" Click="buttonImage_Click" IsEnabled="True">
-                <Image Source="Resources/img_icon.gif" />
-            </Button>
-            <Button Content="Save document" HorizontalAlignment="Right" Name="buttonSaveDocument" Margin="0,2,90,2" Click="buttonSaveDocument_Click" IsEnabled="True"/>
-            <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" Margin="0,2,190,2" HorizontalAlignment="Right" IsEnabled="False"/>
-            <Button Content="Share document" Height="24" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,2,235,2" Click="buttonShareDocument_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Move Document" Name="buttonMoveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonMoveDocument_Click" IsEnabled="True"/>
+                <Button Content="Share document" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonShareDocument_Click" IsEnabled="False" />
+                <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" HorizontalAlignment="Right" Margin="0,0,0,0"  IsEnabled="False"/>
+                <Button Content="Save document" Name="buttonSaveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonSaveDocument_Click" IsEnabled="True"/>
+                <Button Name="buttonImage" HorizontalAlignment="Right" Margin="0,0,0,0"  Click="buttonImage_Click" IsEnabled="True">
+                    <Image Source="Resources/img_icon.gif" />
+                </Button>
+                <Button Content="History" Name="buttonHistory" HorizontalAlignment="Right" Margin="0,0,0,0" IsEnabled="False" Click="buttonHistory_Click" />
+            </StackPanel>
         </Grid>
             <!-- Button menu end -->
 

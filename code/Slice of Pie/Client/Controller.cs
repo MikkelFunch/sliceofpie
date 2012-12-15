@@ -512,5 +512,44 @@ namespace Client
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns>
+        /// [x]a new revision
+        /// [x][0]timestamp
+        /// [x][1]editor name
+        /// [x][2]filecontent with metadata
+        /// </returns>
+        public string[][] GetRevisionsWithContent(int documentId)
+        {
+            string[][] returnArray;
+            if (documentId != null && documentId > 0)
+            {
+                ServiceReference.ServiceDocument[] revisions = null;
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    revisions = proxy.getla
+                }
+
+                //remove duplicates
+                //here
+
+                returnArray = new string[revisions.Length][];
+                
+                using(ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    foreach (ServiceReference.ServiceDocument doc in revisions)
+	                {
+                        string[] item = new string[3];
+                        item[0] = doc.creationTime.ToString();
+                        item[1] = proxy.GetUserById(doc.creatorId).email;
+                        item[2] = proxy.
+	                }
+                }
+            }
+        }
     }
 }
