@@ -398,7 +398,7 @@ namespace Client
             //int folderID = (int)metadata[3];
 
             StringBuilder sb = new StringBuilder();
-            string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, baseDocumentCreationTime);//, folderID);
+            string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow);//, folderID);
             sb.Append(metadataString);
             sb.AppendLine();
             //generate xaml for the document
