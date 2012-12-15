@@ -43,7 +43,6 @@ namespace Client
                 int documentID = int.Parse(metadata[0].Substring(7));
                 int userID = int.Parse(metadata[1].Substring(7));
                 DateTime baseDocumentCreationTime = DateTime.Parse(metadata[2].Substring(10));
-                //int folderID = int.Parse(metadata[3].Substring(4));
 
                 return new object[] { documentID, userID, baseDocumentCreationTime };
             }
@@ -82,22 +81,6 @@ namespace Client
         {
             return GenerateMetadataString(0, Session.GetInstance().UserID, DateTime.UtcNow);//, -1);
         }
-
-        /*public static String GenerateNewMetadata(int docid, int userid, int folderid)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("[");
-            sb.Append("docid " + docid);
-            sb.Append("|");
-            sb.Append("userid " + userid);
-            sb.Append("|");
-            sb.Append("timestamp " + DateTime.UtcNow);
-            sb.Append("|");
-            sb.Append("fid " + folderid);
-            sb.Append("]");
-
-            return sb.ToString();
-        }*/
 
         /// <summary>
         /// Generate a metadata string from raw data
@@ -140,7 +123,15 @@ namespace Client
 
         public static String RemoveMetadataFromFileContent(string fileContent)
         {
-            return fileContent.Substring(fileContent.IndexOf(']'));
+            return fileContent.Substring(fileContent.IndexOf('<'));
+        }
+
+        public static int FetchDocumentIDFromFileContent(string fileContent)
+        {
+            int indexStart = fileContent.IndexOf("docid") + 5;
+            int indexEnd = fileContent.IndexOf("|");
+            int id = int.Parse(fileContent.Substring(indexStart,indexEnd - indexStart));
+            return id;
         }
     }
 }

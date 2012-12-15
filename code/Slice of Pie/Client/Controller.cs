@@ -257,6 +257,17 @@ namespace Client
             gui.labelOpenDocument.Content = "Current document: " + title;
             session.CurrentDocumentTitle = title;
             session.CurrentDocumentPath = documentPath;
+            if (title.Length > 0)
+            {
+                string fileContent = localPersistence.GetFileContent(documentPath);
+                session.CurrentDocumentID = Metadata.FetchDocumentIDFromFileContent(fileContent);
+                gui.richTextBox.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                session.CurrentDocumentID = 0;
+                gui.richTextBox.Visibility = Visibility.Hidden;
+            }
         }
 
         /// <summary>
@@ -547,8 +558,8 @@ namespace Client
                         ServiceReference.ServiceDocument originalDocument = proxy.GetDocumentById(doc.documentId);
 
                         String creationTime = doc.creationTime.ToString().Replace(":", ".");
-                        String filename = originalDocument.name + "_revision_" + creationTime + ".txt";
-                        String content = proxy.GetDocumentContent(doc.path, filename);
+                        String filename = originalDocument.name + "_revision_" + creationTime;
+                        String content = proxy.GetDocumentContent(originalDocument.path, filename);
 
                         string[] item = new string[3];
                         item[0] = doc.creationTime.ToString();
