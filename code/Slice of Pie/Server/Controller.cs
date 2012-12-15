@@ -220,9 +220,9 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, DateTime baseDocCreationTime, String content, String title, String[] original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original)
         {
-            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, filepath, baseDocCreationTime, content, title, original);
+            return PersistentStorage.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
         }
 
         /// <summary>
