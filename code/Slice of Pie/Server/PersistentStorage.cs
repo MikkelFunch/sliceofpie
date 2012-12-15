@@ -257,7 +257,7 @@ namespace Server
                     return null;
                 }
                 Documentrevision latestDocByUser = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
-                if (latestDocByUser == null)
+                if (latestDocByUser != null && latestDocByUser.creationTime == baseDocCreationTime)
                 { //User hasn't made any changes. No conflict
                     String[][] returnArray = new String[1][];
                     Documentrevision latestDocumentRevision = GetLatestDocumentRevisions(documentId)[0];
