@@ -251,7 +251,7 @@ namespace Server
             //No document found with the given id.
             else
             {
-                AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
+                ps.AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
                 return null;
             }
         }
