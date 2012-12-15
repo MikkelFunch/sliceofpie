@@ -86,7 +86,7 @@ namespace Server
         public void AddDocumentRevision(int editorId, int documentId, String content)
         {
             int startIndex = content.IndexOf("timestamp") + 10;
-            int endIndex = content.LastIndexOf("]");
+            int endIndex = content.IndexOf("]");
             DateTime creationTime = DateTime.Parse(content.Substring(startIndex, (endIndex - startIndex)));
             Document document = dao.GetDocumentById(documentId);
             String directoryPath = document.path;
@@ -226,58 +226,14 @@ namespace Server
         }
 
         /// <summary>
-        /// Syncs a document with the server.
+        /// Syncs a document with the server, when there's no conflict
         /// </summary>
-        /// <param name="editorId">The id of the user who's submitting his work</param>
+        /// <param name="editorId">The id of the editor</param>
         /// <param name="documentId">The id of the document</param>
-        /// <param name="folderId">The folder in which the document lies</param>
-        /// <param name="baseDocCreationTime">The creationTime of the document, this document is based on</param>
-        /// <param name="latestUserFileContent">The xaml content of the new document</param>
-        /// <param name="title">The title of the document</param>
-        /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
-        /// <returns>Null if there's no mergeconflict.
-        /// If there is a mergeconflict the returned is like this:
-        /// Array[0] = the merged document
-        /// Array[1] = insertions, same length as Array[0]
-        /// Array[2] = deletions, same length as Array[3]
-        /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String[] latest)
-        {
-            //Document found with the given id
-            if (GetDocumentById(documentId) != null)
-            {
-                bool hasRevisions = DocumentHasRevision(documentId);
-
-                if(!hasRevisions)
-                {
-                    //No conflict
-                    return SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
-                }
-
-                Documentrevision latestUserDocumentRevision = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
-                Documentrevision latestServerDocumentRevision = dao.GetLatestDocumentRevisions(documentId)[0];
-                String latestUserDocumentContent = GetDocumentRevisionContent(latestUserDocumentRevision);
-                String latestServerDocumentContent = GetDocumentRevisionContent(latestServerDocumentRevision);
-                if (latestUserDocumentContent == latestServerDocumentContent)
-                {
-                    //No conflict
-                    return SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
-                }
-                else
-                {
-                    //Conflict
-                    return SyncConflict(documentId, latest);
-                }
-            }
-            //No document found with the given id.
-            else
-            {
-                AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
-                return null;
-            }
-        }
-
-        private String[][] SyncNoConflict(int editorId, int documentId, String filepath, String latestUserFileContent)
+        /// <param name="filepath">The path to where the file lies on the client</param>
+        /// <param name="latestUserFileContent">The xaml content of the user latest document</param>
+        /// <returns>null</returns>
+        public String[][] SyncNoConflict(int editorId, int documentId, String filepath, String latestUserFileContent)
         {
             //No conflict
             int indexEnd = filepath.LastIndexOf("\\");
@@ -287,7 +243,16 @@ namespace Server
             return null;
         }
 
-        private String[][] SyncConflict(int documentId, String[] latest)
+        /// <summary>
+        /// Syncs a document with the server, when there's a conflict
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
+        /// <returns>Array[0] = the merged document
+        /// Array[1] = insertions, same length as Array[0]
+        /// Array[2] = deletions, same length as Array[3]
+        /// Array[3] = the original document (server version)</returns>
+        public String[][] SyncConflict(int documentId, String[] latest)
         {
             String[][] returnArray = new String[4][];
             String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
@@ -417,6 +382,11 @@ namespace Server
             String creationTime = documentRevision.creationTime.ToString().Replace(":", ".");
             String filepath = originalDocument.path + "\\" + originalDocument.name + "_revision_" + creationTime + ".txt";
             return fsh.GetDocumentContent(filepath);
+        }
+
+        public Documentrevision GetLatestDocumentRevisionByUserId(int editorId, int documentId)
+        {
+            return dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
         }
     }
 }
