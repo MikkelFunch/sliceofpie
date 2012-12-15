@@ -252,7 +252,6 @@ namespace Client
                 }
                 doc.Blocks.Add(p);
             }
-            doc.Blocks.Add(new Paragraph(new Run("")));
             return doc;
         }
 

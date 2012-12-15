@@ -464,8 +464,8 @@ namespace Client
         {
             if (fromPath != null && fromPath.Length > 0 && toPath != null && toPath.Length > 0)
             {
+                if (toPath == "Root folder") { toPath = ""; }
                 localPersistence.MoveFileToFolder(fromPath, toPath);
-
                 //In case you move the currently opened document
                 if (fromPath == session.CurrentDocumentPath)
                 {

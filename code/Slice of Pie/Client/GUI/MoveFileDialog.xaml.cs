@@ -68,8 +68,15 @@ namespace Client.GUI
             if (comboBoxFolders.SelectedItem != null)
             {
                 FromPath = SelectedItem.Tag.ToString();
-                ToPath = Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt";
-
+                if (((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() == "Root folder")
+                {
+                    ToPath = Session.GetInstance().RootFolderPath + "\\" + SelectedItem.Header + ".txt";
+                }
+                else
+                {
+                    ToPath = Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt";
+                }
+                
                 this.Close();
             }
         }
