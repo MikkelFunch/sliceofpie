@@ -91,9 +91,9 @@ namespace Server
             Document document = dao.GetDocumentById(documentId);
             String directoryPath = document.path;
             String filename = document.name + "_revision_" + creationTime.ToString().Replace(':', '.') + ".txt";
-            String filepath = directoryPath + "\\" + filename;
+            String filepath = directoryPath +"\\" + filename;
             fsh.WriteToFile(filepath, content, documentId);
-            dao.AddDocumentRevision(creationTime, editorId, documentId, filepath);
+            dao.AddDocumentRevision(creationTime, editorId, documentId, directoryPath);
         }
 
         /// <summary>
