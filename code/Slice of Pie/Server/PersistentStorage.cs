@@ -276,7 +276,7 @@ namespace Server
                 if (latestDocContent == contentWithoutMetadata)
                 {
                     String[][] returnArray = new String[1][];
-                    Model.GetInstance().GetContentAsStringArray(latestDocByUser);
+                    returnArray[0] = Model.GetInstance().GetContentAsStringArray(latestDocByUser);
                     return returnArray;
                 }
                 //Conflict
