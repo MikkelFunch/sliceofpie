@@ -295,11 +295,12 @@ namespace Client
                         String filePath = dirPath + "\\" + documentReference.name + ".txt";
 
                         String content;
-                        //Connect to webservæice
+                        //Connect to webservice
                         using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                         {
                             //Get the content of the file on the server
                             content = proxy.GetLatestDocumentContent(documentReference.id);
+                            proxy.AddDocumentRevision(session.UserID, documentReference.id, content);
                         }
                         //Create the directories needed?
                         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
@@ -397,7 +398,7 @@ namespace Client
             //int folderID = (int)metadata[3];
 
             StringBuilder sb = new StringBuilder();
-            string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow);//, folderID);
+            string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, baseDocumentCreationTime);//, folderID);
             sb.Append(metadataString);
             sb.AppendLine();
             //generate xaml for the document
