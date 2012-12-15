@@ -41,9 +41,9 @@ namespace WcfService
         /// <param name="folderId">The id of the folder in which the document lies</param>
         /// <param name="content">The xaml + metadata content of the document</param>
         /// <returns>The id of the document added</returns>
-        public int AddDocumentWithUserDocument(String name, int userId, int folderId, String content)
+        public int AddDocumentWithUserDocument(String name, int userId, String filepath, String content)
         {
-            return Server.Controller.GetInstance().AddDocumentWithUserDocument(name, userId, folderId, content);
+            return Server.Controller.GetInstance().AddDocumentWithUserDocument(name, userId, filepath, content);
         }
 
         /// <summary>
@@ -158,20 +158,20 @@ namespace WcfService
         }
 
         /// <summary>
-        /// Get all documents of a specific user
+        /// Get all userdocuments of a specific user
         /// </summary>
         /// <param name="userId">The id of the user</param>
-        /// <returns>All documents this user is subscribed to</returns>
-        public List<ServiceDocument> GetAllDocumentsByUserId(int userId)
+        /// <returns>All userdocuments this user is subscribed to</returns>
+        public List<ServiceUserdocument> GetAllUserDocumentsByUserId(int userId)
         {
-            List<Server.Document> serverList = Server.Controller.GetInstance().GetAllDocumentsByUserId(userId);
-            List<ServiceDocument> returnList = null;
+            List<Server.Userdocument> serverList = Server.Controller.GetInstance().GetAllUserDocumentsByUserId(userId);
+            List<ServiceUserdocument> returnList = null;
             if (serverList != null)
             {
-                returnList = new List<ServiceDocument>();
+                returnList = new List<ServiceUserdocument>();
                 for (int i = 0; i < serverList.Count; i++)
                 {
-                    returnList.Add((ServiceDocument)serverList[i]);
+                    returnList.Add((ServiceUserdocument)serverList[i]);
                 }
             }
             return returnList;
@@ -186,6 +186,11 @@ namespace WcfService
         public String GetDocumentContent(String directoryPath, String filename)
         {
             return Server.Controller.GetInstance().GetDocumentContent(directoryPath, filename);
+        }
+
+        public String GetLatestDocumentContent(int documentId)
+        {
+            return Server.Controller.GetInstance().GetLatestDocumentContent(documentId);
         }
 
         /// <summary>
@@ -204,9 +209,9 @@ namespace WcfService
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original)
         {
-            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, folderId, baseDocCreationTime, content, title, original);
+            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
             return stringArray;
         }
         
@@ -219,6 +224,27 @@ namespace WcfService
         public int GetDocumentId(int userId, String title)
         {
             return Server.Controller.GetInstance().GetDocumentId(userId, title);
+        }
+
+        /// <summary>
+        /// Subscribes a user to a document
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="folderId">The id of the folder</param>
+        public void AddUserDocument(int userId, int documentId, String filepath)
+        {
+            Server.Controller.GetInstance().AddUserDocument(userId, documentId, filepath);
+        }
+
+        public int FolderExists(int parentFolderId, String name)
+        {
+            return Server.Controller.GetInstance().FolderExists(parentFolderId, name);
+        }
+
+        public void AddUserDocumentInRoot(int userId, int documentId)
+        {
+            Server.Controller.GetInstance().AddUserDocumentInRoot(userId, documentId);
         }
     }
 }

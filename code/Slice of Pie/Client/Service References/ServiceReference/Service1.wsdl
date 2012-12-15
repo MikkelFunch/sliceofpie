@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service1" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service1" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schemas.datacontract.org/2004/07/WcfService" />
@@ -39,7 +39,7 @@
           <xs:sequence>
             <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="userId" type="xs:int" />
-            <xs:element minOccurs="0" name="folderId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
@@ -201,17 +201,17 @@
           <xs:sequence />
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetAllDocumentsByUserId">
+      <xs:element name="GetAllUserDocumentsByUserId">
         <xs:complexType>
           <xs:sequence>
             <xs:element minOccurs="0" name="userId" type="xs:int" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetAllDocumentsByUserIdResponse">
+      <xs:element name="GetAllUserDocumentsByUserIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllDocumentsByUserIdResult" nillable="true" type="q5:ArrayOfServiceDocument" />
+            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllUserDocumentsByUserIdResult" nillable="true" type="q5:ArrayOfServiceUserdocument" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -230,13 +230,26 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="GetLatestDocumentContent">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLatestDocumentContentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetLatestDocumentContentResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="SyncDocument">
         <xs:complexType>
           <xs:sequence>
             <xs:element minOccurs="0" name="editorId" type="xs:int" />
             <xs:element minOccurs="0" name="documentId" type="xs:int" />
-            <xs:element minOccurs="0" name="folderId" type="xs:int" />
-            <xs:element minOccurs="0" name="baseDocCreationTime" type="xs:dateTime" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
             <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="original" nillable="true" type="q6:ArrayOfstring" />
@@ -263,6 +276,48 @@
           <xs:sequence>
             <xs:element minOccurs="0" name="GetDocumentIdResult" type="xs:int" />
           </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddUserDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="userId" type="xs:int" />
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddUserDocumentResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="FolderExists">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="parentFolderId" type="xs:int" />
+            <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="FolderExistsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="FolderExistsResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddUserDocumentInRoot">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="userId" type="xs:int" />
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddUserDocumentInRootResponse">
+        <xs:complexType>
+          <xs:sequence />
         </xs:complexType>
       </xs:element>
     </xs:schema>
@@ -335,12 +390,20 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="ServiceDocument" nillable="true" type="tns:ServiceDocument" />
-      <xs:complexType name="ArrayOfServiceDocument">
+      <xs:complexType name="ArrayOfServiceUserdocument">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceDocument" nillable="true" type="tns:ServiceDocument" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceUserdocument" nillable="true" type="tns:ServiceUserdocument" />
         </xs:sequence>
       </xs:complexType>
-      <xs:element name="ArrayOfServiceDocument" nillable="true" type="tns:ArrayOfServiceDocument" />
+      <xs:element name="ArrayOfServiceUserdocument" nillable="true" type="tns:ArrayOfServiceUserdocument" />
+      <xs:complexType name="ServiceUserdocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="documentId" type="xs:int" />
+          <xs:element minOccurs="0" name="folderId" type="xs:int" />
+          <xs:element minOccurs="0" name="userId" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ServiceUserdocument" nillable="true" type="tns:ServiceUserdocument" />
     </xs:schema>
     <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:complexType name="ArrayOfstring">
@@ -441,17 +504,23 @@
   <wsdl:message name="IService1_DeleteDocument_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteDocumentResponse" />
   </wsdl:message>
-  <wsdl:message name="IService1_GetAllDocumentsByUserId_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetAllDocumentsByUserId" />
+  <wsdl:message name="IService1_GetAllUserDocumentsByUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUserDocumentsByUserId" />
   </wsdl:message>
-  <wsdl:message name="IService1_GetAllDocumentsByUserId_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetAllDocumentsByUserIdResponse" />
+  <wsdl:message name="IService1_GetAllUserDocumentsByUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUserDocumentsByUserIdResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_GetDocumentContent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentContent" />
   </wsdl:message>
   <wsdl:message name="IService1_GetDocumentContent_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetLatestDocumentContent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestDocumentContent" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetLatestDocumentContent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestDocumentContentResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_SyncDocument_InputMessage">
     <wsdl:part name="parameters" element="tns:SyncDocument" />
@@ -464,6 +533,24 @@
   </wsdl:message>
   <wsdl:message name="IService1_GetDocumentId_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocument" />
+  </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_FolderExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:FolderExists" />
+  </wsdl:message>
+  <wsdl:message name="IService1_FolderExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FolderExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocumentInRoot_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocumentInRoot" />
+  </wsdl:message>
+  <wsdl:message name="IService1_AddUserDocumentInRoot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserDocumentInRootResponse" />
   </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="AddUser">
@@ -522,13 +609,17 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/DeleteDocument" message="tns:IService1_DeleteDocument_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/DeleteDocumentResponse" message="tns:IService1_DeleteDocument_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetAllDocumentsByUserId">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAllDocumentsByUserId" message="tns:IService1_GetAllDocumentsByUserId_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAllDocumentsByUserIdResponse" message="tns:IService1_GetAllDocumentsByUserId_OutputMessage" />
+    <wsdl:operation name="GetAllUserDocumentsByUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAllUserDocumentsByUserId" message="tns:IService1_GetAllUserDocumentsByUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAllUserDocumentsByUserIdResponse" message="tns:IService1_GetAllUserDocumentsByUserId_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetDocumentContent">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDocumentContent" message="tns:IService1_GetDocumentContent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDocumentContentResponse" message="tns:IService1_GetDocumentContent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestDocumentContent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetLatestDocumentContent" message="tns:IService1_GetLatestDocumentContent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetLatestDocumentContentResponse" message="tns:IService1_GetLatestDocumentContent_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="SyncDocument">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/SyncDocument" message="tns:IService1_SyncDocument_InputMessage" />
@@ -537,6 +628,18 @@
     <wsdl:operation name="GetDocumentId">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDocumentId" message="tns:IService1_GetDocumentId_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDocumentIdResponse" message="tns:IService1_GetDocumentId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocument">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUserDocument" message="tns:IService1_AddUserDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddUserDocumentResponse" message="tns:IService1_AddUserDocument_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FolderExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/FolderExists" message="tns:IService1_FolderExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/FolderExistsResponse" message="tns:IService1_FolderExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocumentInRoot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUserDocumentInRoot" message="tns:IService1_AddUserDocumentInRoot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/AddUserDocumentInRootResponse" message="tns:IService1_AddUserDocumentInRoot_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -667,8 +770,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetAllDocumentsByUserId">
-      <soap:operation soapAction="http://tempuri.org/IService1/GetAllDocumentsByUserId" style="document" />
+    <wsdl:operation name="GetAllUserDocumentsByUserId">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetAllUserDocumentsByUserId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -678,6 +781,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetDocumentContent">
       <soap:operation soapAction="http://tempuri.org/IService1/GetDocumentContent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestDocumentContent">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetLatestDocumentContent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -696,6 +808,33 @@
     </wsdl:operation>
     <wsdl:operation name="GetDocumentId">
       <soap:operation soapAction="http://tempuri.org/IService1/GetDocumentId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocument">
+      <soap:operation soapAction="http://tempuri.org/IService1/AddUserDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FolderExists">
+      <soap:operation soapAction="http://tempuri.org/IService1/FolderExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUserDocumentInRoot">
+      <soap:operation soapAction="http://tempuri.org/IService1/AddUserDocumentInRoot" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

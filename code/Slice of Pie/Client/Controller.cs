@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Client
 {
@@ -89,7 +90,7 @@ namespace Client
             int successful = -1;
 
             //Check if something have been entered as email - WE DO NOT CHECK THAT IT IS AN EMAIL
-            if (email.Length > 0)
+            if (email != null && email.Length > 0)
             {
                 //Check that something has been entered as been entered as passwords and check that the two passwords are identical
                 if (passUnencrypted1 != null && passUnencrypted1.Length > 0 && passUnencrypted2 != null && passUnencrypted1 == passUnencrypted2)
@@ -127,7 +128,7 @@ namespace Client
         public bool LoginUser(string email, string unencrytedPass)
         {
             bool successfulLogin = false;
-            if (unencrytedPass.Length > 0 && email.Length > 0)
+            if (email != null && email.Length > 0 && unencrytedPass != null && unencrytedPass.Length > 0)
             {
                 //encrypt passowrd
                 String pass = Security.EncryptString(unencrytedPass);
@@ -146,10 +147,10 @@ namespace Client
                     session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + email;
                     Directory.CreateDirectory(session.RootFolderPath);
 
-                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                    /*using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                     {
                         session.RootFolderID = proxy.GetRootFolderId(userid);
-                    }
+                    }*/
                 }
                 if (userid != -1)
                 {
@@ -178,17 +179,44 @@ namespace Client
             UpdateExplorerView();
         }
 
+        public void ShareDocument(string email)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HANDLE DOCUMENT NOT BEING SYNCED FIRST(NOT IN THE DATABASE)
+        {
+            if (email != null && email.Length > 0 && session.CurrentDocumentPath.Length > 0)
+            {
+                ServiceReference.ServiceUser shareUser = null;
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    shareUser = proxy.GetUserByEmail(email);
+                }
+                if (shareUser != null)
+                {
+                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                    {
+                        proxy.AddUserDocumentInRoot(shareUser.id, session.CurrentDocumentID);
+                    }
+                    MessageBox.Show("Document shared with " + shareUser.email, "Share success");
+                }
+                else
+                {
+                    MessageBox.Show("User does not exist", "Email error");
+                }
+            }
+        }
+
         #endregion
 
         #region LocalPersistence
 
         public void CreateNewDocumentFile(String title)
         {
-            FlowDocument emptyDoc = new FlowDocument();
-            localPersistence.CreateNewDocumentFile(title, emptyDoc);
-            String documentPath = session.RootFolderPath + "\\" + title + ".txt";
-            SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title, documentPath);
-            UpdateExplorerView();
+            if (title != null && title.Length > 0)
+            {
+                FlowDocument emptyDoc = new FlowDocument();
+                localPersistence.CreateNewDocumentFile(title, emptyDoc);
+                String documentPath = session.RootFolderPath + "\\" + title + ".txt";
+                SetOpenDocument(System.Windows.Markup.XamlWriter.Save(emptyDoc), title, documentPath);
+                UpdateExplorerView();
+            }
         }
 
         public void SaveDocumentToFile(FlowDocument document)
@@ -245,149 +273,183 @@ namespace Client
 
         public void SyncAllDocuments()
         {
-            if (session.UserID != -1) //Check if user is logged in
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
-                ServiceReference.ServiceDocument[] documents;
-                //Connect to webservice
-                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                if (session.UserID != -1) //Check if user is logged in
                 {
-                    //Retrieve all documents the users documents
-                    documents = proxy.GetAllDocumentsByUserId(session.UserID);
-                }
-                if (documents != null) //check if any documents is found
-                {
-                    //For each document found
-                    foreach (ServiceReference.ServiceDocument currentDoc in documents)
+                    ServiceReference.ServiceUserdocument[] documents;
+                    //Connect to webservice
+                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                     {
-                        //Check if a corresponding file exists locally
-                        int indexStart = currentDoc.path.IndexOf("sliceofpie");
-                        String relativePath = currentDoc.path.Substring(indexStart);
-                        String fullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + relativePath;
-                        if (!File.Exists(fullPath)) //If the file does not exist
+                        //Retrieve all documents the users documents
+                        documents = proxy.GetAllUserDocumentsByUserId(session.UserID);
+                    }
+                    if (documents != null) //check if any documents is found
+                    {
+                        //For each document found
+                        foreach (ServiceReference.ServiceUserdocument currentDoc in documents)
                         {
+                            String relativeDirPath = FetchRelativeFilePath(currentDoc);
+                            String dirPath = session.RootFolderPath + "\\" + relativeDirPath;
+                            ServiceReference.ServiceDocument documentReference = null;
+
+                            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                            {
+                                //Get the original document from the server
+                                documentReference = proxy.GetDocumentById(currentDoc.documentId);
+                            }
+                            String filePath = dirPath + "\\" + documentReference.name + ".txt";
+
                             String content;
                             //Connect to webservice
                             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                             {
                                 //Get the content of the file on the server
-                                content = proxy.GetDocumentContent(currentDoc.path, currentDoc.name);
+                                content = proxy.GetLatestDocumentContent(documentReference.id);
+                                proxy.AddDocumentRevision(session.UserID, documentReference.id, content);
                             }
                             //Create the directories needed?
-                            Directory.CreateDirectory(fullPath);
+                            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                             //Create a document locally with the content
-                            localPersistence.SaveDocumentToFile(content, fullPath);
-                        }
-                        else //a matching file exsist
-                        {
-                            //currentDoc.creationTime;
-                            //get local corresponsing document
-
-
-
-                            //check if it is the same document id
-                            //if it is -> delete the other document, as it will not be in the database and the database is the overruler
-                            //check if it is same base
-                            //if it is -> check if online version is newer
-                            //// if it is -> user online version
-                            //// if it is not -> sync local version
-                            //if it is not -> single sync the document
-                            //Document already exits.
-                            //Make user single sync this document.
+                            localPersistence.SaveDocumentToFile(content, filePath);
                         }
                     }
-                }
-                else //No documents found by this userId
-                { //loop through all the users folders and add all files to the server
-                    List<String> files = new List<String>();
-                    foreach (String file in Directory.GetFiles(session.RootFolderPath))
-                    {
-                        AddDocumentToServer(file);
-                    }
-
-                    foreach (String dir in Directory.GetDirectories(session.RootFolderPath))
-                    {
-                        foreach (String file in Directory.GetFiles(dir))
+                    else //No documents found by this userId
+                    { //loop through all the users folders and add all files to the server
+                        List<String> files = new List<String>();
+                        foreach (String file in Directory.GetFiles(session.RootFolderPath)) //!!!!!!!!!!!!!!!!If the rootfolder doesn't exist, an exception is thrown
                         {
                             AddDocumentToServer(file);
                         }
+
+                        foreach (String dir in Directory.GetDirectories(session.RootFolderPath))
+                        {
+                            foreach (String file in Directory.GetFiles(dir))
+                            {
+                                AddDocumentToServer(file);
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    //not logged in
+                }
+                UpdateExplorerView();
             }
             else
             {
-                //not logged in
+                //No web connection
+            }
+        }
+
+        private string FetchRelativeFilePath(ServiceReference.ServiceUserdocument doc)
+        {
+            StringBuilder sb = new StringBuilder();
+            ServiceReference.ServiceFolder folder = null;
+
+            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+            {
+                folder = proxy.GetFolder(doc.folderId);
             }
 
-            UpdateExplorerView();
+            while (folder != null || folder.parentFolderId != null)
+            {
+                if (folder.parentFolderId == null)
+                {
+                    break;
+                }
+                else
+                {
+                    sb.Insert(0, "\\" + folder.name);
+                }
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                {
+                    folder = proxy.GetFolder((int)folder.parentFolderId);
+                }
+            }
+
+            String userEmail = session.Email;
+            sb.Insert(0, "");
+
+            return sb.ToString();
         }
 
         /// <summary>
         /// Add file to server
         /// </summary>
-        /// <param name="file">Path to the file which should be added to the server</param>
-        private void AddDocumentToServer(String file)
+        /// <param name="filePath">Path to the file which should be added to the server</param>
+        private void AddDocumentToServer(String filePath)
         {
             //load file content
-            String content = localPersistence.GetFileContent(file);
+            String content = localPersistence.GetFileContent(filePath);
             //get file metadata
-            Object[] metadata = Metadata.RetrieveMetadataFromFile(file);
+            //Object[] metadata = Metadata.RetrieveMetadataFromFile(file);
             //fetch filename
-            String fileName = file.Substring(file.LastIndexOf("\\") + 1, (file.IndexOf(".txt") - file.LastIndexOf("\\") - 1));
+            String fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1, (filePath.IndexOf(".txt") - filePath.LastIndexOf("\\") - 1));
 
             //Connect to webservice
             using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
             {
                 //add document online
-                proxy.AddDocumentWithUserDocument(fileName, session.UserID, (int)metadata[3], content);
+                proxy.AddDocumentWithUserDocument(fileName, session.UserID, filePath, content);
             }
         }
 
         public void SyncDocument(FlowDocument document)
         {
-            //Metadata
-            //0: docid -> docid 11
-            //1: userid -> userid 11
-            //2: timestamp -> timestamp 12-12-2012 12:18:19
-            object[] metadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
-            int documentID = (int)metadata[0];
-            DateTime baseDocumentCreationTime = (DateTime)metadata[2];
-            int folderID = (int)metadata[3];
-
-            StringBuilder sb = new StringBuilder();
-            String newMetadata = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow, folderID);
-            sb.Append(newMetadata);
-            sb.AppendLine();
-            //generate xaml for the document
-            String xaml = System.Windows.Markup.XamlWriter.Save(document);
-            sb.Append(xaml);
-
-            //get the text from the document
-            String content = new TextRange(document.ContentStart, document.ContentEnd).Text;
-
-            String[][] responseArrays = null;
-            //connect to the websevice
-            using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {
-                //push the current document
-                responseArrays = proxy.SyncDocument(session.UserID, documentID, folderID, baseDocumentCreationTime, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
-            }
+                //Metadata
+                //0: docid -> docid 11
+                //1: userid -> userid 11
+                //2: timestamp -> timestamp 12-12-2012 12:18:19
+                object[] metadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
+                int documentID = (int)metadata[0];
+                DateTime baseDocumentCreationTime = (DateTime)metadata[2];
+                //int folderID = (int)metadata[3];
 
-            if (responseArrays == null) //if there is no conflict
-            {
-                if (documentID == 0)
+                StringBuilder sb = new StringBuilder();
+                string metadataString = Metadata.GenerateMetadataString(documentID, session.UserID, DateTime.UtcNow);//, folderID);
+                sb.Append(metadataString);
+                sb.AppendLine();
+                //generate xaml for the document
+                String xaml = System.Windows.Markup.XamlWriter.Save(document);
+                sb.Append(xaml);
+
+                //get the text from the document
+                String content = new TextRange(document.ContentStart, document.ContentEnd).Text;
+
+                String[][] responseArrays = null;
+                //connect to the websevice
+                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
-                    //connect to the websevice
-                    using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                    {
-                        documentID = proxy.GetDocumentId(session.UserID, session.CurrentDocumentTitle);
-                    }
+                    //push the current document
+                    responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                 }
-                //save document with new metadata - basedocument
-                localPersistence.SaveDocumentToFile(document, Metadata.ReplaceDocumentIDInMetadata(newMetadata, documentID));
+
+                if (responseArrays == null) //if there is no conflict
+                {
+                    if (documentID == 0)
+                    {
+                        //connect to the websevice
+                        using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+                        {
+                            documentID = proxy.GetDocumentId(session.UserID, session.CurrentDocumentTitle);
+                        }
+                    }
+                    //save document with new metadata - basedocument
+                    localPersistence.SaveDocumentToFile(document, Metadata.ReplaceDocumentIDInMetadata(metadataString, documentID));
+                    session.CurrentDocumentID = documentID;
+                }
+                else //if there is a conflict
+                {
+                    gui.SetupMergeView(responseArrays);
+                }
             }
-            else //if there is a conflict
+            else
             {
-                gui.SetupMergeView(responseArrays);
+                //No web connection
             }
         }
 
@@ -397,9 +459,9 @@ namespace Client
             int documentid = (int)oldMetadata[0];
             int userid = session.UserID;
             DateTime timestamp = DateTime.UtcNow;
-            int folderid = (int)oldMetadata[3];
+            //int folderid = (int)oldMetadata[3];
 
-            String metadata = Metadata.GenerateMetadataString(documentid, userid, timestamp, folderid);
+            String metadata = Metadata.GenerateMetadataString(documentid, userid, timestamp);//, folderid);
             String xamlContent = System.Windows.Markup.XamlWriter.Save(document);
             String content = metadata + xamlContent;
 
@@ -407,8 +469,48 @@ namespace Client
             {
                 proxy.AddDocumentRevision(session.UserID, documentid, content);
             }
+            localPersistence.SaveDocumentToFile(content, session.CurrentDocumentPath);
         }
 
         #endregion
+
+        public void MoveFileToFolder(string fromPath, string toPath)
+        {
+            if (fromPath != null && fromPath.Length > 0 && toPath != null && toPath.Length > 0)
+            {
+                if (toPath == "Root folder") { toPath = ""; }
+                localPersistence.MoveFileToFolder(fromPath, toPath);
+                //In case you move the currently opened document
+                if (fromPath == session.CurrentDocumentPath)
+                {
+                    session.CurrentDocumentPath = toPath;
+                }
+
+                UpdateExplorerView();
+            }
+        }
+
+        public void ImageDownloadComplete(object sender, EventArgs ea)
+        {
+            BitmapImage image = (BitmapImage)sender;
+            String url = image.UriSource.ToString();
+            String picsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\";
+            int indexStart = url.LastIndexOf('/') + 1;
+            String fileName = url.Substring(indexStart);
+            if (!File.Exists(picsPath + fileName))
+            {
+                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+
+                Directory.CreateDirectory(picsPath);
+                String photolocation = picsPath + fileName; //file name
+
+                encoder.Frames.Add(BitmapFrame.Create(image));
+
+                using (var filestream = new FileStream(photolocation, FileMode.Create))
+                {
+                    encoder.Save(filestream);
+                }
+            }
+        }
     }
 }

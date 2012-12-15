@@ -19,7 +19,7 @@ namespace WcfService
         int AddFolder(String name, int parentFolderId);
 
         [OperationContract]
-        int AddDocumentWithUserDocument(String name, int userId, int folderId, String content);
+        int AddDocumentWithUserDocument(String name, int userId, String filepath, String content);
 
         [OperationContract]
         void AddDocumentRevision(int editorId, int documentId, String content);
@@ -55,16 +55,59 @@ namespace WcfService
         void DeleteDocument(int documentId);
 
         [OperationContract]
-        List<ServiceDocument> GetAllDocumentsByUserId(int userId);
+        List<ServiceUserdocument> GetAllUserDocumentsByUserId(int userId);
 
         [OperationContract]
         String GetDocumentContent(String directoryPath, String filename);
 
         [OperationContract]
-        String[][] SyncDocument(int editorId, int documentId, int folderId, DateTime baseDocCreationTime, String content, String title, String[] original);
+        String GetLatestDocumentContent(int documentId);
+
+        [OperationContract]
+        String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);
+
+        [OperationContract]
+        void AddUserDocument(int userId, int documentId, String filepath);
+
+        [OperationContract]
+        int FolderExists(int parentFolderId, String name);
+
+        [OperationContract]
+        void AddUserDocumentInRoot(int userId, int documentId);
+    }
+
+    [DataContract]
+    public class ServiceUserdocument
+    {
+        [DataMember]
+        public int userId { get; set; }
+
+        [DataMember]
+        public int documentId { get; set; }
+
+        [DataMember]
+        public int folderId { get; set; }
+
+        public static explicit operator ServiceUserdocument(Server.Userdocument ud)
+        {
+            ServiceUserdocument doc = new ServiceUserdocument();
+            doc.userId = ud.userId;
+            doc.documentId = ud.documentId;
+            doc.folderId = ud.folderId;
+            return doc;
+        }
+
+        public static explicit operator Server.Userdocument(ServiceUserdocument ud)
+        {
+            Server.Userdocument doc = new Server.Userdocument();
+            doc.userId = ud.userId;
+            doc.documentId = ud.documentId;
+            doc.folderId = ud.folderId;
+            return doc;
+        }
     }
 
     [DataContract]

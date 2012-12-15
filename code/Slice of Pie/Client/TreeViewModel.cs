@@ -77,7 +77,7 @@ namespace Client
         private void InsertDirectoriesIntoDirectory(ItemCollection collection, DirectoryInfo dir)
         {
             //For each directory in the given directory
-            foreach (DirectoryInfo dInfo in dir.GetDirectories())
+            foreach (DirectoryInfo dInfo in dir.GetDirectories()) //directory have been deleted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             {
                 //Create a treeviewitem to represent the directory
                 TreeViewItem subItem = new TreeViewItem();
