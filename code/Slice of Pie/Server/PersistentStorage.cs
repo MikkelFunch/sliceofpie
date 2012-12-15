@@ -247,28 +247,26 @@ namespace Server
             if (GetDocumentById(documentId) != null)
             {
                 bool hasRevisions = DocumentHasRevision(documentId);
+
+                if(!hasRevisions)
+                {
+                    //No conflict
+                    return SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
+                }
+
                 Documentrevision latestUserDocumentRevision = dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
                 Documentrevision latestServerDocumentRevision = dao.GetLatestDocumentRevisions(documentId)[0];
                 String latestUserDocumentContent = GetDocumentRevisionContent(latestUserDocumentRevision);
                 String latestServerDocumentContent = GetDocumentRevisionContent(latestServerDocumentRevision);
-                if(!hasRevisions || (latestUserDocumentContent == latestServerDocumentContent))
-                { //No conflict
-                    int indexEnd = filepath.LastIndexOf("\\");
-                    filepath = filepath.Substring(0, indexEnd);
-                    AddDocumentRevision(editorId, documentId, latestUserFileContent);
-                    dao.AlterUserDocument(editorId, documentId, filepath);
-                    return null;
+                if (latestUserDocumentContent == latestServerDocumentContent)
+                {
+                    //No conflict
+                    return SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
                 }
                 else
-                { //Conflict
-                    String[][] returnArray = new String[4][];
-                    String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
-                    String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
-                    returnArray[0] = mergedLines[0];
-                    returnArray[1] = mergedLines[1];
-                    returnArray[2] = mergedLines[2];
-                    returnArray[3] = original;
-                    return returnArray;
+                {
+                    //Conflict
+                    return SyncConflict(documentId, latest);
                 }
             }
             //No document found with the given id.
@@ -277,6 +275,28 @@ namespace Server
                 AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
                 return null;
             }
+        }
+
+        private String[][] SyncNoConflict(int editorId, int documentId, String filepath, String latestUserFileContent)
+        {
+            //No conflict
+            int indexEnd = filepath.LastIndexOf("\\");
+            filepath = filepath.Substring(0, indexEnd);
+            AddDocumentRevision(editorId, documentId, latestUserFileContent);
+            dao.AlterUserDocument(editorId, documentId, filepath);
+            return null;
+        }
+
+        private String[][] SyncConflict(int documentId, String[] latest)
+        {
+            String[][] returnArray = new String[4][];
+            String[] original = Model.GetInstance().GetContentAsStringArray(documentId);
+            String[][] mergedLines = Model.GetInstance().MergeDocuments(original, latest);
+            returnArray[0] = mergedLines[0];
+            returnArray[1] = mergedLines[1];
+            returnArray[2] = mergedLines[2];
+            returnArray[3] = original;
+            return returnArray;
         }
 
         /// <summary>
