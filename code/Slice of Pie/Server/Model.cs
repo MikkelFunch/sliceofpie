@@ -152,10 +152,10 @@ namespace Server
         public string[] GetContentAsStringArray(int documentId)
         {
             Documentrevision latestDoc = PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId)[0];
-            Document originalDoc = PersistentStorage.GetInstance().GetDocumentById(documentId);
-            DateTime timestamp = latestDoc.creationTime;
-            String timestampString = timestamp.ToString().Replace(':', '.');
-            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
+            //Document originalDoc = PersistentStorage.GetInstance().GetDocumentById(documentId);
+            //DateTime timestamp = latestDoc.creationTime;
+            //String timestampString = timestamp.ToString().Replace(':', '.');
+            String content = PersistentStorage.GetInstance().GetDocumentContent(latestDoc.path);// + "\\" + originalDoc.name + "_revision_" + timestampString + ".txt");
             content = content.Substring(content.IndexOf('<')); //Remove metadata
             FlowDocument flowDoc = (FlowDocument)System.Windows.Markup.XamlReader.Parse(content);
             TextRange textRange = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);

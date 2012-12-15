@@ -241,5 +241,10 @@ namespace WcfService
         {
             return Server.Controller.GetInstance().FolderExists(parentFolderId, name);
         }
+
+        public void AddUserDocumentInRoot(int userId, int documentId)
+        {
+            Server.Controller.GetInstance().AddUserDocumentInRoot(userId, documentId);
+        }
     }
 }

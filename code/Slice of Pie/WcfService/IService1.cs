@@ -74,6 +74,9 @@ namespace WcfService
 
         [OperationContract]
         int FolderExists(int parentFolderId, String name);
+
+        [OperationContract]
+        void AddUserDocumentInRoot(int userId, int documentId);
     }
 
     [DataContract]

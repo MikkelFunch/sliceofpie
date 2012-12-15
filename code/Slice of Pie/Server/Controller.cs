@@ -256,5 +256,10 @@ namespace Server
         {
             return PersistentStorage.GetInstance().FolderExists(parentFolderId, name);
         }
+
+        public void AddUserDocumentInRoot(int userId, int documentId)
+        {
+            PersistentStorage.GetInstance().AddUserDocumentInRoot(userId, documentId);
+        }
     }
 }
