@@ -9,8 +9,8 @@
             <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="138" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         
         <Label Name="labelDocumentName" Content="" Grid.Column="0" Grid.Row="0"/>
@@ -22,6 +22,6 @@
         
         <RichTextBox Name="richTextBoxCurrentRevision" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="1" />
         <TreeView Name="treeViewRevisions" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
-        <Button Name="buttonClose" Height="23" Grid.Column="1" Grid.Row="2" Content="Close" HorizontalAlignment="Right" Margin="0,0,0,4" Click="buttonClose_Click" />
+        <Button Name="buttonClose" Height="23" Grid.Column="1" Grid.Row="2" Content="Close" HorizontalAlignment="Right" Margin="0,0,4,0" Click="buttonClose_Click" />
     </Grid>
 </Window>

@@ -45,7 +45,6 @@ namespace Client.GUI
         {
             labelDocumentName.Content = DocumentName;
             labelEditor.Content = "Editor: " + EditorName;
-            CreateTreeView();
         }
 
         private void buttonClose_Click(object sender, RoutedEventArgs e)
@@ -53,7 +52,7 @@ namespace Client.GUI
             this.Close();
         }
 
-        private void CreateTreeView()
+        public void CreateTreeView()
         {
             foreach (string[] item in Revisions)
             {
@@ -61,6 +60,7 @@ namespace Client.GUI
                 treeItem.Header = item[0];
                 treeItem.Tag = item;
                 treeItem.MouseDoubleClick += new MouseButtonEventHandler(ItemDoubleClick);
+                treeViewRevisions.Items.Add(treeItem);
             }
         }
 
@@ -70,8 +70,8 @@ namespace Client.GUI
             TreeViewItem item = (TreeViewItem)sender;
 
             richTextBoxCurrentRevision.Document = (FlowDocument)System.Windows.Markup.XamlReader.Parse(((string[])item.Tag)[2]);
-            labelEditor.Content = ((string[])item.Tag)[1];
-            labelCurrentTimeStamp.Content = ((string[])item.Tag)[0];
+            labelEditor.Content = "Editor: " + ((string[])item.Tag)[1];
+            labelCurrentTimeStamp.Content = "Current time: " + ((string[])item.Tag)[0];
         }
     }
 }

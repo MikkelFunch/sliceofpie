@@ -29,6 +29,7 @@ namespace Client
             InitializeComponent();
             controller = Controller.GetInstance();
             controller.SetGui(this);
+            richTextBox.Visibility = Visibility.Hidden;
         }
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
@@ -262,9 +263,10 @@ namespace Client
         {
             RevisionHistoryDialog revDia = new RevisionHistoryDialog();
 
-            revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
             revDia.DocumentName = Session.GetInstance().CurrentDocumentTitle;
             revDia.EditorName = "";
+            revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
+            revDia.CreateTreeView();
             revDia.ShowDialog();
         }
     }
