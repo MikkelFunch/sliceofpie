@@ -1,0 +1,29 @@
+﻿<controls:ChildWindow x:Class="Web_Solution.GUI.RevisionHistoryDialog"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+           Width="400" Height="300" 
+           Title="RevisionHistoryDialog" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="138" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Name="labelDocumentName" Text="" Grid.Column="0" Grid.Row="0"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+            <TextBlock Name="labelEditor" Text="Editor: " Grid.Column="1" Grid.Row="0"/>
+            <TextBlock Name="labelCurrentTimeStamp" Text="Current time: " Grid.Column="1" Grid.Row="1"/>
+        </StackPanel>
+
+        <RichTextBox Name="richTextBoxCurrentRevision" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0,4,0" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="1" />
+        <sdk:TreeView Name="treeViewRevisions" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1"/>
+        <Button Name="buttonClose" Height="23" Grid.Column="1" Grid.Row="2" Content="Close" HorizontalAlignment="Right" Margin="0,0,4,0" Click="buttonClose_Click" />
+    </Grid>
+</controls:ChildWindow>

@@ -132,28 +132,21 @@ namespace Client
             {
                 //encrypt passowrd
                 String pass = Security.EncryptString(unencrytedPass);
-                int userid = -1;
+                ServiceReference.ServiceUser user = null;
                 //connect to webservice
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
                     //get the user id - -1 if no user exists
-                    userid = proxy.GetUserByEmailAndPass(email, pass);
+                    user = proxy.GetUserByEmailAndPass(email, pass);
                 }
-                if (userid != -1) //login successful
+                if (user != null) //login successful
                 {
                     //User logged in
-                    session.UserID = userid;
+                    session.UserID = user.id;
                     session.Email = email;
                     session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + email;
                     Directory.CreateDirectory(session.RootFolderPath);
 
-                    /*using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                    {
-                        session.RootFolderID = proxy.GetRootFolderId(userid);
-                    }*/
-                }
-                if (userid != -1)
-                {
                     System.Windows.MessageBox.Show("Logged in successfully", "Login");
                     successfulLogin = true;
                     UpdateExplorerView();
@@ -181,7 +174,7 @@ namespace Client
 
         public void ShareDocument(string email)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HANDLE DOCUMENT NOT BEING SYNCED FIRST(NOT IN THE DATABASE)
         {
-            if (email != null && email.Length > 0 && session.CurrentDocumentPath.Length > 0)
+            if (email != null && email.Length > 0 && session.CurrentDocumentPath.Length > 0 && session.CurrentDocumentID != -1)
             {
                 ServiceReference.ServiceUser shareUser = null;
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
@@ -415,7 +408,7 @@ namespace Client
                 //0: docid -> docid 11
                 //1: userid -> userid 11
                 //2: timestamp -> timestamp 12-12-2012 12:18:19
-                object[] metadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
+                object[] metadata = LocalPersistenceHandler.RetrieveMetadataFromFile(session.CurrentDocumentPath);
                 int documentID = (int)metadata[0];
                 DateTime baseDocumentCreationTime = (DateTime)metadata[2];
                 //int folderID = (int)metadata[3];
@@ -436,7 +429,7 @@ namespace Client
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
                     //push the current document
-                    responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, sb.ToString(), session.CurrentDocumentTitle, content.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                    responseArrays = proxy.SyncDocument(session.UserID, documentID, session.CurrentDocumentPath, sb.ToString(), session.CurrentDocumentTitle, content);
                 }
 
                 if (responseArrays == null) //if there is no conflict
@@ -466,7 +459,7 @@ namespace Client
 
         public void SaveMergedDocument(FlowDocument document)
         {
-            Object[] oldMetadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
+            Object[] oldMetadata = LocalPersistenceHandler.RetrieveMetadataFromFile(session.CurrentDocumentPath);
             int documentid = (int)oldMetadata[0];
             int userid = session.UserID;
             DateTime timestamp = DateTime.UtcNow;
@@ -572,6 +565,11 @@ namespace Client
             }
 
             return returnArray;
+        }
+
+        public void LoadFilesAndFolders(System.Windows.Controls.ItemCollection items)
+        {
+            TreeViewModel.GetInstance().LoadFilesAndFolders(items);
         }
     }
 }

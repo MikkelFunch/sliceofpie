@@ -1,0 +1,17 @@
+﻿<controls:ChildWindow x:Class="Web_Solution.GUI.NewFolderDialog"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+           Width="247" Height="120" 
+           Title="NewFolderDialog">
+    <Grid>
+        <StackPanel HorizontalAlignment="Left">
+            <TextBlock Text="Enter folder name:"/>
+            <TextBox Name="textboxTitle" Width="210" Margin="8,0,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Name="buttonCreate" Content="Create" Margin="8,0,4,0" Width="58" Click="buttonCreate_Click" />
+                <Button Name="buttonCancel" Content="Cancel" Margin="8,0,4,0" Width="58" Click="buttonCancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</controls:ChildWindow>
