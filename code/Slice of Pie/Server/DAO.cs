@@ -609,11 +609,11 @@ namespace Server
         }
 
         /// <summary>
-        /// 
+        /// Returns the folder path for a user in the server from a user id and a base file path.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="filepath"></param>
-        /// <returns></returns>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="filepath">The base file path</param>
+        /// <returns>The full path to the user's documents</returns>
         public String GetFullDirectoryPath(int userId, String filepath)
         {
             User user = GetUserById(userId);
@@ -623,6 +623,7 @@ namespace Server
             String directoryPath = "D:\\SliceOfPieDocuments\\sliceofpie\\" + user.email + relativeDirectory;
             return directoryPath;
         }
+
 
         public String GetRootDirectoryPath(int userId, String filepath)
         {
@@ -650,6 +651,12 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets the latest revision of a specific document submitted by a specific user.
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The revision of the specified document</returns>
         public Documentrevision GetUsersLatestDocumentRevision(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())

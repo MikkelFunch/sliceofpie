@@ -266,6 +266,21 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Syncs a document with the server.
+        /// </summary>
+        /// <param name="editorId">The id of the user who's submitting his work</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="filepath">The path to where the file lies on the client</param>
+        /// <param name="metadata">The metadata for the document being synchronized</param>
+        /// <param name="title">The title of the document</param>
+        /// <param name="pureContent">The "pure" content of the document. One line per index in the array</param>
+        /// <returns>Null if there's no mergeconflict.
+        /// If there is a mergeconflict the returned is like this:
+        /// Array[0] = the merged document
+        /// Array[1] = insertions, same length as Array[0]
+        /// Array[2] = deletions, same length as Array[3]
+        /// Array[3] = the original document (server version)</returns>
         public String[][] SyncDocumentWeb(int editorId, int documentId, String filepath, String metadata, String title, String pureContent)
         {
             String[] splitPureContent = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -388,6 +403,11 @@ namespace Server
             return returnArray;
         }
 
+        /// <summary>
+        /// Gets the textual content of a document from the document id.
+        /// </summary>
+        /// <param name="documentId">The document to get the content from</param>
+        /// <returns>The textual content</returns>
         public string GetLatestPureDocumentContent(int documentId)
         {
             String metadataAndXaml = PersistentStorage.GetInstance().GetLatestDocumentContent(documentId);

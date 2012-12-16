@@ -265,11 +265,22 @@ namespace Server
             dao.AddUserDocument(userId, documentId, filepath);
         }
 
+        /// <summary>
+        /// Gets the userdocument that connects a document and a user.
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">the id of the document</param>
+        /// <returns>The userdocument connecting the document and the user</returns>
         public Userdocument GetUserdocument(int userId, int documentId)
         {
             return dao.GetUserdocument(userId, documentId);
         }
 
+        /// <summary>
+        /// Gets all document revisions from a specified 
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
         public List<Documentrevision> GetDocumentRevisions(int documentId)
         {
             return dao.GetDocumentRevisions(documentId);
@@ -285,21 +296,41 @@ namespace Server
             return dao.GetLatestDocumentRevisions(documentId);
         }
 
+        /// <summary>
+        /// Gets all folders contained in the root folder and folder contained in these folders.
+        /// </summary>
+        /// <param name="parentId">The id of the containing folder</param>
+        /// <returns>A list of the child folders</returns>
         public List<Folder> GetFoldersByRootId(int parentId)
         {
             return dao.GetFoldersByRootId(parentId);
         }
 
+        /// <summary>
+        /// Returns whether the document with the specified id has a revision.
+        /// </summary>
+        /// <param name="documentId">The id of the specified document</param>
+        /// <returns>Whether the document has a revision in the database</returns>
         public bool DocumentHasRevision(int documentId)
         {
             return dao.DocumentHasRevision(documentId);
         }
 
+        /// <summary>
+        /// Gets the content of the document in the specified file path.
+        /// </summary>
+        /// <param name="filepath">The file path of the document</param>
+        /// <returns>The content of the document in the filepath</returns>
         public string GetDocumentContent(string filepath)
         {
             return fsh.GetDocumentContent(filepath);
         }
 
+        /// <summary>
+        /// Gets the content of the latest document revision made from a document.
+        /// </summary>
+        /// <param name="documentId">The id of the document the revision is based from</param>
+        /// <returns>The content of the latest document revision</returns>
         public string GetLatestDocumentContent(int documentId)
         {
             List<Documentrevision> latestDocumentRevisions = GetLatestDocumentRevisions(documentId);
@@ -337,9 +368,9 @@ namespace Server
         /// The int returned is the id of the last folder.
         /// folder1\folder2\folder3 would return the id of folder3.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="directoryPath">The directory path that the method creates folders from</param>
+        /// <returns>The id of the last folder in the directory path</returns>
         public int CreateDirectoriesAndReturnLatestId(int userId, String directoryPath)
         {
             User user = GetUserById(userId);
@@ -371,6 +402,11 @@ namespace Server
             dao.AddUserDocumentInRoot(userId, documentId);
         }
 
+        /// <summary>
+        /// Gets the content of a document revision from the file system.
+        /// </summary>
+        /// <param name="documentRevision">The documentrevision, which the method returns the content from</param>
+        /// <returns>The content of the document revision</returns>
         public String GetDocumentRevisionContent(Documentrevision documentRevision)
         {
             Document originalDocument = GetDocumentById(documentRevision.documentId);
@@ -379,6 +415,12 @@ namespace Server
             return fsh.GetDocumentContent(filepath);
         }
 
+        /// <summary>
+        /// Gets the latest document revision from a specific document submitted by a specific user.
+        /// </summary>
+        /// <param name="editorId">The id of the user that submitted the revision</param>
+        /// <param name="documentId">The id of the document the revision is made from</param>
+        /// <returns>The document revision</returns>
         public Documentrevision GetLatestDocumentRevisionByUserId(int editorId, int documentId)
         {
             return dao.GetLatestDocumentRevisionByUserId(editorId, documentId);

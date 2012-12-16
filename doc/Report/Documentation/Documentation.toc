@@ -1,0 +1,124 @@
+\contentsline {section}{\numberline {0.1}Introduction}{1}
+\contentsline {section}{\numberline {0.2}Vision}{4}
+\contentsline {paragraph}{Introduction}{4}
+\contentsline {subsection}{\numberline {0.2.1}Positioning}{4}
+\contentsline {paragraph}{Problem Statement}{4}
+\contentsline {section}{\numberline {0.3}Software Analysis}{4}
+\contentsline {subsection}{\numberline {0.3.1}Use cases}{4}
+\contentsline {subsubsection}{Fully dressed use cases}{5}
+\contentsline {subsection}{\numberline {0.3.2}Supplementary specification}{6}
+\contentsline {subsection}{\numberline {0.3.3}Domain model}{7}
+\contentsline {subsection}{\numberline {0.3.4}Technical analysis}{7}
+\contentsline {subsubsection}{Analysis of persistent storage}{7}
+\contentsline {subsubsection}{Analysis of the merge problem}{8}
+\contentsline {subsubsection}{Analysis of UI technologies}{9}
+\contentsline {section}{\numberline {0.4}Architectural analysis}{9}
+\contentsline {subsection}{\numberline {0.4.1}Architectural factors}{9}
+\contentsline {subsubsection}{Evolution points}{9}
+\contentsline {subsection}{\numberline {0.4.2}Architectural decisions}{10}
+\contentsline {subsubsection}{Reliability and Fault Tolerance}{10}
+\contentsline {subsubsection}{Supportability}{10}
+\contentsline {subsubsection}{Performance}{10}
+\contentsline {section}{\numberline {0.5}Software Design}{11}
+\contentsline {subsection}{\numberline {0.5.1}Server class diagram}{11}
+\contentsline {subsection}{\numberline {0.5.2}Client class diagram}{13}
+\contentsline {subsection}{\numberline {0.5.3}Interaction diagrams}{13}
+\contentsline {subsection}{\numberline {0.5.4}Description of classes and responsibilities}{13}
+\contentsline {paragraph}{Server Controller}{13}
+\contentsline {paragraph}{PersistentStorage}{13}
+\contentsline {paragraph}{Model}{13}
+\contentsline {paragraph}{Service}{14}
+\contentsline {paragraph}{Client Controller}{14}
+\contentsline {paragraph}{MainWindow}{14}
+\contentsline {paragraph}{Session}{14}
+\contentsline {paragraph}{Security}{14}
+\contentsline {subsection}{\numberline {0.5.5}Use of design patterns}{14}
+\contentsline {subsubsection}{Component Design Patterns}{14}
+\contentsline {paragraph}{Singleton}{14}
+\contentsline {paragraph}{Composite}{14}
+\contentsline {paragraph}{Facade}{14}
+\contentsline {paragraph}{Database Mapper Pattern}{14}
+\contentsline {section}{\numberline {0.6}Architectural Design}{14}
+\contentsline {subsection}{\numberline {0.6.1}Architectural Patterns}{14}
+\contentsline {subsubsection}{Model View Controller}{14}
+\contentsline {subsubsection}{Client-Server}{15}
+\contentsline {subsubsection}{Quality scenarios }{15}
+\contentsline {paragraph}{Share document}{15}
+\contentsline {paragraph}{Create document}{15}
+\contentsline {paragraph}{Save document offline}{15}
+\contentsline {paragraph}{Create folder}{15}
+\contentsline {subsection}{\numberline {0.6.2}Factor tables}{15}
+\contentsline {subsection}{\numberline {0.6.3}Architectural Views}{15}
+\contentsline {subsubsection}{Logical View}{16}
+\contentsline {subsubsection}{Physical View}{17}
+\contentsline {subsubsection}{Use Case View}{18}
+\contentsline {paragraph}{Operation Contracts}{18}
+\contentsline {section}{\numberline {0.7}Testing}{18}
+\contentsline {subsection}{\numberline {0.7.1}Testing Objective}{18}
+\contentsline {subsection}{\numberline {0.7.2}Unit testing}{18}
+\contentsline {subsubsection}{Whitebox testing}{19}
+\contentsline {subsection}{\numberline {0.7.3}System and Integration testing}{19}
+\contentsline {subsection}{\numberline {0.7.4}Testing results}{19}
+\contentsline {section}{\numberline {0.8}Scrum}{20}
+\contentsline {subsection}{\numberline {0.8.1}Definition of done}{20}
+\contentsline {subsection}{\numberline {0.8.2}Initial Product Backlog}{20}
+\contentsline {subsection}{\numberline {0.8.3}Sprints}{21}
+\contentsline {subsubsection}{Sprint 1}{21}
+\contentsline {paragraph}{Sprint Planning Meeting}{21}
+\contentsline {paragraph}{Sprint Backlog}{21}
+\contentsline {paragraph}{Burndown Chart}{21}
+\contentsline {paragraph}{Daily Scrums}{21}
+\contentsline {paragraph}{Sprint Review}{21}
+\contentsline {paragraph}{Sprint Retrospective}{21}
+\contentsline {subparagraph}{Internal}{21}
+\contentsline {subparagraph}{External}{21}
+\contentsline {paragraph}{Updated Product Backlog}{22}
+\contentsline {subsubsection}{Sprint 2}{22}
+\contentsline {paragraph}{Sprint Planning Meeting}{22}
+\contentsline {paragraph}{Sprint Backlog}{22}
+\contentsline {paragraph}{Burndown Chart}{22}
+\contentsline {paragraph}{Sprint Review}{22}
+\contentsline {paragraph}{Sprint Retrospective}{22}
+\contentsline {subparagraph}{Internal}{22}
+\contentsline {subparagraph}{External}{22}
+\contentsline {paragraph}{Updated Product Backlog}{22}
+\contentsline {subsection}{\numberline {0.8.4}Scrum Masters list of impediments}{22}
+\contentsline {subsection}{\numberline {0.8.5}Overall Sprint Timeline}{22}
+\contentsline {section}{\numberline {0.9}Conclusion}{23}
+\contentsline {chapter}{\numberline {A}Textual Artifacts}{25}
+\contentsline {section}{\numberline {A.1}User manual}{25}
+\contentsline {subsection}{\numberline {A.1.1}Website}{25}
+\contentsline {subsubsection}{How to log in}{25}
+\contentsline {subsubsection}{How to create a document}{25}
+\contentsline {subsubsection}{How to view an existing document}{25}
+\contentsline {subsubsection}{How to edit a document}{25}
+\contentsline {subsubsection}{How to delete a document}{25}
+\contentsline {subsubsection}{How to create a folder}{25}
+\contentsline {subsubsection}{How to move a document}{26}
+\contentsline {subsubsection}{How to view the history of changes to a document}{26}
+\contentsline {subsubsection}{How to share a document with another user}{26}
+\contentsline {subsubsection}{How to insert an image in a document}{26}
+\contentsline {subsection}{\numberline {A.1.2}Client}{26}
+\contentsline {subsubsection}{How to log in}{26}
+\contentsline {subsubsection}{How to move a document}{26}
+\contentsline {subsubsection}{How to save a document offline}{26}
+\contentsline {subsubsection}{How to download all documents and editions of documents}{26}
+\contentsline {section}{\numberline {A.2}Technical Memos}{26}
+\contentsline {subsubsection}{2012-11-27 UI:}{26}
+\contentsline {subsubsection}{2012-11-29 Images:}{27}
+\contentsline {subsubsection}{2012-11-30 Database design}{27}
+\contentsline {subsubsection}{2012-12-05 Document revision server format}{27}
+\contentsline {section}{\numberline {A.3}Operation Contracts}{27}
+\contentsline {subparagraph}{OC 1}{27}
+\contentsline {subparagraph}{OC 2}{27}
+\contentsline {subparagraph}{OC 3}{28}
+\contentsline {subparagraph}{OC 4}{28}
+\contentsline {subparagraph}{OC 5}{28}
+\contentsline {subparagraph}{OC 6}{28}
+\contentsline {subparagraph}{OC 7}{29}
+\contentsline {subparagraph}{OC 8}{29}
+\contentsline {chapter}{\numberline {B}Diagrams}{30}
+\contentsline {section}{\numberline {B.1}System sequence diagrams}{30}
+\contentsline {section}{\numberline {B.2}Factor tables}{31}
+\contentsline {section}{\numberline {B.3}Sprint Backlogs}{35}
+\contentsline {section}{\numberline {B.4}Interaction diagrams}{39}

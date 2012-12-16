@@ -29,7 +29,6 @@ namespace Server
             return instance;
         }
 
-
         public String GetDocumentPath(int userId, int folderId)
         {
             StringBuilder sb = new StringBuilder();
@@ -51,6 +50,12 @@ namespace Server
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Saves a file to the server file system as a txt file with the specified content and the documentId as metadata.
+        /// </summary>
+        /// <param name="filepath">The file path to point to the document</param>
+        /// <param name="content">The textual content of the document</param>
+        /// <param name="documentId">The docId to place in metadata</param>
         public void WriteToFile(String filepath, String content, int documentId)
         {
             int directoryLength = filepath.LastIndexOf("\\");
@@ -70,21 +75,40 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Creates a file at the location that the path specifies. The file to be created is the end of the file path.
+        /// </summary>
+        /// <param name="filePath">The file path specifying the location and the file name</param>
         public void CreateFile(String filePath)
         {
             File.Create(filePath).Close();
         }
-
+        
+        /// <summary>
+        /// Creates a directory at the location that the path specifies.
+        /// </summary>
+        /// <param name="directoryPath">The directory path specifying the location and the directory name</param>
         public void CreateDirectory(String directoryPath)
         {
             Directory.CreateDirectory(directoryPath);
         }
-
+        
+        /// <summary>
+        /// Gets the textual content of the file specified with the file name at in the directory specified by the directory path.
+        /// </summary>
+        /// <param name="directoryPath">The path specifying the directory</param>
+        /// <param name="filename">The file to get content from</param>
+        /// <returns></returns>
         public String GetDocumentContent(String directoryPath, String filename)
         {
             return GetDocumentContent(directoryPath + "\\" + filename + ".txt");
         }
 
+        /// <summary>
+        /// Gets the textual content of the file specified with the filepath.
+        /// </summary>
+        /// <param name="filepath">The filepath pointing to the file</param>
+        /// <returns>The textual content of the file</returns>
         public string GetDocumentContent(string filepath)
         {
             String content = null;
