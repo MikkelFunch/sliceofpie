@@ -480,9 +480,14 @@ namespace Web_Solution.ServiceReference {
         string EndGetLatestDocumentContent(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        System.IAsyncResult BeginSyncDocument(int editorId, int documentId, string filepath, string content, string title, string original, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginSyncDocument(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> EndSyncDocument(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/SyncDocumentWeb", ReplyAction="http://tempuri.org/IService1/SyncDocumentWebResponse")]
+        System.IAsyncResult BeginSyncDocumentWeb(int editorId, int documentId, string filepath, string metadata, string title, string pureContent, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> EndSyncDocumentWeb(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         System.IAsyncResult BeginGetDocumentId(int userId, string title, System.AsyncCallback callback, object asyncState);
@@ -513,6 +518,11 @@ namespace Web_Solution.ServiceReference {
         System.IAsyncResult BeginGetAllFilesAndFoldersByUserId(int userId, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetLatestPureDocumentContent", ReplyAction="http://tempuri.org/IService1/GetLatestPureDocumentContentResponse")]
+        System.IAsyncResult BeginGetLatestPureDocumentContent(int documentId, System.AsyncCallback callback, object asyncState);
+        
+        string EndGetLatestPureDocumentContent(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -768,6 +778,25 @@ namespace Web_Solution.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class SyncDocumentWebCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public SyncDocumentWebCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class GetDocumentIdCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -838,6 +867,25 @@ namespace Web_Solution.ServiceReference {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetLatestPureDocumentContentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetLatestPureDocumentContentCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public string Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
             }
         }
     }
@@ -954,6 +1002,12 @@ namespace Web_Solution.ServiceReference {
         
         private System.Threading.SendOrPostCallback onSyncDocumentCompletedDelegate;
         
+        private BeginOperationDelegate onBeginSyncDocumentWebDelegate;
+        
+        private EndOperationDelegate onEndSyncDocumentWebDelegate;
+        
+        private System.Threading.SendOrPostCallback onSyncDocumentWebCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetDocumentIdDelegate;
         
         private EndOperationDelegate onEndGetDocumentIdDelegate;
@@ -989,6 +1043,12 @@ namespace Web_Solution.ServiceReference {
         private EndOperationDelegate onEndGetAllFilesAndFoldersByUserIdDelegate;
         
         private System.Threading.SendOrPostCallback onGetAllFilesAndFoldersByUserIdCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetLatestPureDocumentContentDelegate;
+        
+        private EndOperationDelegate onEndGetLatestPureDocumentContentDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetLatestPureDocumentContentCompletedDelegate;
         
         private BeginOperationDelegate onBeginOpenDelegate;
         
@@ -1079,6 +1139,8 @@ namespace Web_Solution.ServiceReference {
         
         public event System.EventHandler<SyncDocumentCompletedEventArgs> SyncDocumentCompleted;
         
+        public event System.EventHandler<SyncDocumentWebCompletedEventArgs> SyncDocumentWebCompleted;
+        
         public event System.EventHandler<GetDocumentIdCompletedEventArgs> GetDocumentIdCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> AddUserDocumentCompleted;
@@ -1090,6 +1152,8 @@ namespace Web_Solution.ServiceReference {
         public event System.EventHandler<GetAllDocumentRevisionsByDocumentIdCompletedEventArgs> GetAllDocumentRevisionsByDocumentIdCompleted;
         
         public event System.EventHandler<GetAllFilesAndFoldersByUserIdCompletedEventArgs> GetAllFilesAndFoldersByUserIdCompleted;
+        
+        public event System.EventHandler<GetLatestPureDocumentContentCompletedEventArgs> GetLatestPureDocumentContentCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -1897,8 +1961,8 @@ namespace Web_Solution.ServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginSyncDocument(int editorId, int documentId, string filepath, string content, string title, string original, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginSyncDocument(editorId, documentId, filepath, content, title, original, callback, asyncState);
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginSyncDocument(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginSyncDocument(editorId, documentId, filepath, fileContent, title, pureContent, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1910,10 +1974,10 @@ namespace Web_Solution.ServiceReference {
             int editorId = ((int)(inValues[0]));
             int documentId = ((int)(inValues[1]));
             string filepath = ((string)(inValues[2]));
-            string content = ((string)(inValues[3]));
+            string fileContent = ((string)(inValues[3]));
             string title = ((string)(inValues[4]));
-            string original = ((string)(inValues[5]));
-            return ((Web_Solution.ServiceReference.IService1)(this)).BeginSyncDocument(editorId, documentId, filepath, content, title, original, callback, asyncState);
+            string pureContent = ((string)(inValues[5]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginSyncDocument(editorId, documentId, filepath, fileContent, title, pureContent, callback, asyncState);
         }
         
         private object[] OnEndSyncDocument(System.IAsyncResult result) {
@@ -1929,11 +1993,11 @@ namespace Web_Solution.ServiceReference {
             }
         }
         
-        public void SyncDocumentAsync(int editorId, int documentId, string filepath, string content, string title, string original) {
-            this.SyncDocumentAsync(editorId, documentId, filepath, content, title, original, null);
+        public void SyncDocumentAsync(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent) {
+            this.SyncDocumentAsync(editorId, documentId, filepath, fileContent, title, pureContent, null);
         }
         
-        public void SyncDocumentAsync(int editorId, int documentId, string filepath, string content, string title, string original, object userState) {
+        public void SyncDocumentAsync(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent, object userState) {
             if ((this.onBeginSyncDocumentDelegate == null)) {
                 this.onBeginSyncDocumentDelegate = new BeginOperationDelegate(this.OnBeginSyncDocument);
             }
@@ -1947,9 +2011,65 @@ namespace Web_Solution.ServiceReference {
                         editorId,
                         documentId,
                         filepath,
-                        content,
+                        fileContent,
                         title,
-                        original}, this.onEndSyncDocumentDelegate, this.onSyncDocumentCompletedDelegate, userState);
+                        pureContent}, this.onEndSyncDocumentDelegate, this.onSyncDocumentCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginSyncDocumentWeb(int editorId, int documentId, string filepath, string metadata, string title, string pureContent, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginSyncDocumentWeb(editorId, documentId, filepath, metadata, title, pureContent, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> Web_Solution.ServiceReference.IService1.EndSyncDocumentWeb(System.IAsyncResult result) {
+            return base.Channel.EndSyncDocumentWeb(result);
+        }
+        
+        private System.IAsyncResult OnBeginSyncDocumentWeb(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int editorId = ((int)(inValues[0]));
+            int documentId = ((int)(inValues[1]));
+            string filepath = ((string)(inValues[2]));
+            string metadata = ((string)(inValues[3]));
+            string title = ((string)(inValues[4]));
+            string pureContent = ((string)(inValues[5]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginSyncDocumentWeb(editorId, documentId, filepath, metadata, title, pureContent, callback, asyncState);
+        }
+        
+        private object[] OnEndSyncDocumentWeb(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndSyncDocumentWeb(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnSyncDocumentWebCompleted(object state) {
+            if ((this.SyncDocumentWebCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.SyncDocumentWebCompleted(this, new SyncDocumentWebCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void SyncDocumentWebAsync(int editorId, int documentId, string filepath, string metadata, string title, string pureContent) {
+            this.SyncDocumentWebAsync(editorId, documentId, filepath, metadata, title, pureContent, null);
+        }
+        
+        public void SyncDocumentWebAsync(int editorId, int documentId, string filepath, string metadata, string title, string pureContent, object userState) {
+            if ((this.onBeginSyncDocumentWebDelegate == null)) {
+                this.onBeginSyncDocumentWebDelegate = new BeginOperationDelegate(this.OnBeginSyncDocumentWeb);
+            }
+            if ((this.onEndSyncDocumentWebDelegate == null)) {
+                this.onEndSyncDocumentWebDelegate = new EndOperationDelegate(this.OnEndSyncDocumentWeb);
+            }
+            if ((this.onSyncDocumentWebCompletedDelegate == null)) {
+                this.onSyncDocumentWebCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnSyncDocumentWebCompleted);
+            }
+            base.InvokeAsync(this.onBeginSyncDocumentWebDelegate, new object[] {
+                        editorId,
+                        documentId,
+                        filepath,
+                        metadata,
+                        title,
+                        pureContent}, this.onEndSyncDocumentWebDelegate, this.onSyncDocumentWebCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2234,6 +2354,52 @@ namespace Web_Solution.ServiceReference {
             }
             base.InvokeAsync(this.onBeginGetAllFilesAndFoldersByUserIdDelegate, new object[] {
                         userId}, this.onEndGetAllFilesAndFoldersByUserIdDelegate, this.onGetAllFilesAndFoldersByUserIdCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginGetLatestPureDocumentContent(int documentId, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetLatestPureDocumentContent(documentId, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        string Web_Solution.ServiceReference.IService1.EndGetLatestPureDocumentContent(System.IAsyncResult result) {
+            return base.Channel.EndGetLatestPureDocumentContent(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetLatestPureDocumentContent(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int documentId = ((int)(inValues[0]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginGetLatestPureDocumentContent(documentId, callback, asyncState);
+        }
+        
+        private object[] OnEndGetLatestPureDocumentContent(System.IAsyncResult result) {
+            string retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetLatestPureDocumentContent(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetLatestPureDocumentContentCompleted(object state) {
+            if ((this.GetLatestPureDocumentContentCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetLatestPureDocumentContentCompleted(this, new GetLatestPureDocumentContentCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetLatestPureDocumentContentAsync(int documentId) {
+            this.GetLatestPureDocumentContentAsync(documentId, null);
+        }
+        
+        public void GetLatestPureDocumentContentAsync(int documentId, object userState) {
+            if ((this.onBeginGetLatestPureDocumentContentDelegate == null)) {
+                this.onBeginGetLatestPureDocumentContentDelegate = new BeginOperationDelegate(this.OnBeginGetLatestPureDocumentContent);
+            }
+            if ((this.onEndGetLatestPureDocumentContentDelegate == null)) {
+                this.onEndGetLatestPureDocumentContentDelegate = new EndOperationDelegate(this.OnEndGetLatestPureDocumentContent);
+            }
+            if ((this.onGetLatestPureDocumentContentCompletedDelegate == null)) {
+                this.onGetLatestPureDocumentContentCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetLatestPureDocumentContentCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetLatestPureDocumentContentDelegate, new object[] {
+                        documentId}, this.onEndGetLatestPureDocumentContentDelegate, this.onGetLatestPureDocumentContentCompletedDelegate, userState);
         }
         
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
@@ -2540,14 +2706,14 @@ namespace Web_Solution.ServiceReference {
                 return _result;
             }
             
-            public System.IAsyncResult BeginSyncDocument(int editorId, int documentId, string filepath, string content, string title, string original, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginSyncDocument(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[6];
                 _args[0] = editorId;
                 _args[1] = documentId;
                 _args[2] = filepath;
-                _args[3] = content;
+                _args[3] = fileContent;
                 _args[4] = title;
-                _args[5] = original;
+                _args[5] = pureContent;
                 System.IAsyncResult _result = base.BeginInvoke("SyncDocument", _args, callback, asyncState);
                 return _result;
             }
@@ -2555,6 +2721,24 @@ namespace Web_Solution.ServiceReference {
             public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> EndSyncDocument(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> _result = ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>)(base.EndInvoke("SyncDocument", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginSyncDocumentWeb(int editorId, int documentId, string filepath, string metadata, string title, string pureContent, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[6];
+                _args[0] = editorId;
+                _args[1] = documentId;
+                _args[2] = filepath;
+                _args[3] = metadata;
+                _args[4] = title;
+                _args[5] = pureContent;
+                System.IAsyncResult _result = base.BeginInvoke("SyncDocumentWeb", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> EndSyncDocumentWeb(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>> _result = ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>)(base.EndInvoke("SyncDocumentWeb", _args, result)));
                 return _result;
             }
             
@@ -2636,6 +2820,19 @@ namespace Web_Solution.ServiceReference {
             public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> _result = ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>>)(base.EndInvoke("GetAllFilesAndFoldersByUserId", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetLatestPureDocumentContent(int documentId, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = documentId;
+                System.IAsyncResult _result = base.BeginInvoke("GetLatestPureDocumentContent", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public string EndGetLatestPureDocumentContent(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                string _result = ((string)(base.EndInvoke("GetLatestPureDocumentContent", _args, result)));
                 return _result;
             }
         }

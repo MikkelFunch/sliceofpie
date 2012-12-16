@@ -27,7 +27,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="3*" />
-                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <!-- Explorer grid components -->
 
@@ -81,7 +80,7 @@
 
             <!-- Buttons to the left side-->
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Online" VerticalAlignment="Center" Margin="8,0,0,0" Name="textBlockOnline">
+                <TextBlock Text="Offline" VerticalAlignment="Center" Margin="8,0,0,0" Name="textBlockOnline">
                     <!--<Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4" />-->
                 </TextBlock>
             </StackPanel>

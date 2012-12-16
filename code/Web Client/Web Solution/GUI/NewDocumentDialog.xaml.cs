@@ -31,7 +31,7 @@ namespace Web_Solution.GUI
             if (textBoxTitle.Text.Length > 0)
             {
                 DocumentTitle = textBoxTitle.Text;
-                this.Close();
+                this.DialogResult = true;
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Web_Solution.GUI
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

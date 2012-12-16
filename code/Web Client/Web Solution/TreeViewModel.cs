@@ -32,15 +32,20 @@ namespace Web_Solution
         {
             items.Clear();
             string[][] folders = foldersAndFiles[0];
+            string[][] files = foldersAndFiles[1];
 
             foreach (string[] folder in folders)
             {
                 InsertFolder(folder, items);
             }
+            foreach (string[] file in files)
+            {
+                InsertDocument(file, items);
+            }
         }
 
         /// <summary>
-        /// 0:id, 1:name, 2:parentfodlerid
+        /// 0:id, 1:name, 2:parentfolderid
         /// </summary>
         /// <param name="folders"></param>
         /// <param name="items"></param>
@@ -52,7 +57,7 @@ namespace Web_Solution
 
             foreach (TreeViewItem item in items)
             {
-                if ((int)((object[])item.Tag)[0] == int.Parse(folder[2]))
+                if (int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(folder[2]))
                 {//add to specified folder
                     item.Items.Add(folderItem);
                     return;
@@ -63,7 +68,7 @@ namespace Web_Solution
         }
 
         /// <summary>
-        /// document id,folderid,name
+        /// 0:document id,1:folderid,2:name
         /// </summary>
         /// <param name="document"></param>
         /// <param name="items"></param>
@@ -72,11 +77,11 @@ namespace Web_Solution
             TreeViewItem documentItem = new TreeViewItem();
             documentItem.Header = document[2];
             documentItem.Tag = new object[] { document[0], document[1], false }; //0:document id, 1:folderid,2false->not a folder
-            documentItem.MouseLeftButtonDown += new MouseButtonEventHandler(documentItem_MouseLeftButtonDown);
-
+            documentItem.MouseLeftButtonUp += new MouseButtonEventHandler(documentItem_MouseLeftButtonUp);
+            
             foreach (TreeViewItem item in items)
             {       //check if the item is a folder             check if the document item lies in the folder
-                if ((bool)((object[])item.Tag)[2] == true && (int)((object[])item.Tag)[0] == int.Parse(document[1]))
+                if ((bool)((object[])item.Tag)[2] == true && int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(document[1]))
                 {
                     item.Items.Add(documentItem);
                     return;
@@ -87,42 +92,50 @@ namespace Web_Solution
             items.Add(documentItem);
         }
 
-        public void documentItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void documentItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             bool doubleClick = MouseButtonHelper.IsDoubleClick(sender, e);
             if (doubleClick)
             {
                 TreeViewItem item = (TreeViewItem)sender;
-                Controller.GetInstance().SetOpenDocument((int)((object[])item.Tag)[0], item.Header.ToString());
+                Controller.GetInstance().SetOpenDocument(int.Parse(((object[])item.Tag)[0].ToString()), item.Header.ToString(),int.Parse(((object[])item.Tag)[1].ToString()));
                 //open file in view
             }
         }
 
-        /*private void OpenDocment(object sender, RoutedEventArgs e)
+        public string GetRelativePath(int folderId, ItemCollection items)
         {
-            TreeViewItem item = (TreeViewItem)sender;
-            String text = File.ReadAllText(item.Tag.ToString()); //IOException, if file is used by another program
-            Controller.GetInstance().SetOpenDocument(text, item.Header.ToString(), //item.Tag.ToString());
-        }*/
-
-        /*public void AddItem(string header, object tag, ItemCollection items, bool folder)
-        {
-            TreeViewItem subItem = new TreeViewItem();
-            subItem.Header = header;
-            subItem.Tag = tag;
-
-            if (folder)
+            StringBuilder relativePath = new StringBuilder();
+            
+            while (folderId != Session.GetInstance().RootFolderID)
             {
-                subItem.Items.Add(nullItem);
-                subItem.Expanded += new RoutedEventHandler(FolderExpanded);
-            }
-            else
-            {
-                subItem.MouseLeftButtonDown += new MouseButtonEventHandler(OpenDocment);
+                TreeViewItem folderItem = GetFolderTag(folderId,items);
+                relativePath.Insert(0, "\\" + folderItem.Header);
+                folderId = (int)((object[])folderItem.Tag)[1];
             }
 
-            items.Add(subItem);
-        }*/
+            relativePath.Append(Session.GetInstance().Email + "\\");
+            return relativePath.ToString();
+        }
+
+        private TreeViewItem GetFolderTag(int folderID, ItemCollection items)
+        {
+            foreach (TreeViewItem item in items)
+            {
+                //is the item a folder
+                if ((bool)((object[])item.Tag)[2] == true)
+                {
+                    //is it the folder with given id
+                    if (int.Parse(((object[])item.Tag)[0].ToString()) == folderID)
+                    {
+                        //return the tag
+                        return item;
+                        
+                    }
+                }
+            }
+            return null;
+        }
     }
 
     public static class MouseButtonHelper

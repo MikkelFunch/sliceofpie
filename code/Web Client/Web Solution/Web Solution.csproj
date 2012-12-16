@@ -77,9 +77,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller.cs" />
-    <Compile Include="GUI\ChildWindow1.xaml.cs">
-      <DependentUpon>ChildWindow1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ImageURLDialog.xaml.cs">
       <DependentUpon>ImageURLDialog.xaml</DependentUpon>
     </Compile>
@@ -123,10 +120,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="GUI\ChildWindow1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GUI\ImageURLDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
