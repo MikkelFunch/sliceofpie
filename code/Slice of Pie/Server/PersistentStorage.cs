@@ -119,7 +119,7 @@ namespace Server
         /// Gets a user from the database
         /// </summary>
         /// <param name="email">The email of the user</param>
-        /// <param name="pass">The md5'ed password of the user</param>
+        /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
         public int GetUserByEmailAndPass(String email, String pass)
         {
@@ -275,6 +275,11 @@ namespace Server
             return dao.GetDocumentRevisions(documentId);
         }
 
+        /// <summary>
+        /// Get all documentrevisions with the given documentId
+        /// </summary>
+        /// <param name="documentId">The documentId</param>
+        /// <returns>All documentrevisions with the given documentId</returns>
         public List<Documentrevision> GetLatestDocumentRevisions(int documentId)
         {
             return dao.GetLatestDocumentRevisions(documentId);
@@ -316,6 +321,12 @@ namespace Server
             return documentContent;
         }
 
+        /// <summary>
+        /// Check if a folder exists
+        /// </summary>
+        /// <param name="parentFolderId">The id of the parentfolder</param>
+        /// <param name="name">The name of the folder</param>
+        /// <returns>The id of the folder if it exists, else -1</returns>
         public int FolderExists(int parentFolderId, string name)
         {
             return dao.FolderExists(parentFolderId, name);
@@ -350,6 +361,11 @@ namespace Server
             return parentFolderId;
         }
 
+        /// <summary>
+        /// Adds a userdocument in the givens users root folder
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
         public void AddUserDocumentInRoot(int userId, int documentId)
         {
             dao.AddUserDocumentInRoot(userId, documentId);
