@@ -89,6 +89,7 @@ namespace Server
                 User user = new User();
                 user.email = email;
                 user.password = password;
+                //Add a root folder named "root"
                 Folder folder = new Folder();
                 folder.name = "root";
                 user.Folder = folder;
@@ -179,10 +180,10 @@ namespace Server
         }
 
         /// <summary>
-        /// Retrieve user from database using email and md5 encrypted password
+        /// Retrieve user from database using email and sha1 encrypted password
         /// </summary>
         /// <param name="email">user email</param>
-        /// <param name="pass">corresponding password encrypted using md5</param>
+        /// <param name="pass">corresponding password encrypted using sha1</param>
         /// <returns>return null if user does not exist and the corresponding User object if the user exists</returns>
         public int GetUserByEmailAndPass(String email, String pass)
         {
@@ -192,12 +193,11 @@ namespace Server
                              where u.email == email && u.password == pass
                              select u.id;
 
-                int returnID = -1;
                 if (userid.Count<int>() > 0)
                 {
-                    returnID = userid.First<int>();
+                    return userid.First<int>();
                 }
-                return returnID;
+                return -1;
             }
         }
 
@@ -497,7 +497,12 @@ namespace Server
             }
         }
 
-
+        /// <summary>
+        /// Gets a document id by the id of the creator and the title of the document
+        /// </summary>
+        /// <param name="userId">the id of the user</param>
+        /// <param name="title">the title of the document</param>
+        /// <returns>The id of the document with the given creator and title</returns>
         public int GetDocumentId(int userId, string title)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -509,6 +514,12 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets the latest documentrevision of a user
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The latest documentrevision by that user</returns>
         public Documentrevision GetLatestDocumentRevisionByUserId(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -525,6 +536,12 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Check if a folder exists
+        /// </summary>
+        /// <param name="parentFolderId">The id of the parentfolder</param>
+        /// <param name="name">The name of the folder</param>
+        /// <returns>The id of the folder if it exists, else -1</returns>
         public int FolderExists(int parentFolderId, string name)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
@@ -540,6 +557,12 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Alters a userdocument, effectively moving the document from one folder to another
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
+        /// <param name="filepath">the path to the document</param>
         public void AlterUserDocument(int userId, int documentId, String filepath)
         {
             int folderId = GetFolderIdByDirectoryPath(userId, filepath);
@@ -554,6 +577,12 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets the id of the folder by a directory path
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="directoryPath">The path of the directory</param>
+        /// <returns>The id of the folder</returns>
         private int GetFolderIdByDirectoryPath(int userId, String directoryPath)
         {
             directoryPath += "\\";
@@ -579,6 +608,12 @@ namespace Server
             return parentFolderId;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public String GetFullDirectoryPath(int userId, String filepath)
         {
             User user = GetUserById(userId);
@@ -596,6 +631,11 @@ namespace Server
             return directoryPath;
         }
 
+        /// <summary>
+        /// Adds a userdocument in the givens users root folder
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
         public void AddUserDocumentInRoot(int userId, int documentId)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())

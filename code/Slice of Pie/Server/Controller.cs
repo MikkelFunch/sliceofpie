@@ -98,7 +98,7 @@ namespace Server
         /// Gets a user from the database
         /// </summary>
         /// <param name="email">The email of the user</param>
-        /// <param name="pass">The md5'ed password of the user</param>
+        /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
         public int GetUserByEmailAndPass(String email, String pass)
         {
@@ -225,6 +225,7 @@ namespace Server
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
             {
+                //Check if the document has any revisions
                 bool hasRevisions = ps.DocumentHasRevision(documentId);
 
                 if (!hasRevisions)
@@ -233,10 +234,16 @@ namespace Server
                     return ps.SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
                 }
 
+                //Get the latest documentrevision by the user
                 Documentrevision latestUserDocumentRevision = ps.GetLatestDocumentRevisionByUserId(editorId, documentId);
+                //Get the latest documentrevision on the server
                 Documentrevision latestServerDocumentRevision = ps.GetLatestDocumentRevisions(documentId)[0];
+                //Get the content of the latest documentrevision by the user
                 String latestUserDocumentContent = ps.GetDocumentRevisionContent(latestUserDocumentRevision);
+                //Get the content of the latest documentrevision on the server
                 String latestServerDocumentContent = ps.GetDocumentRevisionContent(latestServerDocumentRevision);
+
+                //Check if the two contents are equal. If they are equal, there's no conflict
                 if (latestUserDocumentContent == latestServerDocumentContent)
                 {
                     //No conflict
@@ -248,9 +255,9 @@ namespace Server
                     return Model.GetInstance().SyncConflict(documentId, latest);
                 }
             }
-            //No document found with the given id.
             else
             {
+                //No document found with the given id.
                 ps.AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
                 return null;
             }
@@ -278,21 +285,42 @@ namespace Server
             PersistentStorage.GetInstance().AddUserDocument(userId, documentId, filepath);
         }
 
+        /// <summary>
+        /// Get the content of the latest documentrevision by a documentId
+        /// </summary>
+        /// <param name="documentId">The id of the document</param>
+        /// <returns>The content of the latest documentrevision</returns>
         public string GetLatestDocumentContent(int documentId)
         {
             return PersistentStorage.GetInstance().GetLatestDocumentContent(documentId);
         }
 
+        /// <summary>
+        /// Check if a folder exists
+        /// </summary>
+        /// <param name="parentFolderId">The id of the parentfolder</param>
+        /// <param name="name">The name of the folder</param>
+        /// <returns>The id of the folder if it exists, else -1</returns>
         public int FolderExists(int parentFolderId, string name)
         {
             return PersistentStorage.GetInstance().FolderExists(parentFolderId, name);
         }
 
+        /// <summary>
+        /// Adds a userdocument in the givens users root folder
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <param name="documentId">The id of the document</param>
         public void AddUserDocumentInRoot(int userId, int documentId)
         {
             PersistentStorage.GetInstance().AddUserDocumentInRoot(userId, documentId);
         }
 
+        /// <summary>
+        /// Get all documentrevisions with the given documentId
+        /// </summary>
+        /// <param name="documentId">The documentId</param>
+        /// <returns>All documentrevisions with the given documentId</returns>
         public List<Documentrevision> GetAllDocumentRevisionsByDocumentId(int documentId)
         {
             return PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId);
