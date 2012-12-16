@@ -1,0 +1,14 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces Domain model }}{8}
+\contentsline {figure}{\numberline {2}{\ignorespaces Class diagram modeling the server without PersistentStorage}}{12}
+\contentsline {figure}{\numberline {3}{\ignorespaces Class diagram modeling the PersistentStorage component}}{13}
+\contentsline {figure}{\numberline {4}{\ignorespaces Class diagram modeling the client}}{14}
+\contentsline {figure}{\numberline {5}{\ignorespaces Package diagram}}{17}
+\contentsline {figure}{\numberline {6}{\ignorespaces Deployment diagram}}{18}
+\contentsline {figure}{\numberline {7}{\ignorespaces Use case diagram}}{19}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {B.1}{\ignorespaces System sequence diagram of Create Document}}{31}
+\contentsline {figure}{\numberline {B.2}{\ignorespaces System sequence diagram of Delete Document}}{31}
+\contentsline {figure}{\numberline {B.3}{\ignorespaces System sequence diagram of Edit Document}}{31}
+\contentsline {figure}{\numberline {B.4}{\ignorespaces System sequence diagram of Share Document}}{32}
+\contentsline {figure}{\numberline {B.5}{\ignorespaces System sequence diagram of Synchronize Document}}{32}

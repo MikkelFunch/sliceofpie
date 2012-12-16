@@ -272,5 +272,16 @@ namespace WcfService
         {
             return Server.Controller.GetInstance().GetLatestPureDocumentContent(documentId);
         }
+
+        /// <summary>
+        /// Share a document through the web interface
+        /// </summary>
+        /// <param name="documentId">The id of the document that's been shared</param>
+        /// <param name="ownerId">The id of the user that shares the document</param>
+        /// <param name="recieverId">the id of the user that is being shared the document</param>
+        public void ShareDocumentWeb(int documentId, int ownerId, int recieverId)
+        {
+            Server.Controller.GetInstance().ShareDocumentWeb(documentId, ownerId, recieverId);
+        }
     }
 }

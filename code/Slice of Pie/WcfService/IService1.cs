@@ -89,6 +89,9 @@ namespace WcfService
 
         [OperationContract]
         String GetLatestPureDocumentContent(int documentId);
+
+        [OperationContract]
+        void ShareDocumentWeb(int documentId, int ownerId, int recieverId);
     }
 
     [DataContract]

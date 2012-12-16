@@ -22,7 +22,6 @@ namespace TestProject
             DAO.GetInstance().DeleteAllData();
         }
 
-
         /// <summary>
         /// Deletes all tuples in database.
         /// </summary>
@@ -31,7 +30,6 @@ namespace TestProject
         {
             //DAO.GetInstance().DeleteAllData();
         }
-
 
         /// <summary>
         ///Test for AddUser and GetUser. Has no explicit dependencies.
@@ -50,18 +48,19 @@ namespace TestProject
         /// <summary>
         /// Test for AddDocument and GetDocument. Has AddUserGetUserTest as dependency.
         /// </summary>
-        /*[TestMethod()]
+        [TestMethod()]
         public void AddDocumentGetDocumentTest()
         {
             string email = "test";
-            string password = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
+            string password = "169741432292041771551662876811521114523313515247187211";
+            int userId = DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUserById(userId);
             string name = "TestDoc";
-            PersistentStorage.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
-            Document d = PersistentStorage.GetInstance().GetDocument(name);
+            int documentId = DAO.GetInstance().AddDocument(name, u.id, "testcontent");
+            Document d = DAO.GetInstance().GetDocumentById(documentId);
+            Assert.AreEqual(d.creatorId, u.id);
             Assert.AreEqual(d.name, name);
-        }*/
+        }
 
         /// <summary>
         /// Test for AddFolder and GetFolder. Has AddUserGetUserTest as dependency.
@@ -70,96 +69,86 @@ namespace TestProject
         public void AddFolderGetFolderTest()
         {
             string email = "test";
-            string password = "098F6BCD4621D373CADE4E832627B4F6";
+            string password = "169741432292041771551662876811521114523313515247187211";
             DAO.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUserByEmail(email);
+            User u = DAO.GetInstance().GetUserByEmail(email);
             string name = "testFolder";
             int folderId = DAO.GetInstance().AddFolder(name, u.rootFolderId);
-            Folder f = PersistentStorage.GetInstance().GetFolder(folderId);
+            Folder f = DAO.GetInstance().GetFolder(folderId);
             Assert.AreEqual(f.name, name);
         }
 
         /// <summary>
-        /// Tests AddUserdocument and GetUserdocument. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
+        /// Test for AddUserDocumentInRoot and GetUserDocument. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
         /// </summary>
-        /*[TestMethod()]
-        public void AddUserdocumentGetUserdocumentTest()
-        {
-            ///User 1
-            string email1 = "test1";
-            string password1 = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email1, password1);
-            User u1 = PersistentStorage.GetInstance().GetUser(email1);
-            //User 2
-            string email2 = "test2";
-            string password2 = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email2, password2);
-            User u2 = PersistentStorage.GetInstance().GetUser(email2);
-            //Document
-            string name = "TestDoc";
-            PersistentStorage.GetInstance().AddDocument(name, u1.id, u1.rootFolderId, "testcontent");
-            Document d = PersistentStorage.GetInstance().GetDocument(name);
-            //Userdocument
-            PersistentStorage.GetInstance().AddUserDocument(u2.id, d.id, u2.rootFolderId);
-            Userdocument ud = PersistentStorage.GetInstance().GetUserdocument(u2.id, d.id);
-            Assert.AreEqual(ud.folderId, u2.rootFolderId);
-            Assert.AreEqual(ud.documentId, d.id);
-            Assert.AreEqual(ud.userId, u2.id);
-        }*/
-
-        /// <summary>
-        /// Tests AddDocumentRevision and GetDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
-        /// </summary>
-        /*[TestMethod()]
-        public void AddDocumentRevisionGetDocumentRevisionsTest()
+        [TestMethod()]
+        public void AddUserDocumentInRootGetUserDocument()
         {
             //User
-            string email = "test";
-            string password = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
+            string email1 = "test";
+            string password = "169741432292041771551662876811521114523313515247187211";
+            int userId1 = DAO.GetInstance().AddUser(email1, password);
+            string email2 = "test2";
+            int userId2 = DAO.GetInstance().AddUser(email2, password);
+            User user = DAO.GetInstance().GetUserById(userId2);
             //Document
-            string name = "TestDoc";
-            PersistentStorage.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
-            Document d = PersistentStorage.GetInstance().GetDocument(name);
-            //DocumentRevision
-            PersistentStorage.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
-            List<Documentrevision> drlist = PersistentStorage.GetInstance().GetDocumentRevisions(d.id);
-            Assert.AreEqual(drlist[0].documentId, d.id);
-            Assert.AreEqual(drlist[0].editorId, u.id);
-        }*/
+            int docId = DAO.GetInstance().AddDocument("title", userId1, "testpath");
+            //Userdocument
+            DAO.GetInstance().AddUserDocumentInRoot(userId2, docId);
+            Userdocument ud = DAO.GetInstance().GetUserdocument(userId2, docId);
+            Assert.AreEqual(ud.documentId, docId);
+            Assert.AreEqual(ud.folderId, user.rootFolderId);
+        }
+        
 
         /// <summary>
         /// Tests AddDocumentRevision and GetLatestDocumentRevision. Has AddUserGetUserTest and AddDocumentGetDocumentTest as dependency.
         /// </summary>
-        /*[TestMethod()]
-        public void GetLatestDocumentRevisionTest()
+        [TestMethod()]
+        public void GetDocumentRevisionsAddDocumentRevisionTest()
+        {
+            //User
+            string email1 = "test";
+            string password = "169741432292041771551662876811521114523313515247187211";
+            int userId = DAO.GetInstance().AddUser(email1, password);
+            //Document
+            string name = "TestDoc";
+            int docId = DAO.GetInstance().AddDocument(name, userId, "testpath");
+            //DocumentRevision
+            DAO.GetInstance().AddDocumentRevision(DateTime.MinValue, userId, docId, "testpath");
+            DAO.GetInstance().AddDocumentRevision(DateTime.UtcNow, userId, docId, "testpath");
+            List<Documentrevision> drlist = DAO.GetInstance().GetLatestDocumentRevisions(docId);
+            Documentrevision dr1 = drlist[0];
+            Documentrevision dr2 = drlist[1];
+            Assert.AreEqual(dr1.editorId, userId);
+            Assert.AreEqual(dr2.editorId, userId);
+            Assert.AreEqual(dr1.documentId, docId);
+            Assert.AreEqual(dr2.documentId, docId);
+        }
+
+        /// <summary>
+        /// Tests GetUsersLatestDocumentRevision. Has GetDocumentRevisionsAddDocumentRevisionTest as dependency.
+        /// </summary>
+        [TestMethod()]
+        public void GetUsersLatestDocumentRevision()
         {
             //User
             string email = "test";
-            string password = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUser(email);
-            string email1 = "test1";
-            string password1 = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email1, password1);
-            User u1 = PersistentStorage.GetInstance().GetUser(email);
-            string email2 = "test2";
-            string password2 = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email2, password2);
-            User u2 = PersistentStorage.GetInstance().GetUser(email);
+            string password = "169741432292041771551662876811521114523313515247187211";
+            int userId = DAO.GetInstance().AddUser(email, password);
             //Document
             string name = "TestDoc";
-            PersistentStorage.GetInstance().AddDocument(name, u.id, u.rootFolderId, "testcontent");
-            Document d = PersistentStorage.GetInstance().GetDocument(name);
+            int docId = DAO.GetInstance().AddDocument(name, userId, "testpath");
             //DocumentRevision
-            PersistentStorage.GetInstance().AddDocumentRevision(u.id, d.id, "Newtestcontent");
-            PersistentStorage.GetInstance().AddDocumentRevision(u1.id, d.id, "Newtestcontentedited");
-            PersistentStorage.GetInstance().AddDocumentRevision(u2.id, d.id, "Newtestcontenteditedagain");
-            List<Documentrevision> drlist = PersistentStorage.GetInstance().GetLatestDocumentRevisions(d.id);
-            Documentrevision dr = drlist[0];
-            Assert.AreEqual(dr.editorId, u2.id);
-        }*/
+            DAO.GetInstance().AddDocumentRevision(DateTime.UtcNow, userId, docId, "testpath");
+            DAO.GetInstance().AddDocumentRevision(DateTime.UtcNow, userId, docId, "testpath");
+            List<Documentrevision> drlist = DAO.GetInstance().GetLatestDocumentRevisions(docId);
+            Documentrevision dr1 = drlist[0];
+            Documentrevision dr2 = drlist[1];
+            Documentrevision dr = DAO.GetInstance().GetUsersLatestDocumentRevision(userId, docId);
+            Assert.AreEqual(dr.documentId, dr1.documentId);
+
+        }
 
         /// <summary>
         /// Tests GetFolderByParentId. Has AddUserGetUserTest and AddFolderGetFolder as dependency.
@@ -169,16 +158,16 @@ namespace TestProject
         {
             //User
             string email = "test";
-            string password = "098F6BCD4621D373CADE4E832627B4F6";
-            PersistentStorage.GetInstance().AddUser(email, password);
-            User u = PersistentStorage.GetInstance().GetUserByEmail(email);
+            string password = "169741432292041771551662876811521114523313515247187211";
+            DAO.GetInstance().AddUser(email, password);
+            User u = DAO.GetInstance().GetUserByEmail(email);
             //Folders
             string name1 = "testFolder1";
             string name2 = "testFolder2";
             string name3 = "testFolder3";
-            PersistentStorage.GetInstance().AddFolder(name1, u.rootFolderId);
-            PersistentStorage.GetInstance().AddFolder(name2, u.rootFolderId);
-            PersistentStorage.GetInstance().AddFolder(name3, u.rootFolderId);
+            DAO.GetInstance().AddFolder(name1, u.rootFolderId);
+            DAO.GetInstance().AddFolder(name2, u.rootFolderId);
+            DAO.GetInstance().AddFolder(name3, u.rootFolderId);
             List<Folder> folders = PersistentStorage.GetInstance().GetFoldersByRootId(u.rootFolderId);
             Assert.IsTrue(folders.Count == 3);
             Assert.IsTrue(name1.Equals(folders[0].name) || name1.Equals(folders[1].name) || name1.Equals(folders[2].name));
