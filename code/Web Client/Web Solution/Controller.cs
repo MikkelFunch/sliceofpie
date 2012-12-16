@@ -430,7 +430,11 @@ namespace Web_Solution
             }
         }
 
-        public void SaveMergedDocument(string fileXamlContent)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pureContent">Pure content of the text in the document</param>
+        public void SaveMergedDocument(string pureContent)
         {
             int documentid = session.CurrentDocumentID;
             int userid = session.UserID;
@@ -438,10 +442,8 @@ namespace Web_Solution
 
             String metadata = Metadata.GenerateMetadataString(documentid, userid, timestamp);
 
-            String content = metadata + fileXamlContent;
-
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.AddDocumentRevisionAsync(session.UserID, documentid, content);
+            proxy.AddDocumentRevisionWebAsync(documentid, session.UserID, pureContent, metadata);
             proxy.CloseAsync();
         }
 

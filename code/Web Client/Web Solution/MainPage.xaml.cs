@@ -145,11 +145,12 @@ namespace Web_Solution
         private void buttonSaveMergedDocument_Click(object sender, RoutedEventArgs e)
         {
             //Get textselection from richtextbox
-            TextSelection textSelection = richTextBox.Selection;
+            richTextBoxMerged.SelectAll();
+            TextSelection textSelection = richTextBoxMerged.Selection;
             //retrieve the xaml
-            String xamlFromRichTextBox = textSelection.Xaml;
-            controller.SaveMergedDocument(xamlFromRichTextBox);
-            richTextBox.Selection.Xaml = xamlFromRichTextBox;
+            String pureContent = textSelection.Text;
+            controller.SaveMergedDocument(pureContent);
+            richTextBox.Selection.Text = pureContent;
 
             richTextBox.Width = double.NaN;
             richTextBoxMerged.Visibility = Visibility.Collapsed;
