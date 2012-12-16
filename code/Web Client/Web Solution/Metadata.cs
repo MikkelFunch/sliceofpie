@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Documents;
 using System.IO;
 
-namespace Client
+namespace Web_Solution
 {
     static class Metadata
     {
@@ -23,16 +23,6 @@ namespace Client
         {
             return RetrieveMetadataFromFile(CurrentDocumentPath);
         }*/
-
-        /// <summary>
-        /// Generate metadata string from an object array containing metadata
-        /// </summary>
-        /// <param name="metadata">an object array containing metadata: [0](int)documentid,[1](int)userid,[2](DateTime)timestamp,[3](int)folderid</param>
-        /// <returns></returns>
-        public static String GetMetadataStringFromObjectArray(Object[] metadata)
-        {
-            return GenerateMetadataString((int)metadata[0], (int)metadata[1], (DateTime)metadata[2]);//, (int)metadata[3]);
-        }
 
         /// <summary>
         /// Generates a string containing metadata for a newly created file on the local system.
@@ -66,6 +56,8 @@ namespace Client
             sb.Append("userid " + userid);
             sb.Append("|");
             sb.Append("timestamp " + timestamp);
+            //sb.Append("|");
+            //sb.Append("fid " + folderid);
             sb.Append("]");
 
             return sb.ToString();

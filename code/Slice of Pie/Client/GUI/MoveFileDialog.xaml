@@ -5,7 +5,7 @@
     <Grid>
         <StackPanel>
             <Label Content="Move document: " Height="28" Margin="2,0,0,0"/>
-            <Label Content="example.txt" Height="28" Name="labelDocumentName" Margin="20,0,8,0"/>
+            <Label Content="" Height="28" Name="labelDocumentName" Margin="20,0,8,0"/>
             <Label Content="to folder:" Height="28" Margin="2,0,0,0"/>
             <ComboBox Height="23" Name="comboBoxFolders" Width="170" HorizontalAlignment="Left" Margin="8,0,0,0"/>
             <StackPanel Orientation="Horizontal" Margin="0,8,0,0">

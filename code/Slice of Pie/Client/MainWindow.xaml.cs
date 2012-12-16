@@ -118,7 +118,7 @@ namespace Client
         /// <param name="e"></param>
         private void ExplorerTree_Loaded(object sender, RoutedEventArgs e)
         {
-            TreeViewModel.GetInstance().LoadFilesAndFolders(ExplorerTree.Items);
+            controller.LoadFilesAndFolders(ExplorerTree.Items);
         }
 
         private void buttonSaveDocument_Click(object sender, RoutedEventArgs e)

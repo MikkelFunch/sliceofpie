@@ -5,7 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 
 
-namespace Client
+namespace Web_Solution
 {
     static public class Security
     {

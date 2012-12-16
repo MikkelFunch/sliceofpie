@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Web_Solution.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="500" Width="960" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    <!--xmlns:app="clr-namespace:Client", xmlns:sdk="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"-->
+
+    <!-- Main grid -->
+    <Grid Name="mainGrid">
+        <!-- Main grid definitions -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+
+
+        <!-- Explorer grid -->
+        <Grid Name="gridExplorer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Row="2" Margin="0,0,0,0">
+            <!-- Explorer grid definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <!-- Explorer grid components -->
+
+            <!-- Top buttons definitions -->
+            <StackPanel Orientation="Horizontal">
+                <Button Content="New Document" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewDocument" IsEnabled="False" Click="buttonNewDocument_Click" Height="24"/>
+                <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewFolder" IsEnabled="False" Click="buttonNewFolder_Click" Height="24" />
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24"/>
+            </StackPanel>
+
+            <!-- Bottom buttons -->
+            <Button Content="Sync all" HorizontalAlignment="Left" Margin="2,2,2,2" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False" Height="24" Grid.Column="0" Grid.Row="2"/>
+
+
+            <!-- Explorer treeview -->
+            <sdk:TreeView Grid.Row="1" HorizontalAlignment="Stretch" Name="ExplorerTree" VerticalAlignment="Stretch" AllowDrop="True" />
+            <!--MouseMove="ExplorerTree_MouseMove" DragOver="ExplorerTree_DragOver" Drop="ExplorerTree_Drop" > -->
+
+            <!-- Explorer grid components end -->
+        </Grid>
+        <!-- Explorer grid end -->
+
+
+        <!-- Center grid -->
+        <Grid Name="gridCenter"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Gray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <!-- Center grid definitions-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="700" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Center grid components -->
+            <RichTextBox Name="richTextBox" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto"  Visibility="Visible" Grid.RowSpan="2" />
+            <RichTextBox Name="richTextBoxMerged" Grid.Column="1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Visibility="Collapsed" Grid.RowSpan="2" />
+            <sdk:Label Content="Server version" Grid.Column="1" Height="27" HorizontalAlignment="Left" Margin="0,0,0,0" Name="labelServer" VerticalAlignment="Top" Visibility="Collapsed"/>
+            <sdk:Label Content="Merged version" Grid.Column="1" Height="27" HorizontalAlignment="Right" Margin="0,0,0,0" Name="labelMerge" VerticalAlignment="Top" Visibility="Collapsed"/>
+        </Grid>
+        <!-- Center grid end-->
+
+        <!-- Main grid components -->
+
+        <!-- Button menu -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <!-- Border -->
+            <Border BorderBrush="Silver" BorderThickness="1" Height="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+
+            <!-- Buttons to the left side-->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Online" VerticalAlignment="Center" Margin="8,0,0,0" Name="textBlockOnline">
+                    <!--<Image Name="OnlineImage" Source="Resources/reddot.png" Width="16" Height="16" HorizontalAlignment="Left" Margin="-8,0,0,4" />-->
+                </TextBlock>
+            </StackPanel>
+            <sdk:Label Content="Current document:" Height="28" Name="labelOpenDocument" Margin="225,0,0,0" />
+
+
+            <!-- Buttons to the right side -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Move Document" Name="buttonMoveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonMoveDocument_Click" IsEnabled="False"/>
+                <Button Content="Share document" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonShareDocument_Click" IsEnabled="False" />
+                <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" HorizontalAlignment="Right" Margin="0,0,0,0"  IsEnabled="False"/>
+                <Button Name="buttonImage" HorizontalAlignment="Right" Margin="0,0,0,0"  Click="buttonImage_Click" IsEnabled="True">
+                    <Image Source="Resources/img_icon.gif" />
+                </Button>
+                <Button Content="History" Name="buttonHistory" HorizontalAlignment="Right" Margin="0,0,0,0" IsEnabled="False" Click="buttonHistory_Click" />
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Button Content="Login" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Name="buttonLogin" Width="75" Margin="2,0,2,0" Click="LoginItem_Click" />
+        <Button Content="Register" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="2,0,0,0" Name="buttonRegister" Width="75" Click="RegisterItem_Click"/>
+        </StackPanel>
+        <!-- Button menu end -->
+
+        <!-- Main grid components end -->
+    </Grid>
+    <!-- Main grid end -->
+</UserControl>

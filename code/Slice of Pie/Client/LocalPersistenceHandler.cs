@@ -46,7 +46,7 @@ namespace Client
         /// <param name="document"></param>
         public void SaveDocumentToFile(FlowDocument document)
         {
-            Object[] metadata = Metadata.RetrieveMetadataFromFile(session.CurrentDocumentPath);
+            Object[] metadata = RetrieveMetadataFromFile(session.CurrentDocumentPath);
             String metadataString;
             if (metadata != null)
                 metadataString = Metadata.GetMetadataStringFromObjectArray(metadata);
@@ -149,10 +149,43 @@ namespace Client
         public void MoveFileToFolder(string fromPath, string toPath)
         {
             File.Move(fromPath, toPath);
-            Object[] metadataArray = Metadata.RetrieveMetadataFromFile(toPath);
+            Object[] metadataArray = RetrieveMetadataFromFile(toPath);
             //metadataArray[3] = 0;
             String metadataString = Metadata.GetMetadataStringFromObjectArray(metadataArray);
             ReplaceMetadataStringInFile(toPath, metadataString);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">Path to the file for which you want metadata</param>
+        /// <returns></returns>
+        public static object[] RetrieveMetadataFromFile(String path)
+        {
+            String content;
+            using (StreamReader stream = new StreamReader(File.OpenRead(path)))
+            {
+                content = stream.ReadToEnd();
+            }
+            if (content.StartsWith("["))
+            {
+                String[] metadata = content.Split(new String[] { "]" }, StringSplitOptions.None)[0].Split(new String[] { "|", "]" }, StringSplitOptions.None);
+
+                int documentID = int.Parse(metadata[0].Substring(7));
+                int userID = int.Parse(metadata[1].Substring(7));
+                DateTime baseDocumentCreationTime = DateTime.Parse(metadata[2].Substring(10));
+
+                return new object[] { documentID, userID, baseDocumentCreationTime };
+            }
+            else
+            { //throw en exception, file corrupted
+                return null;
+            }
+        }
+
+        public static Object[] RetrieveMetadataFromFile(String directoryPath, String filename)
+        {
+            return (RetrieveMetadataFromFile(directoryPath + "\\" + filename + ".txt"));
         }
     }
 }
