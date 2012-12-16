@@ -185,19 +185,19 @@ namespace Server
         /// <param name="email">user email</param>
         /// <param name="pass">corresponding password encrypted using sha1</param>
         /// <returns>return null if user does not exist and the corresponding User object if the user exists</returns>
-        public int GetUserByEmailAndPass(String email, String pass)
+        public User GetUserByEmailAndPass(String email, String pass)
         {
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
-                var userid = from u in context.Users
+                var user = from u in context.Users
                              where u.email == email && u.password == pass
-                             select u.id;
+                             select u;
 
-                if (userid.Count<int>() > 0)
+                if (user.Count<User>() > 0)
                 {
-                    return userid.First<int>();
+                    return user.First<User>();
                 }
-                return -1;
+                return null;
             }
         }
 

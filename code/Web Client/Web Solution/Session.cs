@@ -90,5 +90,11 @@ namespace Web_Solution
             get;
             set;
         }
+
+        public int FolderID 
+        { 
+            get; 
+            set; 
+        }
     }
 }

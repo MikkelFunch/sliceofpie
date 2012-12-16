@@ -250,9 +250,9 @@
             <xs:element minOccurs="0" name="editorId" type="xs:int" />
             <xs:element minOccurs="0" name="documentId" type="xs:int" />
             <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
-            <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="fileContent" nillable="true" type="xs:string" />
             <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
-            <xs:element minOccurs="0" name="original" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="pureContent" nillable="true" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -260,6 +260,25 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SyncDocumentResult" nillable="true" type="q7:ArrayOfArrayOfstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SyncDocumentWeb">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="editorId" type="xs:int" />
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+            <xs:element minOccurs="0" name="filepath" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="metadata" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="pureContent" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SyncDocumentWebResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SyncDocumentWebResult" nillable="true" type="q8:ArrayOfArrayOfstring" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -330,7 +349,7 @@
       <xs:element name="GetAllDocumentRevisionsByDocumentIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllDocumentRevisionsByDocumentIdResult" nillable="true" type="q8:ArrayOfServiceDocumentrevision" />
+            <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllDocumentRevisionsByDocumentIdResult" nillable="true" type="q9:ArrayOfServiceDocumentrevision" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -344,7 +363,21 @@
       <xs:element name="GetAllFilesAndFoldersByUserIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetAllFilesAndFoldersByUserIdResult" nillable="true" type="q9:ArrayOfArrayOfArrayOfstring" />
+            <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetAllFilesAndFoldersByUserIdResult" nillable="true" type="q10:ArrayOfArrayOfArrayOfstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLatestPureDocumentContent">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="documentId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLatestPureDocumentContentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetLatestPureDocumentContentResult" nillable="true" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -578,6 +611,12 @@
   <wsdl:message name="IService1_SyncDocument_OutputMessage">
     <wsdl:part name="parameters" element="tns:SyncDocumentResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_SyncDocumentWeb_InputMessage">
+    <wsdl:part name="parameters" element="tns:SyncDocumentWeb" />
+  </wsdl:message>
+  <wsdl:message name="IService1_SyncDocumentWeb_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SyncDocumentWebResponse" />
+  </wsdl:message>
   <wsdl:message name="IService1_GetDocumentId_InputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentId" />
   </wsdl:message>
@@ -613,6 +652,12 @@
   </wsdl:message>
   <wsdl:message name="IService1_GetAllFilesAndFoldersByUserId_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAllFilesAndFoldersByUserIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetLatestPureDocumentContent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestPureDocumentContent" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetLatestPureDocumentContent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestPureDocumentContentResponse" />
   </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="AddUser">
@@ -687,6 +732,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/SyncDocument" message="tns:IService1_SyncDocument_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/SyncDocumentResponse" message="tns:IService1_SyncDocument_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SyncDocumentWeb">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/SyncDocumentWeb" message="tns:IService1_SyncDocumentWeb_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/SyncDocumentWebResponse" message="tns:IService1_SyncDocumentWeb_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetDocumentId">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDocumentId" message="tns:IService1_GetDocumentId_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDocumentIdResponse" message="tns:IService1_GetDocumentId_OutputMessage" />
@@ -710,6 +759,10 @@
     <wsdl:operation name="GetAllFilesAndFoldersByUserId">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserId" message="tns:IService1_GetAllFilesAndFoldersByUserId_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserIdResponse" message="tns:IService1_GetAllFilesAndFoldersByUserId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestPureDocumentContent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetLatestPureDocumentContent" message="tns:IService1_GetLatestPureDocumentContent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetLatestPureDocumentContentResponse" message="tns:IService1_GetLatestPureDocumentContent_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -876,6 +929,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SyncDocumentWeb">
+      <soap:operation soapAction="http://tempuri.org/IService1/SyncDocumentWeb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetDocumentId">
       <soap:operation soapAction="http://tempuri.org/IService1/GetDocumentId" style="document" />
       <wsdl:input>
@@ -923,6 +985,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetAllFilesAndFoldersByUserId">
       <soap:operation soapAction="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestPureDocumentContent">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetLatestPureDocumentContent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

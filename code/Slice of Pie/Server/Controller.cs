@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Documents;
+using System.Windows.Controls;
 
 namespace Server
 {
@@ -100,7 +101,7 @@ namespace Server
         /// <param name="email">The email of the user</param>
         /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
-        public int GetUserByEmailAndPass(String email, String pass)
+        public User GetUserByEmailAndPass(String email, String pass)
         {
             return PersistentStorage.GetInstance().GetUserByEmailAndPass(email, pass);
         }
@@ -210,17 +211,19 @@ namespace Server
         /// <param name="editorId">The id of the user who's submitting his work</param>
         /// <param name="documentId">The id of the document</param>
         /// <param name="filepath">The path to where the file lies on the client</param>
-        /// <param name="latestUserFileContent">The xaml content of the user latest document</param>
+        /// <param name="fileContent">The xaml content of the document the user is syncing</param>
         /// <param name="title">The title of the document</param>
-        /// <param name="latest">The "pure" content of the document. One line per index in the array</param>
+        /// <param name="pureContent">The "pure" content of the document. One line per index in the array</param>
         /// <returns>Null if there's no mergeconflict.
         /// If there is a mergeconflict the returned is like this:
         /// Array[0] = the merged document
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String[] latest)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String fileContent, String title, String pureContent)
         {
+            String[] latestAsArray = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
+
             PersistentStorage ps = PersistentStorage.GetInstance();
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
@@ -231,7 +234,7 @@ namespace Server
                 if (!hasRevisions)
                 {
                     //No conflict
-                    return ps.SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
+                    return ps.SyncNoConflict(editorId, documentId, filepath, fileContent);
                 }
 
                 //Get the latest documentrevision by the user
@@ -247,20 +250,33 @@ namespace Server
                 if (latestUserDocumentContent == latestServerDocumentContent)
                 {
                     //No conflict
-                    return ps.SyncNoConflict(editorId, documentId, filepath, latestUserFileContent);
+                    return ps.SyncNoConflict(editorId, documentId, filepath, fileContent);
                 }
                 else
                 {
                     //Conflict
-                    return Model.GetInstance().SyncConflict(documentId, latest);
+                    return Model.GetInstance().SyncConflict(documentId, latestAsArray);
                 }
             }
             else
             {
                 //No document found with the given id.
-                ps.AddDocumentWithUserDocument(title, editorId, filepath, latestUserFileContent);
+                ps.AddDocumentWithUserDocument(title, editorId, filepath, fileContent);
                 return null;
             }
+        }
+
+        public String[][] SyncDocumentWeb(int editorId, int documentId, String filepath, String metadata, String title, String pureContent)
+        {
+            String[] splitPureContent = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
+            FlowDocument document = new FlowDocument();
+            foreach (String s in splitPureContent)
+            {
+                Paragraph p = new Paragraph(new Run(s));
+                document.Blocks.Add(p);
+            }
+            String fileContent = metadata + System.Windows.Markup.XamlWriter.Save(document);
+            return SyncDocument(editorId, documentId, filepath, fileContent, title, pureContent);
         }
 
         /// <summary>
@@ -324,6 +340,61 @@ namespace Server
         public List<Documentrevision> GetAllDocumentRevisionsByDocumentId(int documentId)
         {
             return PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId);
+        }
+
+        public String[][][] GetAllFilesAndFolderByUserId(int userId)
+        {
+            PersistentStorage ps = PersistentStorage.GetInstance();
+
+            List<String[]> metadataListFolder = new List<String[]>();
+            //Get the rootFolderId of the user
+            int rootFolderId = ps.GetRootFolderId(userId);
+
+            List<Folder> folders = new List<Folder>();
+            folders.AddRange(ps.GetFoldersByRootId(rootFolderId));
+            Folder currentFolder;
+            for (int i = 0; i < folders.Count; i++)
+            {
+                currentFolder = folders[i];
+                String[] metadata = new String[3];
+                metadata[0] = currentFolder.id.ToString();
+                metadata[1] = currentFolder.name;
+                metadata[2] = currentFolder.parentFolderId.ToString();
+                metadataListFolder.Add(metadata);
+                folders.AddRange(ps.GetFoldersByRootId(currentFolder.id));
+            }
+            ////////////////////////////////////////////////////////////
+            List<String[]> metadataListDocument = new List<String[]>();
+
+            List<Userdocument> userdocs = new List<Userdocument>();
+            List<Userdocument> userdocsFromServer = ps.GetAllUserDocumentsByUserId(userId);
+            if (userdocsFromServer != null)
+            {
+                userdocs.AddRange(userdocsFromServer);
+                Document currentDoc;
+                foreach (Userdocument ud in userdocs)
+                {
+                    currentDoc = ps.GetDocumentById(ud.documentId);
+                    String[] metadata = new String[3];
+                    metadata[0] = ud.documentId.ToString();
+                    metadata[1] = ud.folderId.ToString();
+                    metadata[2] = currentDoc.name;
+                    metadataListDocument.Add(metadata);
+                }
+            }
+            String[][][] returnArray = new String[2][][];
+            returnArray[0] = metadataListFolder.ToArray();
+            returnArray[1] = metadataListDocument.ToArray();
+            return returnArray;
+        }
+
+        public string GetLatestPureDocumentContent(int documentId)
+        {
+            String metadataAndXaml = PersistentStorage.GetInstance().GetLatestDocumentContent(documentId);
+            String xaml = metadataAndXaml.Substring(metadataAndXaml.IndexOf("<"));
+            FlowDocument flowDocument = (FlowDocument)System.Windows.Markup.XamlReader.Parse(xaml);
+            TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
+            return textRange.Text;
         }
     }
 }

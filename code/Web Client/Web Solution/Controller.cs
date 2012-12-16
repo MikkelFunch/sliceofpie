@@ -158,6 +158,7 @@ namespace Web_Solution
             else
             {
                 session.Email = "";
+                gui.textBlockOnline.Text = "Offline";
                 MessageBox.Show("Wrong email or password");
             }
         }
@@ -179,6 +180,7 @@ namespace Web_Solution
             }
 
             TreeViewModel.GetInstance().LoadFilesAndFolders(gui.ExplorerTree.Items, foldersAndFilesArrays);
+            gui.textBlockOnline.Text = "Online";
             UpdateExplorerView();
 
             System.Windows.MessageBox.Show("Logged in successfully");
@@ -197,7 +199,7 @@ namespace Web_Solution
 
             SetOpenDocument("", "", "");
             gui.SetLoginView(false);
-            gui.Items.Clear();
+            gui.ExplorerTree.Items.Clear();
             UpdateExplorerView();
         }
 
@@ -244,7 +246,7 @@ namespace Web_Solution
                 session.CurrentDocumentTitle = title;
 
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-                proxy.AddDocumentWithUserDocumentAsync(title, session.UserID, session.RootFolderPath, fileContent);
+                proxy.AddDocumentWithUserDocumentAsync(title, session.UserID, session.Email + "\\", fileContent);
                 proxy.AddDocumentWithUserDocumentCompleted += new EventHandler<ServiceReference.AddDocumentWithUserDocumentCompletedEventArgs>(proxy_AddDocumentWithUserDocumentCompleted);
             }
         }
@@ -304,20 +306,20 @@ namespace Web_Solution
             }
         }
 
-        public void SetOpenDocument(int documentId, string documentTitle)
+        public void SetOpenDocument(int documentId, string documentTitle, int folderId)
         {
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.GetLatestDocumentContentAsync(documentId);
-            proxy.GetLatestDocumentContentCompleted += new EventHandler<ServiceReference.GetLatestDocumentContentCompletedEventArgs>(proxy_GetLatestDocumentContentCompleted);
+            proxy.GetLatestPureDocumentContentAsync(documentId);
+            proxy.GetLatestPureDocumentContentCompleted += new EventHandler<ServiceReference.GetLatestPureDocumentContentCompletedEventArgs>(proxy_GetLatestPureDocumentContentCompleted);
             session.CurrentDocumentID = documentId;
             session.CurrentDocumentTitle = documentTitle;
+            session.FolderID = folderId;
         }
 
-        public void proxy_GetLatestDocumentContentCompleted(Object sender, ServiceReference.GetLatestDocumentContentCompletedEventArgs args)
+        public void proxy_GetLatestPureDocumentContentCompleted(Object sender, ServiceReference.GetLatestPureDocumentContentCompletedEventArgs args)
         {
-            string fileContent = args.Result;
-            string xaml = Metadata.RemoveMetadataFromFileContent(fileContent);
-            gui.richTextBox.Xaml = xaml;
+            string pureContent = args.Result;
+            gui.richTextBox.Selection.Text = pureContent;
         }
 
         /// <summary>
@@ -399,47 +401,31 @@ namespace Web_Solution
 
         #endregion
 
-        public void SyncDocument(string textBoxXaml, string pureContent)
+        public void SyncDocument(string pureContent)
         {
             int documentId = session.CurrentDocumentID;
             DateTime baseDocumentCreationTime = session.CurrentDocumentTimeStampMetadata;
 
             string metadata = Metadata.GenerateMetadataString(documentId, session.UserID, DateTime.UtcNow);
-            string fileContent = metadata + textBoxXaml;
+            string filePath = TreeViewModel.GetInstance().GetRelativePath(session.FolderID ,gui.ExplorerTree.Items);
 
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.SyncDocumentAsync(session.UserID, documentId, "", fileContent, session.CurrentDocumentTitle, pureContent);
-            proxy.SyncDocumentCompleted += new EventHandler<ServiceReference.SyncDocumentCompletedEventArgs>(proxy_SyncDocumentCompleted);
+            proxy.SyncDocumentWebAsync(session.UserID, documentId, filePath, metadata, session.CurrentDocumentTitle, pureContent);
+            proxy.SyncDocumentWebCompleted += new EventHandler<ServiceReference.SyncDocumentWebCompletedEventArgs>(proxy_SyncDocumentWebCompleted);
         }
 
-        private void proxy_SyncDocumentCompleted(Object sender, ServiceReference.SyncDocumentCompletedEventArgs args)
+        private void proxy_SyncDocumentWebCompleted(Object sender, ServiceReference.SyncDocumentWebCompletedEventArgs args)
         {
-            string[][] responseArrays = new string[4][];
-            for (int i = 0; i < args.Result.Count; i++)
+            if (args.Result != null) //if there is no conflict
             {
-                responseArrays[i] = args.Result[i].ToArray();
-            }
-
-            if (responseArrays == null) //if there is no conflict
-            {
-                if (session.CurrentDocumentID == 0)
+                string[][] responseArrays = new string[4][];
+                for (int i = 0; i < args.Result.Count; i++)
                 {
-                    //connect to the websevice
-                    ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-                    proxy.GetDocumentIdAsync(session.UserID, session.CurrentDocumentTitle);
-                    proxy.GetDocumentIdCompleted +=new EventHandler<ServiceReference.GetDocumentIdCompletedEventArgs>(proxy_GetDocumentIdCompleted);
-                    proxy.GetDocumentIdCompleted += new EventHandler<ServiceReference.GetDocumentIdCompletedEventArgs>(proxy_GetDocumentIdCompleted);
+                    responseArrays[i] = args.Result[i].ToArray();
                 }
-            }
-            else //if there is a conflict
-            {
+
                 gui.SetupMergeView(responseArrays);
             }
-        }
-
-        private void proxy_GetDocumentIdCompleted(Object sender, ServiceReference.GetDocumentIdCompletedEventArgs args)
-        {
-            session.CurrentDocumentID = args.Result;
         }
 
         public void SaveMergedDocument(string fileXamlContent)

@@ -26,12 +26,6 @@ namespace Web_Solution
             richTextBox.Visibility = Visibility.Collapsed;
         }
 
-        public ItemCollection Items
-        {
-            get;
-            set;
-        }
-
         private void buttonImage_Click(object sender, RoutedEventArgs e)
         {
             string url = null;
@@ -99,7 +93,10 @@ namespace Web_Solution
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
         {
-            controller.SyncDocument(richTextBox.Xaml, richTextBox.Selection.Text);
+            richTextBox.SelectAll();
+            string a = richTextBox.Selection.Text;
+            string b = richTextBoxMerged.Selection.Text;
+            controller.SyncDocument(richTextBox.Selection.Text);
         }
 
         /*private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
@@ -200,10 +197,16 @@ namespace Web_Solution
         private void buttonNewDocument_Click(object sender, RoutedEventArgs e)
         {
             NewDocumentDialog docDia = new NewDocumentDialog();
+            docDia.Closed += new EventHandler(docDia_Closed);
             docDia.Show();
+        }
 
+        private void docDia_Closed(object sender, EventArgs args)
+        {
+            NewDocumentDialog docDia = (NewDocumentDialog)sender;
             controller.CreateNewDocumentFile(docDia.DocumentTitle);
         }
+
 
         private void buttonMoveDocument_Click(object sender, RoutedEventArgs e)
         {

@@ -121,7 +121,7 @@ namespace Server
         /// <param name="email">The email of the user</param>
         /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
-        public int GetUserByEmailAndPass(String email, String pass)
+        public User GetUserByEmailAndPass(String email, String pass)
         {
             return dao.GetUserByEmailAndPass(email, pass);
         }
