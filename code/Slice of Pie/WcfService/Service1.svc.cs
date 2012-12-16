@@ -209,9 +209,15 @@ namespace WcfService
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String fileContent, String title, String pureContent)
         {
-            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
+            String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, filepath, fileContent, title, pureContent);
+            return stringArray;
+        }
+
+        public String[][] SyncDocumentWeb(int editorId, int documentId, String filepath, String metadata, String title, String pureContent)
+        {
+            String[][] stringArray = Server.Controller.GetInstance().SyncDocumentWeb(editorId, documentId, filepath, metadata, title, pureContent);
             return stringArray;
         }
 
@@ -260,6 +266,11 @@ namespace WcfService
         public String[][][] GetAllFilesAndFoldersByUserId(int userId)
         {
             return Server.Controller.GetInstance().GetAllFilesAndFolderByUserId(userId);
+        }
+
+        public String GetLatestPureDocumentContent(int documentId)
+        {
+            return Server.Controller.GetInstance().GetLatestPureDocumentContent(documentId);
         }
     }
 }

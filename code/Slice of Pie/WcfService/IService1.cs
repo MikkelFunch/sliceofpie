@@ -64,7 +64,10 @@ namespace WcfService
         String GetLatestDocumentContent(int documentId);
 
         [OperationContract]
-        String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String original);
+        String[][] SyncDocument(int editorId, int documentId, String filepath, String fileContent, String title, String pureContent);
+
+        [OperationContract]
+        String[][] SyncDocumentWeb(int editorId, int documentId, String filepath, String metadata, String title, String pureContent);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);
@@ -83,6 +86,9 @@ namespace WcfService
 
         [OperationContract]
         String[][][] GetAllFilesAndFoldersByUserId(int userId);
+
+        [OperationContract]
+        String GetLatestPureDocumentContent(int documentId);
     }
 
     [DataContract]
