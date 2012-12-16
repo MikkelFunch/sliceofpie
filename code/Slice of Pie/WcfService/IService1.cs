@@ -28,7 +28,7 @@ namespace WcfService
         void SaveMergedDocument(int editorId, int documentId, String content);
 
         [OperationContract]
-        int GetUserByEmailAndPass(String email, String pass);
+        ServiceUser GetUserByEmailAndPass(String email, String pass);
 
         [OperationContract]
         ServiceUser GetUserById(int userId);
@@ -64,7 +64,7 @@ namespace WcfService
         String GetLatestDocumentContent(int documentId);
 
         [OperationContract]
-        String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original);
+        String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String original);
 
         [OperationContract]
         int GetDocumentId(int userId, String title);
@@ -80,6 +80,9 @@ namespace WcfService
 
         [OperationContract]
         List<ServiceDocumentrevision> GetAllDocumentRevisionsByDocumentId(int documentId);
+
+        [OperationContract]
+        String[][][] GetAllFilesAndFoldersByUserId(int userId);
     }
 
     [DataContract]
@@ -212,6 +215,7 @@ namespace WcfService
 
         public static explicit operator ServiceUser(Server.User u)
         {
+            if (u == null) { return null; }
             ServiceUser user = new ServiceUser();
             user.email = u.email;
             user.id = u.id;

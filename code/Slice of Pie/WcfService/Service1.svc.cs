@@ -74,9 +74,9 @@ namespace WcfService
         /// <param name="email">The email of the user</param>
         /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
-        public int GetUserByEmailAndPass(String email, String pass)
+        public ServiceUser GetUserByEmailAndPass(String email, String pass)
         {
-            return Server.Controller.GetInstance().GetUserByEmailAndPass(email, pass);
+            return (ServiceUser) Server.Controller.GetInstance().GetUserByEmailAndPass(email, pass);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace WcfService
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String[] original)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String content, String title, String original)
         {
             String[][] stringArray = Server.Controller.GetInstance().SyncDocument(editorId, documentId, filepath, content, title, original);
             return stringArray;
@@ -255,6 +255,11 @@ namespace WcfService
                 list.Add((ServiceDocumentrevision)doc);
             }
             return list;
+        }
+
+        public String[][][] GetAllFilesAndFoldersByUserId(int userId)
+        {
+            return Server.Controller.GetInstance().GetAllFilesAndFolderByUserId(userId);
         }
     }
 }

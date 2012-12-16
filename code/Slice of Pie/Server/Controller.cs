@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Documents;
+using System.Windows.Controls;
 
 namespace Server
 {
@@ -100,7 +101,7 @@ namespace Server
         /// <param name="email">The email of the user</param>
         /// <param name="pass">The sha1'ed password of the user</param>
         /// <returns>The user with the given email of password</returns>
-        public int GetUserByEmailAndPass(String email, String pass)
+        public User GetUserByEmailAndPass(String email, String pass)
         {
             return PersistentStorage.GetInstance().GetUserByEmailAndPass(email, pass);
         }
@@ -219,8 +220,10 @@ namespace Server
         /// Array[1] = insertions, same length as Array[0]
         /// Array[2] = deletions, same length as Array[3]
         /// Array[3] = the original document (server version)</returns>
-        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String[] latest)
+        public String[][] SyncDocument(int editorId, int documentId, String filepath, String latestUserFileContent, String title, String latest)
         {
+            String[] latestAsArray = latest.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
+            
             PersistentStorage ps = PersistentStorage.GetInstance();
             //Document found with the given id
             if (GetDocumentById(documentId) != null)
@@ -252,7 +255,7 @@ namespace Server
                 else
                 {
                     //Conflict
-                    return Model.GetInstance().SyncConflict(documentId, latest);
+                    return Model.GetInstance().SyncConflict(documentId, latestAsArray);
                 }
             }
             else
@@ -324,6 +327,48 @@ namespace Server
         public List<Documentrevision> GetAllDocumentRevisionsByDocumentId(int documentId)
         {
             return PersistentStorage.GetInstance().GetLatestDocumentRevisions(documentId);
+        }
+
+        public String[][][] GetAllFilesAndFolderByUserId(int userId)
+        {
+            PersistentStorage ps = PersistentStorage.GetInstance();
+            
+            List<String[]> metadataListFolder = new List<String[]>();
+            //Get the rootFolderId of the user
+            int rootFolderId = ps.GetRootFolderId(userId);
+
+            List<Folder> folders = new List<Folder>();
+            folders.AddRange(ps.GetFoldersByRootId(rootFolderId));
+            Folder currentFolder;
+            for (int i = 0; i < folders.Count; i++)
+            {
+                currentFolder = folders[i];
+                String[] metadata = new String[3];
+                metadata[0] = currentFolder.id.ToString();
+                metadata[1] = currentFolder.name;
+                metadata[2] = currentFolder.parentFolderId.ToString();
+                metadataListFolder.Add(metadata);
+                folders.AddRange(ps.GetFoldersByRootId(currentFolder.id));
+            }
+            ////////////////////////////////////////////////////////////
+            List<String[]> metadataListDocument = new List<String[]>();
+
+            List<Userdocument> userdocs = new List<Userdocument>();
+            userdocs.AddRange(ps.GetAllUserDocumentsByUserId(userId));
+            Document currentDoc;
+            foreach (Userdocument ud in userdocs)
+            {
+                currentDoc = ps.GetDocumentById(ud.documentId);
+                String[] metadata = new String[3];
+                metadata[0] = ud.documentId.ToString();
+                metadata[1] = ud.folderId.ToString();
+                metadata[2] = currentDoc.name;
+                metadataListDocument.Add(metadata);
+            }
+            String[][][] returnArray = new String[2][][];
+            returnArray[0] = metadataListFolder.ToArray();
+            returnArray[1] = metadataListDocument.ToArray();
+            return returnArray;
         }
     }
 }
