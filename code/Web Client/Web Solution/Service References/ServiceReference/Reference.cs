@@ -528,6 +528,11 @@ namespace Web_Solution.ServiceReference {
         System.IAsyncResult BeginShareDocumentWeb(int documentId, int ownerId, int recieverId, System.AsyncCallback callback, object asyncState);
         
         void EndShareDocumentWeb(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/AddDocumentRevisionWeb", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionWebResponse")]
+        System.IAsyncResult BeginAddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata, System.AsyncCallback callback, object asyncState);
+        
+        void EndAddDocumentRevisionWeb(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1061,6 +1066,12 @@ namespace Web_Solution.ServiceReference {
         
         private System.Threading.SendOrPostCallback onShareDocumentWebCompletedDelegate;
         
+        private BeginOperationDelegate onBeginAddDocumentRevisionWebDelegate;
+        
+        private EndOperationDelegate onEndAddDocumentRevisionWebDelegate;
+        
+        private System.Threading.SendOrPostCallback onAddDocumentRevisionWebCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -1167,6 +1178,8 @@ namespace Web_Solution.ServiceReference {
         public event System.EventHandler<GetLatestPureDocumentContentCompletedEventArgs> GetLatestPureDocumentContentCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> ShareDocumentWebCompleted;
+        
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> AddDocumentRevisionWebCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -2464,6 +2477,57 @@ namespace Web_Solution.ServiceReference {
                         recieverId}, this.onEndShareDocumentWebDelegate, this.onShareDocumentWebCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginAddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginAddDocumentRevisionWeb(documentId, userId, pureContent, metadata, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        void Web_Solution.ServiceReference.IService1.EndAddDocumentRevisionWeb(System.IAsyncResult result) {
+            base.Channel.EndAddDocumentRevisionWeb(result);
+        }
+        
+        private System.IAsyncResult OnBeginAddDocumentRevisionWeb(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int documentId = ((int)(inValues[0]));
+            int userId = ((int)(inValues[1]));
+            string pureContent = ((string)(inValues[2]));
+            string metadata = ((string)(inValues[3]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginAddDocumentRevisionWeb(documentId, userId, pureContent, metadata, callback, asyncState);
+        }
+        
+        private object[] OnEndAddDocumentRevisionWeb(System.IAsyncResult result) {
+            ((Web_Solution.ServiceReference.IService1)(this)).EndAddDocumentRevisionWeb(result);
+            return null;
+        }
+        
+        private void OnAddDocumentRevisionWebCompleted(object state) {
+            if ((this.AddDocumentRevisionWebCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.AddDocumentRevisionWebCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void AddDocumentRevisionWebAsync(int documentId, int userId, string pureContent, string metadata) {
+            this.AddDocumentRevisionWebAsync(documentId, userId, pureContent, metadata, null);
+        }
+        
+        public void AddDocumentRevisionWebAsync(int documentId, int userId, string pureContent, string metadata, object userState) {
+            if ((this.onBeginAddDocumentRevisionWebDelegate == null)) {
+                this.onBeginAddDocumentRevisionWebDelegate = new BeginOperationDelegate(this.OnBeginAddDocumentRevisionWeb);
+            }
+            if ((this.onEndAddDocumentRevisionWebDelegate == null)) {
+                this.onEndAddDocumentRevisionWebDelegate = new EndOperationDelegate(this.OnEndAddDocumentRevisionWeb);
+            }
+            if ((this.onAddDocumentRevisionWebCompletedDelegate == null)) {
+                this.onAddDocumentRevisionWebCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnAddDocumentRevisionWebCompleted);
+            }
+            base.InvokeAsync(this.onBeginAddDocumentRevisionWebDelegate, new object[] {
+                        documentId,
+                        userId,
+                        pureContent,
+                        metadata}, this.onEndAddDocumentRevisionWebDelegate, this.onAddDocumentRevisionWebCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -2910,6 +2974,21 @@ namespace Web_Solution.ServiceReference {
             public void EndShareDocumentWeb(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 base.EndInvoke("ShareDocumentWeb", _args, result);
+            }
+            
+            public System.IAsyncResult BeginAddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[4];
+                _args[0] = documentId;
+                _args[1] = userId;
+                _args[2] = pureContent;
+                _args[3] = metadata;
+                System.IAsyncResult _result = base.BeginInvoke("AddDocumentRevisionWeb", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public void EndAddDocumentRevisionWeb(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                base.EndInvoke("AddDocumentRevisionWeb", _args, result);
             }
         }
     }
