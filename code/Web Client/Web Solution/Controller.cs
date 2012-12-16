@@ -132,7 +132,7 @@ namespace Web_Solution
                 //get the user id - -1 if no user exists
                 proxy.GetUserByEmailAndPassAsync(email, pass);
                 proxy.GetUserByEmailAndPassCompleted += new EventHandler<ServiceReference.GetUserByEmailAndPassCompletedEventArgs>(proxy_GetUserByEmailAndPassCompleted);
-                session.Email = email;            
+                session.Email = email;
             }
             else
             {
@@ -148,7 +148,7 @@ namespace Web_Solution
                 //User logged in
                 session.UserID = user.id;
                 session.RootFolderID = user.rootFolderId;
-                
+
                 gui.SetLoginView(true);
 
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
@@ -205,9 +205,9 @@ namespace Web_Solution
 
         #endregion
 
-        public void ShareDocument(string email)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HANDLE DOCUMENT NOT BEING SYNCED FIRST(NOT IN THE DATABASE)
+        public void ShareDocument(string email)
         {
-            if (email != null && email.Length > 0 && session.CurrentDocumentPath.Length > 0 && session.CurrentDocumentID != -1)
+            if (email != null && email.Length > 0 && session.CurrentDocumentID != -1)
             {
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
                 proxy.GetUserByEmailAsync(email);
@@ -223,6 +223,7 @@ namespace Web_Solution
             {
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
                 proxy.AddUserDocumentInRootAsync(shareUser.id, session.CurrentDocumentID);
+                proxy.ShareDocumentWebAsync(session.CurrentDocumentID, session.UserID, shareUser.id);
                 MessageBox.Show("Document shared with " + shareUser.email);
             }
             else
@@ -256,7 +257,7 @@ namespace Web_Solution
             int documentId = args.Result;
             session.CurrentDocumentID = documentId;
 
-            string[] documentData = new string[]{documentId.ToString(),session.RootFolderID.ToString(),session.CurrentDocumentTitle};
+            string[] documentData = new string[] { documentId.ToString(), session.RootFolderID.ToString(), session.CurrentDocumentTitle };
 
             TreeViewModel.GetInstance().InsertDocument(documentData, gui.ExplorerTree.Items);
             gui.richTextBox.Selection.Text = "";
@@ -265,11 +266,11 @@ namespace Web_Solution
 
         public void CreateFolder(String folderName, int parentFolderId)
         {
-            if(parentFolderId == -1) parentFolderId = session.RootFolderID;
+            if (parentFolderId == -1) parentFolderId = session.RootFolderID;
 
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.AddFolderAsync(folderName,parentFolderId);
-            proxy.AddFolderCompleted +=new EventHandler<ServiceReference.AddFolderCompletedEventArgs>(proxy_AddFolderCompleted);
+            proxy.AddFolderAsync(folderName, parentFolderId);
+            proxy.AddFolderCompleted += new EventHandler<ServiceReference.AddFolderCompletedEventArgs>(proxy_AddFolderCompleted);
         }
 
         private void proxy_AddFolderCompleted(object sender, ServiceReference.AddFolderCompletedEventArgs args)
@@ -319,6 +320,7 @@ namespace Web_Solution
         public void proxy_GetLatestPureDocumentContentCompleted(Object sender, ServiceReference.GetLatestPureDocumentContentCompletedEventArgs args)
         {
             string pureContent = args.Result;
+            gui.richTextBox.SelectAll();
             gui.richTextBox.Selection.Text = pureContent;
         }
 
@@ -407,7 +409,7 @@ namespace Web_Solution
             DateTime baseDocumentCreationTime = session.CurrentDocumentTimeStampMetadata;
 
             string metadata = Metadata.GenerateMetadataString(documentId, session.UserID, DateTime.UtcNow);
-            string filePath = TreeViewModel.GetInstance().GetRelativePath(session.FolderID ,gui.ExplorerTree.Items);
+            string filePath = TreeViewModel.GetInstance().GetRelativePath(session.FolderID, gui.ExplorerTree.Items);
 
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
             proxy.SyncDocumentWebAsync(session.UserID, documentId, filePath, metadata, session.CurrentDocumentTitle, pureContent);

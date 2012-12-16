@@ -523,6 +523,11 @@ namespace Web_Solution.ServiceReference {
         System.IAsyncResult BeginGetLatestPureDocumentContent(int documentId, System.AsyncCallback callback, object asyncState);
         
         string EndGetLatestPureDocumentContent(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/ShareDocumentWeb", ReplyAction="http://tempuri.org/IService1/ShareDocumentWebResponse")]
+        System.IAsyncResult BeginShareDocumentWeb(int documentId, int ownerId, int recieverId, System.AsyncCallback callback, object asyncState);
+        
+        void EndShareDocumentWeb(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1050,6 +1055,12 @@ namespace Web_Solution.ServiceReference {
         
         private System.Threading.SendOrPostCallback onGetLatestPureDocumentContentCompletedDelegate;
         
+        private BeginOperationDelegate onBeginShareDocumentWebDelegate;
+        
+        private EndOperationDelegate onEndShareDocumentWebDelegate;
+        
+        private System.Threading.SendOrPostCallback onShareDocumentWebCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -1154,6 +1165,8 @@ namespace Web_Solution.ServiceReference {
         public event System.EventHandler<GetAllFilesAndFoldersByUserIdCompletedEventArgs> GetAllFilesAndFoldersByUserIdCompleted;
         
         public event System.EventHandler<GetLatestPureDocumentContentCompletedEventArgs> GetLatestPureDocumentContentCompleted;
+        
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> ShareDocumentWebCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -2402,6 +2415,55 @@ namespace Web_Solution.ServiceReference {
                         documentId}, this.onEndGetLatestPureDocumentContentDelegate, this.onGetLatestPureDocumentContentCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginShareDocumentWeb(int documentId, int ownerId, int recieverId, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginShareDocumentWeb(documentId, ownerId, recieverId, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        void Web_Solution.ServiceReference.IService1.EndShareDocumentWeb(System.IAsyncResult result) {
+            base.Channel.EndShareDocumentWeb(result);
+        }
+        
+        private System.IAsyncResult OnBeginShareDocumentWeb(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int documentId = ((int)(inValues[0]));
+            int ownerId = ((int)(inValues[1]));
+            int recieverId = ((int)(inValues[2]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginShareDocumentWeb(documentId, ownerId, recieverId, callback, asyncState);
+        }
+        
+        private object[] OnEndShareDocumentWeb(System.IAsyncResult result) {
+            ((Web_Solution.ServiceReference.IService1)(this)).EndShareDocumentWeb(result);
+            return null;
+        }
+        
+        private void OnShareDocumentWebCompleted(object state) {
+            if ((this.ShareDocumentWebCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.ShareDocumentWebCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void ShareDocumentWebAsync(int documentId, int ownerId, int recieverId) {
+            this.ShareDocumentWebAsync(documentId, ownerId, recieverId, null);
+        }
+        
+        public void ShareDocumentWebAsync(int documentId, int ownerId, int recieverId, object userState) {
+            if ((this.onBeginShareDocumentWebDelegate == null)) {
+                this.onBeginShareDocumentWebDelegate = new BeginOperationDelegate(this.OnBeginShareDocumentWeb);
+            }
+            if ((this.onEndShareDocumentWebDelegate == null)) {
+                this.onEndShareDocumentWebDelegate = new EndOperationDelegate(this.OnEndShareDocumentWeb);
+            }
+            if ((this.onShareDocumentWebCompletedDelegate == null)) {
+                this.onShareDocumentWebCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnShareDocumentWebCompleted);
+            }
+            base.InvokeAsync(this.onBeginShareDocumentWebDelegate, new object[] {
+                        documentId,
+                        ownerId,
+                        recieverId}, this.onEndShareDocumentWebDelegate, this.onShareDocumentWebCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -2834,6 +2896,20 @@ namespace Web_Solution.ServiceReference {
                 object[] _args = new object[0];
                 string _result = ((string)(base.EndInvoke("GetLatestPureDocumentContent", _args, result)));
                 return _result;
+            }
+            
+            public System.IAsyncResult BeginShareDocumentWeb(int documentId, int ownerId, int recieverId, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[3];
+                _args[0] = documentId;
+                _args[1] = ownerId;
+                _args[2] = recieverId;
+                System.IAsyncResult _result = base.BeginInvoke("ShareDocumentWeb", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public void EndShareDocumentWeb(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                base.EndInvoke("ShareDocumentWeb", _args, result);
             }
         }
     }
