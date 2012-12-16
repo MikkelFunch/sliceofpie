@@ -429,5 +429,19 @@ namespace Server
             String content = PersistentStorage.GetInstance().GetDocumentRevisionContent(latestDocByOwner);
             PersistentStorage.GetInstance().AddDocumentRevision(recieverId, documentId, content);
         }
+
+        /// <summary>
+        /// Add a document revision through the web site
+        /// </summary>
+        /// <param name="documentId">The id of the document, that were adding a revision to</param>
+        /// <param name="userId">The id of the user who's adding the revision</param>
+        /// <param name="pureContent">The pure content of the document</param>
+        /// <param name="metadata">The metadata for the document</param>
+        public void AddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata)
+        {
+            String xaml = System.Windows.Markup.XamlWriter.Save(pureContent);
+            String fileContent = metadata + xaml;
+            PersistentStorage.GetInstance().AddDocumentRevision(userId, documentId, fileContent);
+        }
     }
 }

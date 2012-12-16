@@ -92,6 +92,9 @@ namespace WcfService
 
         [OperationContract]
         void ShareDocumentWeb(int documentId, int ownerId, int recieverId);
+
+        [OperationContract]
+        void AddDocumentRevisionWeb(int documentId, int userId, String pureContent, String metadata);
     }
 
     [DataContract]

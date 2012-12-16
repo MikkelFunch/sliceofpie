@@ -283,5 +283,17 @@ namespace WcfService
         {
             Server.Controller.GetInstance().ShareDocumentWeb(documentId, ownerId, recieverId);
         }
+
+        /// <summary>
+        /// Add a document revision through the web site
+        /// </summary>
+        /// <param name="documentId">The id of the document, that were adding a revision to</param>
+        /// <param name="userId">The id of the user who's adding the revision</param>
+        /// <param name="pureContent">The pure content of the document</param>
+        /// <param name="metadata">The metadata for the document</param>
+        public void AddDocumentRevisionWeb(int documentId, int userId, String pureContent, String metadata)
+        {
+            Server.Controller.GetInstance().AddDocumentRevisionWeb(documentId, userId, pureContent, metadata);
+        }
     }
 }
