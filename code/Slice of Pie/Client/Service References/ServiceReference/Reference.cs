@@ -498,7 +498,7 @@ namespace Client.ServiceReference {
         void SaveMergedDocument(int editorId, int documentId, string content);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserByEmailAndPass", ReplyAction="http://tempuri.org/IService1/GetUserByEmailAndPassResponse")]
-        int GetUserByEmailAndPass(string email, string pass);
+        Client.ServiceReference.ServiceUser GetUserByEmailAndPass(string email, string pass);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserById", ReplyAction="http://tempuri.org/IService1/GetUserByIdResponse")]
         Client.ServiceReference.ServiceUser GetUserById(int userId);
@@ -552,17 +552,7 @@ namespace Client.ServiceReference {
         Client.ServiceReference.ServiceDocumentrevision[] GetAllDocumentRevisionsByDocumentId(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserId", ReplyAction="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserIdResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceUser))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceFolder))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceDocument))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceUserdocument[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceUserdocument))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceDocumentrevision[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Client.ServiceReference.ServiceDocumentrevision))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[][]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(string[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        object[] GetAllFilesAndFoldersByUserId(int userId);
+        string[][][] GetAllFilesAndFoldersByUserId(int userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -612,7 +602,7 @@ namespace Client.ServiceReference {
             base.Channel.SaveMergedDocument(editorId, documentId, content);
         }
         
-        public int GetUserByEmailAndPass(string email, string pass) {
+        public Client.ServiceReference.ServiceUser GetUserByEmailAndPass(string email, string pass) {
             return base.Channel.GetUserByEmailAndPass(email, pass);
         }
         
@@ -684,7 +674,7 @@ namespace Client.ServiceReference {
             return base.Channel.GetAllDocumentRevisionsByDocumentId(documentId);
         }
         
-        public object[] GetAllFilesAndFoldersByUserId(int userId) {
+        public string[][][] GetAllFilesAndFoldersByUserId(int userId) {
             return base.Channel.GetAllFilesAndFoldersByUserId(userId);
         }
     }

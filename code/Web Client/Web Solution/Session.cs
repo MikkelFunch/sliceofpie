@@ -72,5 +72,23 @@ namespace Web_Solution
             get;
             set;
         }
+
+        public int RootFolderID
+        {
+            get;
+            set;
+        }
+
+        public string NewlyCreatedFolderName
+        {
+            get;
+            set;
+        }
+
+        public int NewlyCreatedFolderParentId
+        {
+            get;
+            set;
+        }
     }
 }

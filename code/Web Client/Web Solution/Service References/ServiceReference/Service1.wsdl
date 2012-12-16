@@ -90,7 +90,7 @@
       <xs:element name="GetUserByEmailAndPassResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element minOccurs="0" name="GetUserByEmailAndPassResult" type="xs:int" />
+            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetUserByEmailAndPassResult" nillable="true" type="q1:ServiceUser" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -104,7 +104,7 @@
       <xs:element name="GetUserByIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetUserByIdResult" nillable="true" type="q1:ServiceUser" />
+            <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetUserByIdResult" nillable="true" type="q2:ServiceUser" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -118,7 +118,7 @@
       <xs:element name="GetUserByEmailResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetUserByEmailResult" nillable="true" type="q2:ServiceUser" />
+            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetUserByEmailResult" nillable="true" type="q3:ServiceUser" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -132,7 +132,7 @@
       <xs:element name="GetFolderResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetFolderResult" nillable="true" type="q3:ServiceFolder" />
+            <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetFolderResult" nillable="true" type="q4:ServiceFolder" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -160,7 +160,7 @@
       <xs:element name="GetDocumentByIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetDocumentByIdResult" nillable="true" type="q4:ServiceDocument" />
+            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetDocumentByIdResult" nillable="true" type="q5:ServiceDocument" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -211,7 +211,7 @@
       <xs:element name="GetAllUserDocumentsByUserIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllUserDocumentsByUserIdResult" nillable="true" type="q5:ArrayOfServiceUserdocument" />
+            <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllUserDocumentsByUserIdResult" nillable="true" type="q6:ArrayOfServiceUserdocument" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -259,7 +259,7 @@
       <xs:element name="SyncDocumentResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SyncDocumentResult" nillable="true" type="q6:ArrayOfArrayOfstring" />
+            <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SyncDocumentResult" nillable="true" type="q7:ArrayOfArrayOfstring" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -330,7 +330,7 @@
       <xs:element name="GetAllDocumentRevisionsByDocumentIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllDocumentRevisionsByDocumentIdResult" nillable="true" type="q7:ArrayOfServiceDocumentrevision" />
+            <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetAllDocumentRevisionsByDocumentIdResult" nillable="true" type="q8:ArrayOfServiceDocumentrevision" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -344,7 +344,7 @@
       <xs:element name="GetAllFilesAndFoldersByUserIdResponse">
         <xs:complexType>
           <xs:sequence>
-            <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetAllFilesAndFoldersByUserIdResult" nillable="true" type="q8:ArrayOfanyType" />
+            <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetAllFilesAndFoldersByUserIdResult" nillable="true" type="q9:ArrayOfArrayOfArrayOfstring" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -462,12 +462,12 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
-      <xs:complexType name="ArrayOfanyType">
+      <xs:complexType name="ArrayOfArrayOfArrayOfstring">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" type="xs:anyType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ArrayOfArrayOfstring" nillable="true" type="tns:ArrayOfArrayOfstring" />
         </xs:sequence>
       </xs:complexType>
-      <xs:element name="ArrayOfanyType" nillable="true" type="tns:ArrayOfanyType" />
+      <xs:element name="ArrayOfArrayOfArrayOfstring" nillable="true" type="tns:ArrayOfArrayOfArrayOfstring" />
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IService1_AddUser_InputMessage">

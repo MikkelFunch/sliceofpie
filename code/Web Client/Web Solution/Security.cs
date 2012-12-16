@@ -20,7 +20,7 @@ namespace Web_Solution
             SHA1 sha1 = new SHA1Managed();
 
             //convert the input text to array of bytes
-            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(s));
+            byte[] hashData = sha1.ComputeHash(Encoding.UTF8.GetBytes(s));
 
             //create new instance of StringBuilder to save hashed data
             StringBuilder returnValue = new StringBuilder();

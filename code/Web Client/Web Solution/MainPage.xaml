@@ -39,7 +39,7 @@
             </StackPanel>
 
             <!-- Bottom buttons -->
-            <Button Content="Sync all" HorizontalAlignment="Left" Margin="2,2,2,2" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False" Height="24" Grid.Column="0" Grid.Row="2"/>
+            <!--<Button Content="Sync all" HorizontalAlignment="Left" Margin="2,2,2,2" Name="buttonSyncAll" Click="buttonSyncAll_Click" IsEnabled="False" Height="24" Grid.Column="0" Grid.Row="2"/>-->
 
 
             <!-- Explorer treeview -->
@@ -100,7 +100,7 @@
             </StackPanel>
         </Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-        <Button Content="Login" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Name="buttonLogin" Width="75" Margin="2,0,2,0" Click="LoginItem_Click" />
+        <Button Content="Login" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Name="buttonLogin" Width="75" Margin="2,0,2,0" Click="buttonLogin_Click" />
         <Button Content="Register" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="2,0,0,0" Name="buttonRegister" Width="75" Click="RegisterItem_Click"/>
         </StackPanel>
         <!-- Button menu end -->

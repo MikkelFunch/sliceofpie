@@ -51,12 +51,21 @@ namespace Web_Solution
             }
         }
 
-        private void LoginItem_Click(object sender, RoutedEventArgs e)
+        private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
             LoginDialog logDialog = new LoginDialog();
+            logDialog.Closed += new EventHandler(logDialog_Closed);
             logDialog.Show();
+        }
 
-            controller.LoginUser(logDialog.Email, logDialog.UnencryptedPass);
+        private void logDialog_Closed(object sender, EventArgs args)
+        {
+            LoginDialog logDialog = (LoginDialog)sender;
+            bool? result = logDialog.DialogResult;
+            if (result == true)
+            {
+                controller.LoginUser(logDialog.Email, logDialog.UnencryptedPass);
+            }
         }
 
         private void LogoutItem_Click(object sender, RoutedEventArgs e)
@@ -74,7 +83,7 @@ namespace Web_Solution
             buttonHistory.IsEnabled = loggedin;
             buttonNewFolder.IsEnabled = loggedin;
             buttonSync.IsEnabled = loggedin;
-            buttonSyncAll.IsEnabled = loggedin;
+            //buttonSyncAll.IsEnabled = loggedin;
             buttonImage.IsEnabled = loggedin;
             if (loggedin) textBlockOnline.Text = "Online";
             else textBlockOnline.Text = "Offline";
@@ -93,10 +102,10 @@ namespace Web_Solution
             controller.SyncDocument(richTextBox.Xaml, richTextBox.Selection.Text);
         }
 
-        private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
+        /*private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
         {
             controller.SyncAllDocuments();
-        }
+        }*/
 
         /// <summary>
         /// 
@@ -165,16 +174,19 @@ namespace Web_Solution
             NewFolderDialog newfDia = new NewFolderDialog();
             newfDia.Show();
 
-            string path = "";
-            if (ExplorerTree.SelectedItem != null)
+            int parentFolderId = -1;
+            if (ExplorerTree.SelectedItem != null) //an item is  chosen
             {
-                if (!((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+                TreeViewItem item = (TreeViewItem)ExplorerTree.SelectedItem;
+
+                //it is a folder, and not a file
+                if ((bool)((object[])item.Tag)[2] == true)
                 {
-                    path = ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString();
+                    parentFolderId = (int)((object[])item.Tag)[0];
                 }
             }
-
-            controller.CreateFolder(newfDia.Title, path);
+            
+            controller.CreateFolder(newfDia.FolderTitle,parentFolderId);
         }
 
         private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
@@ -206,13 +218,13 @@ namespace Web_Solution
 
         private void buttonHistory_Click(object sender, RoutedEventArgs e)
         {
-            RevisionHistoryDialog revDia = new RevisionHistoryDialog();
+            /*RevisionHistoryDialog revDia = new RevisionHistoryDialog();
 
             revDia.DocumentName = Session.GetInstance().CurrentDocumentTitle;
             revDia.EditorName = "";
             revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
             revDia.CreateTreeView();
-            revDia.Show();
+            revDia.Show();*/
         }
 
         public void SetLoginView(bool active)
@@ -234,7 +246,7 @@ namespace Web_Solution
             buttonNewFolder.IsEnabled = active;
             buttonShareDocument.IsEnabled = active;
             buttonSync.IsEnabled = active;
-            buttonSyncAll.IsEnabled = active;
+            //buttonSyncAll.IsEnabled = active;
         }
     }
 }

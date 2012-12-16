@@ -64,12 +64,12 @@ namespace Web_Solution.GUI
         {
             bool doubleClick = MouseButtonHelper.IsDoubleClick(sender, e);
             if (doubleClick)
-            {
+            {/*
                 //Get the treeviewitem and create a DirectoryInfo for the folder which it represent
                 TreeViewItem item = (TreeViewItem)sender;
                 richTextBoxCurrentRevision.Selection.Xaml = Controller.GetInstance().GetDocumentContentFromId((int)item.Tag);
                 labelEditor.Text = "Editor: " + ((string[])item.Tag)[1];
-                labelCurrentTimeStamp.Text = "Current time: " + item.Header;
+                labelCurrentTimeStamp.Text = "Current time: " + item.Header;*/
             }
         }
     }

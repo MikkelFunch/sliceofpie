@@ -422,7 +422,7 @@ namespace Web_Solution.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetUserByEmailAndPass", ReplyAction="http://tempuri.org/IService1/GetUserByEmailAndPassResponse")]
         System.IAsyncResult BeginGetUserByEmailAndPass(string email, string pass, System.AsyncCallback callback, object asyncState);
         
-        int EndGetUserByEmailAndPass(System.IAsyncResult result);
+        Web_Solution.ServiceReference.ServiceUser EndGetUserByEmailAndPass(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetUserById", ReplyAction="http://tempuri.org/IService1/GetUserByIdResponse")]
         System.IAsyncResult BeginGetUserById(int userId, System.AsyncCallback callback, object asyncState);
@@ -510,19 +510,9 @@ namespace Web_Solution.ServiceReference {
         System.Collections.ObjectModel.ObservableCollection<Web_Solution.ServiceReference.ServiceDocumentrevision> EndGetAllDocumentRevisionsByDocumentId(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserId", ReplyAction="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserIdResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Web_Solution.ServiceReference.ServiceUser))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Web_Solution.ServiceReference.ServiceFolder))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Web_Solution.ServiceReference.ServiceDocument))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<Web_Solution.ServiceReference.ServiceUserdocument>))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Web_Solution.ServiceReference.ServiceUserdocument))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<Web_Solution.ServiceReference.ServiceDocumentrevision>))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Web_Solution.ServiceReference.ServiceDocumentrevision))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<string>))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<object>))]
         System.IAsyncResult BeginGetAllFilesAndFoldersByUserId(int userId, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<object> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -597,10 +587,10 @@ namespace Web_Solution.ServiceReference {
             this.results = results;
         }
         
-        public int Result {
+        public Web_Solution.ServiceReference.ServiceUser Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((int)(this.results[0]));
+                return ((Web_Solution.ServiceReference.ServiceUser)(this.results[0]));
             }
         }
     }
@@ -844,10 +834,10 @@ namespace Web_Solution.ServiceReference {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<object> Result {
+        public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<object>)(this.results[0]));
+                return ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>>)(this.results[0]));
             }
         }
     }
@@ -1357,7 +1347,7 @@ namespace Web_Solution.ServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        int Web_Solution.ServiceReference.IService1.EndGetUserByEmailAndPass(System.IAsyncResult result) {
+        Web_Solution.ServiceReference.ServiceUser Web_Solution.ServiceReference.IService1.EndGetUserByEmailAndPass(System.IAsyncResult result) {
             return base.Channel.EndGetUserByEmailAndPass(result);
         }
         
@@ -1368,7 +1358,7 @@ namespace Web_Solution.ServiceReference {
         }
         
         private object[] OnEndGetUserByEmailAndPass(System.IAsyncResult result) {
-            int retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetUserByEmailAndPass(result);
+            Web_Solution.ServiceReference.ServiceUser retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetUserByEmailAndPass(result);
             return new object[] {
                     retVal};
         }
@@ -2206,7 +2196,7 @@ namespace Web_Solution.ServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<object> Web_Solution.ServiceReference.IService1.EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
+        System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> Web_Solution.ServiceReference.IService1.EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
             return base.Channel.EndGetAllFilesAndFoldersByUserId(result);
         }
         
@@ -2216,7 +2206,7 @@ namespace Web_Solution.ServiceReference {
         }
         
         private object[] OnEndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<object> retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetAllFilesAndFoldersByUserId(result);
+            System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetAllFilesAndFoldersByUserId(result);
             return new object[] {
                     retVal};
         }
@@ -2402,9 +2392,9 @@ namespace Web_Solution.ServiceReference {
                 return _result;
             }
             
-            public int EndGetUserByEmailAndPass(System.IAsyncResult result) {
+            public Web_Solution.ServiceReference.ServiceUser EndGetUserByEmailAndPass(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                int _result = ((int)(base.EndInvoke("GetUserByEmailAndPass", _args, result)));
+                Web_Solution.ServiceReference.ServiceUser _result = ((Web_Solution.ServiceReference.ServiceUser)(base.EndInvoke("GetUserByEmailAndPass", _args, result)));
                 return _result;
             }
             
@@ -2643,9 +2633,9 @@ namespace Web_Solution.ServiceReference {
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<object> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> EndGetAllFilesAndFoldersByUserId(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<object> _result = ((System.Collections.ObjectModel.ObservableCollection<object>)(base.EndInvoke("GetAllFilesAndFoldersByUserId", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> _result = ((System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>>)(base.EndInvoke("GetAllFilesAndFoldersByUserId", _args, result)));
                 return _result;
             }
         }

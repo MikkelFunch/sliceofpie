@@ -132,17 +132,17 @@ namespace Client
             {
                 //encrypt passowrd
                 String pass = Security.EncryptString(unencrytedPass);
-                int userid = -1;
+                ServiceReference.ServiceUser user = null;
                 //connect to webservice
                 using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
                 {
                     //get the user id - -1 if no user exists
-                    userid = proxy.GetUserByEmailAndPass(email, pass);
+                    user = proxy.GetUserByEmailAndPass(email, pass);
                 }
-                if (userid != -1) //login successful
+                if (user != null) //login successful
                 {
                     //User logged in
-                    session.UserID = userid;
+                    session.UserID = user.id;
                     session.Email = email;
                     session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + email;
                     Directory.CreateDirectory(session.RootFolderPath);

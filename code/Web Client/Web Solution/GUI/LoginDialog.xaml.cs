@@ -39,15 +39,14 @@ namespace Web_Solution.GUI
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
 
         private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
             Email = textboxEmail.Text;
             UnencryptedPass = passwordBox.Password;
-
-            this.Close();
+            this.DialogResult = true;
         }
     }
 }

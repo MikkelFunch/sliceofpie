@@ -27,11 +27,11 @@ namespace Web_Solution
         /// id,name,parent
         /// </summary>
         /// <param name="items"></param>
-        /// <param name="filesAndFolders"></param>
-        public void LoadFilesAndFolders(ItemCollection items, string[][][] filesAndFolders)
+        /// <param name="foldersAndFiles"></param>
+        public void LoadFilesAndFolders(ItemCollection items, string[][][] foldersAndFiles)
         {
             items.Clear();
-            string[][] folders = filesAndFolders[0];
+            string[][] folders = foldersAndFiles[0];
 
             foreach (string[] folder in folders)
             {
@@ -54,12 +54,12 @@ namespace Web_Solution
             {
                 if ((int)((object[])item.Tag)[0] == int.Parse(folder[2]))
                 {//add to specified folder
-                    item.Items.Add(folder);
+                    item.Items.Add(folderItem);
                     return;
                 }
 	        }
             //add to root
-            items.Add(folder);
+            items.Add(folderItem);
         }
 
         /// <summary>

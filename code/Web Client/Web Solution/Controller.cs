@@ -142,28 +142,46 @@ namespace Web_Solution
 
         private void proxy_GetUserByEmailAndPassCompleted(Object sender, ServiceReference.GetUserByEmailAndPassCompletedEventArgs args)
         {
-            int userid = args.Result;
-            if (userid != -1) //login successful
+            ServiceReference.ServiceUser user = args.Result;
+            if (user != null) //login successful
             {
                 //User logged in
-                session.UserID = userid;
-
-                System.Windows.MessageBox.Show("Logged in successfully");
+                session.UserID = user.id;
+                session.RootFolderID = user.rootFolderId;
+                
                 gui.SetLoginView(true);
 
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-                proxy.getShiat(session.UserID);
-
-
-                object[] 
-                TreeViewModel.GetInstance().LoadFilesAndFolders(gui.Items);
-                UpdateExplorerView();
+                proxy.GetAllFilesAndFoldersByUserIdAsync(user.id);
+                proxy.GetAllFilesAndFoldersByUserIdCompleted += new EventHandler<ServiceReference.GetAllFilesAndFoldersByUserIdCompletedEventArgs>(proxy_GetAllFilesAndFoldersByUserIdCompleted);
             }
             else
             {
                 session.Email = "";
                 MessageBox.Show("Wrong email or password");
             }
+        }
+
+        private void proxy_GetAllFilesAndFoldersByUserIdCompleted(Object sender, ServiceReference.GetAllFilesAndFoldersByUserIdCompletedEventArgs args)
+        {
+            System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> foldersAndFiles = args.Result;
+            string[][][] foldersAndFilesArrays = new string[2][][];
+
+            for (int i = 0; i < 2; i++)
+            {
+                System.Collections.ObjectModel.ObservableCollection<string>[] temp = foldersAndFiles[i].ToArray();
+                foldersAndFilesArrays[i] = new string[temp.Length][];
+                for (int j = 0; j < temp.Length; j++)
+                {
+                    string[] tempfoldersorfiles = temp[j].ToArray();
+                    foldersAndFilesArrays[i][j] = tempfoldersorfiles;
+                }
+            }
+
+            TreeViewModel.GetInstance().LoadFilesAndFolders(gui.ExplorerTree.Items, foldersAndFilesArrays);
+            UpdateExplorerView();
+
+            System.Windows.MessageBox.Show("Logged in successfully");
         }
 
         #endregion
@@ -219,14 +237,42 @@ namespace Web_Solution
         {
             if (title != null && title.Length > 0)
             {
-                TreeViewModel.GetInstance().AddItem(title,0,gui.Items,false);
-                UpdateExplorerView();
+                string emptyDocumentXaml = "<FlowDocument xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" />";
+                string metadata = Metadata.GenerateMetadataStringForNewFile();
+                string fileContent = metadata + emptyDocumentXaml;
+
+                session.CurrentDocumentTitle = title;
+
+                ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+                proxy.AddDocumentWithUserDocumentAsync(title, session.UserID, session.RootFolderPath, fileContent);
+                proxy.AddDocumentWithUserDocumentCompleted += new EventHandler<ServiceReference.AddDocumentWithUserDocumentCompletedEventArgs>(proxy_AddDocumentWithUserDocumentCompleted);
             }
         }
 
-        public void CreateFolder(String folderName, String path)
+        private void proxy_AddDocumentWithUserDocumentCompleted(object sender, ServiceReference.AddDocumentWithUserDocumentCompletedEventArgs args)
         {
-            TreeViewModel.GetInstance().AddItem(folderName, path, gui.Items, true);
+            int documentId = args.Result;
+            session.CurrentDocumentID = documentId;
+
+            string[] documentData = new string[]{documentId.ToString(),session.RootFolderID.ToString(),session.CurrentDocumentTitle};
+
+            TreeViewModel.GetInstance().InsertDocument(documentData, gui.ExplorerTree.Items);
+            gui.richTextBox.Selection.Text = "";
+            UpdateExplorerView();
+        }
+
+        public void CreateFolder(String folderName, int parentFolderId)
+        {
+            if(parentFolderId == -1) parentFolderId = session.RootFolderID;
+
+            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+            proxy.AddFolderAsync(folderName,parentFolderId);
+            proxy.AddFolderCompleted +=new EventHandler<ServiceReference.AddFolderCompletedEventArgs>(proxy_AddFolderCompleted);
+        }
+
+        private void proxy_AddFolderCompleted(object sender, ServiceReference.AddFolderCompletedEventArgs args)
+        {
+            TreeViewModel.GetInstance().InsertFolder(new string[] { args.Result.ToString(), session.NewlyCreatedFolderName, session.NewlyCreatedFolderParentId.ToString() }, gui.ExplorerTree.Items);
             UpdateExplorerView();
         }
 
@@ -279,11 +325,11 @@ namespace Web_Solution
         /// </summary>
         public void UpdateExplorerView()
         {
-            gui.ExplorerTree.Items.Clear();
+            /*gui.ExplorerTree.Items.Clear();
             foreach (TreeViewItem item in gui.Items)
             {
                 gui.ExplorerTree.Items.Add(item);
-            }
+            }*/
         }
 
         #endregion
@@ -455,7 +501,7 @@ namespace Web_Solution
         /// [x][1]editor name
         /// [x][2]filecontent with metadata
         /// </returns>
-        public string[][] GetAllDocumentRevisionsWithContent(int documentId)
+        /*public string[][] GetAllDocumentRevisionsWithContent(int documentId)
         {
             string[][] returnArray = null;
             if (documentId > 0)
@@ -493,8 +539,6 @@ namespace Web_Solution
             }
 
             return returnArray;
-        }
-
-
+        }*/
     }
 }
