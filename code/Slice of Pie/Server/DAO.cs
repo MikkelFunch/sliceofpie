@@ -690,5 +690,21 @@ namespace Server
                 context.SaveChanges();
             }
         }
+
+        /// <summary>
+        /// Gets a documentrevision by its id
+        /// </summary>
+        /// <param name="documentRevisionId">The id of the document revision</param>
+        /// <returns>The documentrevision with the given id</returns>
+        public Documentrevision GetDocumentRevisionById(int documentRevisionId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var documentrevision = from dr in context.Documentrevisions
+                                       where dr.id == documentRevisionId
+                                       select dr;
+                return documentrevision.First<Documentrevision>();
+            }
+        }
     }
 }

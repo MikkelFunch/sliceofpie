@@ -464,5 +464,20 @@ namespace Server
         {
             PersistentStorage.GetInstance().MoveDocumentWeb(userId, documentId, newFolderId);
         }
+
+        /// <summary>
+        /// Gets the pure content of a document revision
+        /// </summary>
+        /// <param name="documentRevisionId">The id of the document revision</param>
+        /// <returns>The pure content of the document revision</returns>
+        public string GetDocumentRevisionContentById(int documentRevisionId)
+        {
+            Documentrevision documentRevision = PersistentStorage.GetInstance().GetDocumentRevisionById(documentRevisionId);
+            String fileContent = PersistentStorage.GetInstance().GetDocumentRevisionContent(documentRevision);
+            String xaml = fileContent.Substring(fileContent.IndexOf("<"));
+            FlowDocument flowDocument = (FlowDocument)System.Windows.Markup.XamlReader.Parse(xaml);
+            TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
+            return textRange.Text;
+        }
     }
 }
