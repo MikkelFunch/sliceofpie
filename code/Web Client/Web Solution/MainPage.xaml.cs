@@ -28,20 +28,23 @@ namespace Web_Solution
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
         {
-            string url = null;
-
             ImageURLDialog imgDia = new ImageURLDialog();
+            imgDia.Closed += new EventHandler(imgDia_Closed);
             imgDia.Show();
+        }
+
+        private void imgDia_Closed(object sender, EventArgs args)
+        {
+            ImageURLDialog imgDia = (ImageURLDialog)sender;
 
             //get inserted url
-            url = imgDia.URLString;
+            string url = imgDia.URLString;
 
             //check if it is a valid url
             if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
             {
-                richTextBox.SelectAll();
-                String clearText = richTextBox.Selection.Text;
-                richTextBox.Selection.Text = richTextBox.Selection.Text.Insert(0, "[IMAGE:" + url + "]");
+                string urlString = "[IMAGE:" + url + "]";
+                richTextBox.Selection.Text += urlString;
             }
         }
 
@@ -227,13 +230,20 @@ namespace Web_Solution
 
         private void buttonMoveDocument_Click(object sender, RoutedEventArgs e)
         {
-            if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+            if (ExplorerTree.SelectedItem != null && ((bool)((object[])((TreeViewItem)ExplorerTree.SelectedItem).Tag)[2]) == false)
             {
                 MoveFileDialog movDia = new MoveFileDialog();
                 movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
+                movDia.Source = ExplorerTree.Items;
+                movDia.Closed += new EventHandler(movDia_Closed);
                 movDia.Show();
-                controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
             }
+        }
+
+        private void movDia_Closed(object sender, EventArgs args)
+        {
+            MoveFileDialog movDia = (MoveFileDialog)sender;
+            controller.MoveFileToFolder(movDia.FromId, movDia.ToId, int.Parse(((object[])movDia.SelectedItem.Tag)[0].ToString()));
         }
 
         private void buttonHistory_Click(object sender, RoutedEventArgs e)

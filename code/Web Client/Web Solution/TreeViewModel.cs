@@ -53,7 +53,21 @@ namespace Web_Solution
         {
             TreeViewItem folderItem = new TreeViewItem();
             folderItem.Header = folder[1];
-            folderItem.Tag = new object[] { folder[0], folder[2], true }; 
+            folderItem.Opacity = 0.5;
+            folderItem.Tag = new object[] { folder[0], folder[2], true};
+
+            InsertFolderHelper(folder, items);
+            
+            //add to root
+            if(int.Parse(((object[])(folderItem.Tag))[1].ToString()) == Session.GetInstance().RootFolderID)
+                items.Add(folderItem);
+        }
+
+        private void InsertFolderHelper(string[] folder, ItemCollection items)
+        {
+            TreeViewItem folderItem = new TreeViewItem();
+            folderItem.Header = folder[1];
+            folderItem.Tag = new object[] { folder[0], folder[2], true };
 
             foreach (TreeViewItem item in items)
             {
@@ -62,9 +76,8 @@ namespace Web_Solution
                     item.Items.Add(folderItem);
                     return;
                 }
-	        }
-            //add to root
-            items.Add(folderItem);
+                InsertFolderHelper(folder, item.Items);
+            }
         }
 
         /// <summary>
@@ -78,18 +91,34 @@ namespace Web_Solution
             documentItem.Header = document[2];
             documentItem.Tag = new object[] { document[0], document[1], false }; //0:document id, 1:folderid,2false->not a folder
             documentItem.MouseLeftButtonUp += new MouseButtonEventHandler(documentItem_MouseLeftButtonUp);
-            
-            foreach (TreeViewItem item in items)
-            {       //check if the item is a folder             check if the document item lies in the folder
-                if ((bool)((object[])item.Tag)[2] == true && int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(document[1]))
-                {
-                    item.Items.Add(documentItem);
-                    return;
-                }
-            }
+
+            InsertDocumentHelper(document, items);
 
             //add to root
-            items.Add(documentItem);
+            if (int.Parse(((object[])(documentItem.Tag))[1].ToString()) == Session.GetInstance().RootFolderID)
+                items.Add(documentItem);
+        }
+
+        private void InsertDocumentHelper(string[] document, ItemCollection items)
+        {
+            TreeViewItem documentItem = new TreeViewItem();
+            documentItem.Header = document[2];
+            documentItem.Tag = new object[] { document[0], document[1], false }; //0:document id, 1:folderid,2false->not a folder
+            documentItem.MouseLeftButtonUp += new MouseButtonEventHandler(documentItem_MouseLeftButtonUp);
+
+            foreach (TreeViewItem item in items)
+            {       //check if the item is a folder
+                if ((bool)((object[])item.Tag)[2] == true)
+                {
+                    //check if the document item lies in the folder
+                    if (int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(document[1]))
+                    {
+                        item.Items.Add(documentItem);
+                        return;
+                    }
+                    InsertDocumentHelper(document, item.Items);
+                }
+            }
         }
 
         public void documentItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -135,6 +164,15 @@ namespace Web_Solution
                 }
             }
             return null;
+        }
+
+        public void RemoveDocument(int documentId, ItemCollection items)
+        {
+            foreach (TreeViewItem item in items)
+            {
+                object[] tag = (object[])item.Tag;
+                if()
+            }
         }
     }
 
