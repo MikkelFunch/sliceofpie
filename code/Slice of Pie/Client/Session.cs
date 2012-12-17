@@ -37,30 +37,45 @@ namespace Client
             set;
         }
 
+        /// <summary>
+        /// ID of the document currently in focus.
+        /// </summary>
         public int CurrentDocumentID
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The path to the root folder on the local file system.
+        /// </summary>
         public string RootFolderPath
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The path of the local document currently in focus.
+        /// </summary>
         public string CurrentDocumentPath
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The title of the document currently in focus.
+        /// </summary>
         public string CurrentDocumentTitle
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The email of the user
+        /// </summary>
         public string Email
         {
             get;

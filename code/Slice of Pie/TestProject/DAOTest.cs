@@ -28,7 +28,7 @@ namespace TestProject
         [ClassCleanup()]
         public static void CleanDataBaseFinish()
         {
-            //DAO.GetInstance().DeleteAllData();
+            DAO.GetInstance().DeleteAllData();
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace TestProject
             string name = "TestDoc";
             int docId = DAO.GetInstance().AddDocument(name, userId, "testpath");
             //DocumentRevision
-            DAO.GetInstance().AddDocumentRevision(DateTime.MinValue, userId, docId, "testpath");
             DAO.GetInstance().AddDocumentRevision(DateTime.UtcNow, userId, docId, "testpath");
+            DAO.GetInstance().AddDocumentRevision(DateTime.UtcNow.Add(new TimeSpan(0, 15, 30)), userId, docId, "testpath");
             List<Documentrevision> drlist = DAO.GetInstance().GetLatestDocumentRevisions(docId);
             Documentrevision dr1 = drlist[0];
             Documentrevision dr2 = drlist[1];
