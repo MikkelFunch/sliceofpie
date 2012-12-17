@@ -306,5 +306,15 @@ namespace WcfService
         {
             Server.Controller.GetInstance().MoveDocumentWeb(userId, documentId, newFolderId);
         }
+
+        /// <summary>
+        /// Gets the pure content of a document revision
+        /// </summary>
+        /// <param name="documentRevisionId">The id of the document revision</param>
+        /// <returns>The pure content of the document revision</returns>
+        public String GetDocumentRevisionContentById(int documentRevisionId)
+        {
+            return Server.Controller.GetInstance().GetDocumentRevisionContentById(documentRevisionId);
+        }
     }
 }
