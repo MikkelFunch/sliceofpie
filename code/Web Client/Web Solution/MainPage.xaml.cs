@@ -244,17 +244,7 @@ namespace Web_Solution
         private void buttonHistory_Click(object sender, RoutedEventArgs e)
         {
             RevisionHistoryDialog revDia = new RevisionHistoryDialog();
-            controller.PopulateHistory(revDia.Items);
-            revDia.Show();
-
-
-            /*RevisionHistoryDialog revDia = new RevisionHistoryDialog();
-
-            revDia.DocumentName = Session.GetInstance().CurrentDocumentTitle;
-            revDia.EditorName = "";
-            revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
-            revDia.CreateTreeView();
-            revDia.Show();*/
+            controller.PopulateHistory(revDia);
         }
 
         public void SetLoginView(bool active)
@@ -277,6 +267,14 @@ namespace Web_Solution
             buttonShareDocument.IsEnabled = active;
             buttonSync.IsEnabled = active;
             //buttonSyncAll.IsEnabled = active;
+        }
+
+        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExplorerTree.SelectedItem != null)
+            {
+                controller.DeleteDocument((TreeViewItem)ExplorerTree.SelectedItem, ExplorerTree.Items);
+            }
         }
     }
 }

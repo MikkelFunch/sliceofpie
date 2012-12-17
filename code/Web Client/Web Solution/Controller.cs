@@ -33,7 +33,6 @@ namespace Web_Solution
         {
             session = Session.GetInstance();
             session.UserID = -1;
-            session.RevisionItems = new TreeView().Items;
         }
 
         /// <summary>
@@ -433,8 +432,10 @@ namespace Web_Solution
             return TreeViewModel.GetInstance().GetRelativePath(folderId, Source);
         }
 
-        public void PopulateHistory(ItemCollection itemCollection)
+        public void PopulateHistory(Web_Solution.GUI.RevisionHistoryDialog revDia)
         {
+            session.RevisionDialog = revDia;
+
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
             proxy.GetAllDocumentRevisionsByDocumentIdAsync(session.CurrentDocumentID);
             proxy.GetAllDocumentRevisionsByDocumentIdCompleted +=new EventHandler<ServiceReference.GetAllDocumentRevisionsByDocumentIdCompletedEventArgs>(proxy_GetAllDocumentRevisionsByDocumentIdCompleted);
@@ -444,15 +445,47 @@ namespace Web_Solution
         {
             ServiceReference.ServiceDocumentrevision[] revisions = args.Result.ToArray();
 
-            session.RevisionItems.Clear();
+
             for (int i = 0; i < revisions.Length; i++)
             {
                 TreeViewItem item = new TreeViewItem();
                 item.Header = revisions[i].creationTime;
                 item.Tag = revisions[i].id;
+                item.MouseLeftButtonUp += new System.Windows.Input.MouseButtonEventHandler(item_MouseLeftButtonUp);
 
-                session.RevisionItems.Add(item);
+                session.RevisionDialog.treeViewRevisions.Items.Add(item);
             }
+
+            session.RevisionDialog.labelDocumentName.Text = session.CurrentDocumentTitle;
+            session.RevisionDialog.Show();
+        }
+
+        private void item_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            bool doubleClick = MouseButtonHelper.IsDoubleClick(sender, e);
+            if (doubleClick)
+            {
+                TreeViewItem item = (TreeViewItem)sender;
+                session.RevisionDialog.labelCurrentTimeStamp.Text = "Opened revision: " + item.Header.ToString();
+                ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+                proxy.GetDocumentRevisionContentByIdAsync((int)item.Tag);
+                proxy.GetDocumentRevisionContentByIdCompleted += new EventHandler<ServiceReference.GetDocumentRevisionContentByIdCompletedEventArgs>(proxy_GetDocumentRevisionContentByIdCompleted);
+            }
+        }
+
+        private void proxy_GetDocumentRevisionContentByIdCompleted(object sender, ServiceReference.GetDocumentRevisionContentByIdCompletedEventArgs args)
+        {
+            string content = args.Result;
+            session.RevisionDialog.richTextBoxCurrentRevision.SelectAll();
+            session.RevisionDialog.richTextBoxCurrentRevision.Selection.Text = content;
+        }
+
+        public void DeleteDocument(TreeViewItem item, ItemCollection items)
+        {
+            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+            int documentId = int.Parse(((object[])item.Tag)[0].ToString());
+            proxy.DeleteDocumentReferenceAsync(session.UserID, documentId);
+            TreeViewModel.GetInstance().RemoveDocument(documentId, items);
         }
     }
 }

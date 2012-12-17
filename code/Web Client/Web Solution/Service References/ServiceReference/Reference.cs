@@ -538,6 +538,11 @@ namespace Web_Solution.ServiceReference {
         System.IAsyncResult BeginMoveDocumentWeb(int userId, int documentId, int newFolderId, System.AsyncCallback callback, object asyncState);
         
         void EndMoveDocumentWeb(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/GetDocumentRevisionContentById", ReplyAction="http://tempuri.org/IService1/GetDocumentRevisionContentByIdResponse")]
+        System.IAsyncResult BeginGetDocumentRevisionContentById(int documentRevisionId, System.AsyncCallback callback, object asyncState);
+        
+        string EndGetDocumentRevisionContentById(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -907,6 +912,25 @@ namespace Web_Solution.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetDocumentRevisionContentByIdCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetDocumentRevisionContentByIdCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public string Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class Service1Client : System.ServiceModel.ClientBase<Web_Solution.ServiceReference.IService1>, Web_Solution.ServiceReference.IService1 {
         
         private BeginOperationDelegate onBeginAddUserDelegate;
@@ -1083,6 +1107,12 @@ namespace Web_Solution.ServiceReference {
         
         private System.Threading.SendOrPostCallback onMoveDocumentWebCompletedDelegate;
         
+        private BeginOperationDelegate onBeginGetDocumentRevisionContentByIdDelegate;
+        
+        private EndOperationDelegate onEndGetDocumentRevisionContentByIdDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetDocumentRevisionContentByIdCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -1193,6 +1223,8 @@ namespace Web_Solution.ServiceReference {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> AddDocumentRevisionWebCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> MoveDocumentWebCompleted;
+        
+        public event System.EventHandler<GetDocumentRevisionContentByIdCompletedEventArgs> GetDocumentRevisionContentByIdCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -2590,6 +2622,52 @@ namespace Web_Solution.ServiceReference {
                         newFolderId}, this.onEndMoveDocumentWebDelegate, this.onMoveDocumentWebCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginGetDocumentRevisionContentById(int documentRevisionId, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetDocumentRevisionContentById(documentRevisionId, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        string Web_Solution.ServiceReference.IService1.EndGetDocumentRevisionContentById(System.IAsyncResult result) {
+            return base.Channel.EndGetDocumentRevisionContentById(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetDocumentRevisionContentById(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int documentRevisionId = ((int)(inValues[0]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginGetDocumentRevisionContentById(documentRevisionId, callback, asyncState);
+        }
+        
+        private object[] OnEndGetDocumentRevisionContentById(System.IAsyncResult result) {
+            string retVal = ((Web_Solution.ServiceReference.IService1)(this)).EndGetDocumentRevisionContentById(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetDocumentRevisionContentByIdCompleted(object state) {
+            if ((this.GetDocumentRevisionContentByIdCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetDocumentRevisionContentByIdCompleted(this, new GetDocumentRevisionContentByIdCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetDocumentRevisionContentByIdAsync(int documentRevisionId) {
+            this.GetDocumentRevisionContentByIdAsync(documentRevisionId, null);
+        }
+        
+        public void GetDocumentRevisionContentByIdAsync(int documentRevisionId, object userState) {
+            if ((this.onBeginGetDocumentRevisionContentByIdDelegate == null)) {
+                this.onBeginGetDocumentRevisionContentByIdDelegate = new BeginOperationDelegate(this.OnBeginGetDocumentRevisionContentById);
+            }
+            if ((this.onEndGetDocumentRevisionContentByIdDelegate == null)) {
+                this.onEndGetDocumentRevisionContentByIdDelegate = new EndOperationDelegate(this.OnEndGetDocumentRevisionContentById);
+            }
+            if ((this.onGetDocumentRevisionContentByIdCompletedDelegate == null)) {
+                this.onGetDocumentRevisionContentByIdCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetDocumentRevisionContentByIdCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetDocumentRevisionContentByIdDelegate, new object[] {
+                        documentRevisionId}, this.onEndGetDocumentRevisionContentByIdDelegate, this.onGetDocumentRevisionContentByIdCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -3065,6 +3143,19 @@ namespace Web_Solution.ServiceReference {
             public void EndMoveDocumentWeb(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 base.EndInvoke("MoveDocumentWeb", _args, result);
+            }
+            
+            public System.IAsyncResult BeginGetDocumentRevisionContentById(int documentRevisionId, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = documentRevisionId;
+                System.IAsyncResult _result = base.BeginInvoke("GetDocumentRevisionContentById", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public string EndGetDocumentRevisionContentById(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                string _result = ((string)(base.EndInvoke("GetDocumentRevisionContentById", _args, result)));
+                return _result;
             }
         }
     }

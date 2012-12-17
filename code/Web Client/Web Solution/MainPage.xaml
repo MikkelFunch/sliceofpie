@@ -34,7 +34,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="New Document" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewDocument" IsEnabled="False" Click="buttonNewDocument_Click" Height="24"/>
                 <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewFolder" IsEnabled="False" Click="buttonNewFolder_Click" Height="24" />
-                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24"/>
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24" Click="buttonDelete_Click" />
             </StackPanel>
 
             <!-- Bottom buttons -->

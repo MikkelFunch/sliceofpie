@@ -424,6 +424,20 @@
           <xs:sequence />
         </xs:complexType>
       </xs:element>
+      <xs:element name="GetDocumentRevisionContentById">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="documentRevisionId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDocumentRevisionContentByIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDocumentRevisionContentByIdResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType" />
@@ -720,6 +734,12 @@
   <wsdl:message name="IService1_MoveDocumentWeb_OutputMessage">
     <wsdl:part name="parameters" element="tns:MoveDocumentWebResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_GetDocumentRevisionContentById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentRevisionContentById" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetDocumentRevisionContentById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentRevisionContentByIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="AddUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/AddUser" message="tns:IService1_AddUser_InputMessage" />
@@ -836,6 +856,10 @@
     <wsdl:operation name="MoveDocumentWeb">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/MoveDocumentWeb" message="tns:IService1_MoveDocumentWeb_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/MoveDocumentWebResponse" message="tns:IService1_MoveDocumentWeb_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentRevisionContentById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDocumentRevisionContentById" message="tns:IService1_GetDocumentRevisionContentById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDocumentRevisionContentByIdResponse" message="tns:IService1_GetDocumentRevisionContentById_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -1094,6 +1118,15 @@
     </wsdl:operation>
     <wsdl:operation name="MoveDocumentWeb">
       <soap:operation soapAction="http://tempuri.org/IService1/MoveDocumentWeb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentRevisionContentById">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetDocumentRevisionContentById" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

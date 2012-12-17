@@ -124,10 +124,10 @@ namespace Web_Solution
             set; 
         }
 
-        public System.Windows.Controls.ItemCollection RevisionItems
-        {
-            get;
-            set;
+        public GUI.RevisionHistoryDialog RevisionDialog 
+        { 
+            get; 
+            set; 
         }
     }
 }
