@@ -534,7 +534,10 @@ namespace Client.ServiceReference {
         string GetLatestDocumentContent(int documentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocument", ReplyAction="http://tempuri.org/IService1/SyncDocumentResponse")]
-        string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string original);
+        string[][] SyncDocument(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SyncDocumentWeb", ReplyAction="http://tempuri.org/IService1/SyncDocumentWebResponse")]
+        string[][] SyncDocumentWeb(int editorId, int documentId, string filepath, string metadata, string title, string pureContent);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentId", ReplyAction="http://tempuri.org/IService1/GetDocumentIdResponse")]
         int GetDocumentId(int userId, string title);
@@ -553,6 +556,21 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserId", ReplyAction="http://tempuri.org/IService1/GetAllFilesAndFoldersByUserIdResponse")]
         string[][][] GetAllFilesAndFoldersByUserId(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetLatestPureDocumentContent", ReplyAction="http://tempuri.org/IService1/GetLatestPureDocumentContentResponse")]
+        string GetLatestPureDocumentContent(int documentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ShareDocumentWeb", ReplyAction="http://tempuri.org/IService1/ShareDocumentWebResponse")]
+        void ShareDocumentWeb(int documentId, int ownerId, int recieverId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddDocumentRevisionWeb", ReplyAction="http://tempuri.org/IService1/AddDocumentRevisionWebResponse")]
+        void AddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/MoveDocumentWeb", ReplyAction="http://tempuri.org/IService1/MoveDocumentWebResponse")]
+        void MoveDocumentWeb(int userId, int documentId, int newFolderId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDocumentRevisionContentById", ReplyAction="http://tempuri.org/IService1/GetDocumentRevisionContentByIdResponse")]
+        string GetDocumentRevisionContentById(int documentRevisionId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -650,8 +668,12 @@ namespace Client.ServiceReference {
             return base.Channel.GetLatestDocumentContent(documentId);
         }
         
-        public string[][] SyncDocument(int editorId, int documentId, string filepath, string content, string title, string original) {
-            return base.Channel.SyncDocument(editorId, documentId, filepath, content, title, original);
+        public string[][] SyncDocument(int editorId, int documentId, string filepath, string fileContent, string title, string pureContent) {
+            return base.Channel.SyncDocument(editorId, documentId, filepath, fileContent, title, pureContent);
+        }
+        
+        public string[][] SyncDocumentWeb(int editorId, int documentId, string filepath, string metadata, string title, string pureContent) {
+            return base.Channel.SyncDocumentWeb(editorId, documentId, filepath, metadata, title, pureContent);
         }
         
         public int GetDocumentId(int userId, string title) {
@@ -676,6 +698,26 @@ namespace Client.ServiceReference {
         
         public string[][][] GetAllFilesAndFoldersByUserId(int userId) {
             return base.Channel.GetAllFilesAndFoldersByUserId(userId);
+        }
+        
+        public string GetLatestPureDocumentContent(int documentId) {
+            return base.Channel.GetLatestPureDocumentContent(documentId);
+        }
+        
+        public void ShareDocumentWeb(int documentId, int ownerId, int recieverId) {
+            base.Channel.ShareDocumentWeb(documentId, ownerId, recieverId);
+        }
+        
+        public void AddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata) {
+            base.Channel.AddDocumentRevisionWeb(documentId, userId, pureContent, metadata);
+        }
+        
+        public void MoveDocumentWeb(int userId, int documentId, int newFolderId) {
+            base.Channel.MoveDocumentWeb(userId, documentId, newFolderId);
+        }
+        
+        public string GetDocumentRevisionContentById(int documentRevisionId) {
+            return base.Channel.GetDocumentRevisionContentById(documentRevisionId);
         }
     }
 }

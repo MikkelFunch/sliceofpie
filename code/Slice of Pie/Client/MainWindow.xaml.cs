@@ -53,10 +53,7 @@ namespace Client
                 TextRange tr = new TextRange(richTextBox.Selection.Start,richTextBox.Selection.End);
                 tr.Text = "";
 
-                int indexStart = url.LastIndexOf('/') + 1;
-                String fileName = url.Substring(indexStart);
-
-                Run run = new Run("[IMAGE:" + fileName + "]");
+                Run run = new Run("[IMAGE:" + url + "]");
                 Hyperlink hlink = new Hyperlink(run, tr.Start);
                 hlink.NavigateUri = new Uri(url);
             }
@@ -268,6 +265,14 @@ namespace Client
             revDia.Revisions = controller.GetAllDocumentRevisionsWithContent(Session.GetInstance().CurrentDocumentID);
             revDia.CreateTreeView();
             revDia.ShowDialog();
+        }
+
+        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExplorerTree.SelectedItem != null)
+            {
+                controller.DeleteDocument((TreeViewItem)ExplorerTree.SelectedItem, ExplorerTree.Items);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Client
 {
@@ -150,7 +151,6 @@ namespace Client
         {
             File.Move(fromPath, toPath);
             Object[] metadataArray = RetrieveMetadataFromFile(toPath);
-            //metadataArray[3] = 0;
             String metadataString = Metadata.GetMetadataStringFromObjectArray(metadataArray);
             ReplaceMetadataStringInFile(toPath, metadataString);
         }
@@ -186,6 +186,37 @@ namespace Client
         public static Object[] RetrieveMetadataFromFile(String directoryPath, String filename)
         {
             return (RetrieveMetadataFromFile(directoryPath + "\\" + filename + ".txt"));
+        }
+
+        public void DeleteFile(string filePath)
+        {
+            File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// Method for handling newly donwloaded images. The images are stored in the local file system and URL's added to the containing document.
+        /// </summary>
+        /// <param name="image">BitmapImage which have been fully donwloaded</param>
+        public void DownloadImage(BitmapImage image)
+        {
+            String url = image.UriSource.ToString();
+            String picsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\";
+            int indexStart = url.LastIndexOf('/') + 1;
+            String fileName = url.Substring(indexStart);
+            if (!File.Exists(picsPath + fileName))
+            {
+                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+
+                Directory.CreateDirectory(picsPath);
+                String photolocation = picsPath + fileName; //file name
+
+                encoder.Frames.Add(BitmapFrame.Create(image));
+
+                using (var filestream = new FileStream(photolocation, FileMode.Create))
+                {
+                    encoder.Save(filestream);
+                }
+            }
         }
     }
 }

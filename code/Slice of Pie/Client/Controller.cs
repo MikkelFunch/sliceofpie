@@ -163,6 +163,9 @@ namespace Client
             return successfulLogin;
         }
 
+        /// <summary>
+        /// Logout user
+        /// </summary>
         public void LogoutUser()
         {
             session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
@@ -172,7 +175,11 @@ namespace Client
             UpdateExplorerView();
         }
 
-        public void ShareDocument(string email)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HANDLE DOCUMENT NOT BEING SYNCED FIRST(NOT IN THE DATABASE)
+        /// <summary>
+        /// Method to share the currently opened document with another user
+        /// </summary>
+        /// <param name="email">The email of the sue rwhich you want to share the doument</param>
+        public void ShareDocument(string email)
         {
             if (email != null && email.Length > 0 && session.CurrentDocumentPath.Length > 0 && session.CurrentDocumentID != -1)
             {
@@ -222,7 +229,7 @@ namespace Client
         /// <param name="document">The file as format interpretable by Rich Text Box</param>
         public void SaveDocumentToFile(FlowDocument document)
         {
-            if (session.UserID != -1 && session.CurrentDocumentPath != null)
+            if (session.CurrentDocumentPath != null)
             {
                 localPersistence.SaveDocumentToFile(document);
                 UpdateExplorerView();
@@ -258,6 +265,7 @@ namespace Client
         {
             //try catch in case of corrupted file
             FlowDocument doc = localPersistence.CreateFlowDocumentWithoutMetadata(content);
+            DownloadAllImagesFrom(new TextRange(doc.ContentStart, doc.ContentEnd ).Text);
 
             gui.richTextBox.Document = doc;
             gui.labelOpenDocument.Content = "Current document: " + title;
@@ -327,6 +335,7 @@ namespace Client
                             {
                                 //Get the content of the file on the server
                                 content = proxy.GetLatestDocumentContent(documentReference.id);
+                                //add a document revision in order to be able to detect merge conflicts later
                                 proxy.AddDocumentRevision(session.UserID, documentReference.id, content);
                             }
                             //Create the directories needed?
@@ -338,7 +347,7 @@ namespace Client
                     else //No documents found by this userId
                     { //loop through all the users folders and add all files to the server
                         List<String> files = new List<String>();
-                        foreach (String file in Directory.GetFiles(session.RootFolderPath)) //!!!!!!!!!!!!!!!!If the rootfolder doesn't exist, an exception is thrown
+                        foreach (String file in Directory.GetFiles(session.RootFolderPath))
                         {
                             AddDocumentToServer(file);
                         }
@@ -360,7 +369,7 @@ namespace Client
             }
             else
             {
-                //No web connection
+                MessageBox.Show("No internet connection", "Internet connection error");
             }
         }
 
@@ -409,8 +418,6 @@ namespace Client
         {
             //load file content
             String content = localPersistence.GetFileContent(filePath);
-            //get file metadata
-            //Object[] metadata = Metadata.RetrieveMetadataFromFile(file);
             //fetch filename
             String fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1, (filePath.IndexOf(".txt") - filePath.LastIndexOf("\\") - 1));
 
@@ -530,31 +537,13 @@ namespace Client
         }
 
         /// <summary>
-        /// Event handler for downloading of images for offline cache. The pictures are stored in the local file system and URL's added to the containing document.
+        /// Event handler for downloading of images for offline cache. Redirected to LocalPersistenceHandler
         /// </summary>
         /// <param name="sender">The image downloaded</param>
         /// <param name="ea">Event arguments. Not used.</param>
         public void ImageDownloadComplete(object sender, EventArgs ea)
         {
-            BitmapImage image = (BitmapImage)sender;
-            String url = image.UriSource.ToString();
-            String picsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\pics\\";
-            int indexStart = url.LastIndexOf('/') + 1;
-            String fileName = url.Substring(indexStart);
-            if (!File.Exists(picsPath + fileName))
-            {
-                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-
-                Directory.CreateDirectory(picsPath);
-                String photolocation = picsPath + fileName; //file name
-
-                encoder.Frames.Add(BitmapFrame.Create(image));
-
-                using (var filestream = new FileStream(photolocation, FileMode.Create))
-                {
-                    encoder.Save(filestream);
-                }
-            }
+            localPersistence.DownloadImage((BitmapImage)sender);
         }
 
         /// <summary>
@@ -614,6 +603,60 @@ namespace Client
         public void LoadFilesAndFolders(System.Windows.Controls.ItemCollection items)
         {
             TreeViewModel.GetInstance().LoadFilesAndFolders(items);
+        }
+
+        /// <summary>
+        /// Method to remove a users participation in a document - the document still lives on the server, but the currently online user can no longer access it
+        /// </summary>
+        /// <param name="item">TreeViewItem represetation of the item which is to be removed</param>
+        /// <param name="items">An item collection which contains the soon to be removed document</param>
+        public void DeleteDocument(System.Windows.Controls.TreeViewItem item, System.Windows.Controls.ItemCollection items)
+        {
+            //get document id for the file
+            int documentId = Metadata.FetchDocumentIDFromFileContent(localPersistence.GetFileContent(item.Tag.ToString()));
+
+            using(ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
+            {
+                //delete the users document reference
+                proxy.DeleteDocumentReference(session.UserID, documentId);
+            }
+            //delete the file locally
+            localPersistence.DeleteFile(item.Tag.ToString());
+            UpdateExplorerView();
+        }
+
+        /// <summary>
+        /// Method which finds and starts the download of all images in the given content
+        /// </summary>
+        /// <param name="content">Content which might contain images</param>
+        public void DownloadAllImagesFrom(string content)
+        {
+            //for each loop the content with the image url and the content before that is removed
+            while(content.Length > 0 && content.IndexOf("[IMAGE:") >= 0)
+            {
+                //remove content which was before the image
+                content = content.Substring(content.IndexOf("[IMAGE:"));
+
+                //start index of the url
+                int startIndex = content.IndexOf("http");
+                //end index of the url
+                int endIndex = content.IndexOf("]");
+                //get the url
+                string url = content.Substring(startIndex, endIndex-startIndex);
+                //set the new content variable
+                content = content.Substring(endIndex);
+                try
+                {
+                    //Create bitmapimage refrenceing the online link to download it
+                    BitmapImage bitmap = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
+                    //bitmap.DownloadCompleted += controller.GetDownloadCompleteEventHandler();
+                    bitmap.DownloadCompleted += new EventHandler(ImageDownloadComplete);
+                }
+                catch(Exception e)
+                {
+                    //image url error
+                }
+            }
         }
     }
 }

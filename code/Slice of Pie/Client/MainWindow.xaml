@@ -32,7 +32,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="New Document" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewDocument" IsEnabled="True" Click="buttonNewDocument_Click" Height="24"/>
                 <Button Content="New Folder" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonNewFolder" IsEnabled="False" Click="buttonNewFolder_Click" Height="24" />
-                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24"/>
+                <Button Content="Delete" VerticalAlignment="Stretch" Margin="2,2,2,2" Name="buttonDelete" IsEnabled="False" Height="24" Click="buttonDelete_Click" />
             </StackPanel>
                 
             <!-- Bottom buttons -->
@@ -99,7 +99,7 @@
             <!-- Buttons to the right side -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Move Document" Name="buttonMoveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonMoveDocument_Click" IsEnabled="True"/>
-                <Button Content="Share document" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonShareDocument_Click" IsEnabled="False" />
+                <Button Content="Share document" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonShareDocument_Click" IsEnabled="True" />
                 <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" HorizontalAlignment="Right" Margin="0,0,0,0"  IsEnabled="False"/>
                 <Button Content="Save document" Name="buttonSaveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonSaveDocument_Click" IsEnabled="True"/>
                 <Button Name="buttonImage" HorizontalAlignment="Right" Margin="0,0,0,0"  Click="buttonImage_Click" IsEnabled="True">
