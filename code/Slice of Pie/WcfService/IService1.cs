@@ -95,6 +95,9 @@ namespace WcfService
 
         [OperationContract]
         void AddDocumentRevisionWeb(int documentId, int userId, String pureContent, String metadata);
+
+        [OperationContract]
+        void MoveDocumentWeb(int userId, int documentId, int newFolderId);
     }
 
     [DataContract]
