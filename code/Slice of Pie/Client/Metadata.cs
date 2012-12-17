@@ -86,11 +86,21 @@ namespace Client
             return metadata;
         }
 
+        /// <summary>
+        /// Removes the meta data from the document content.
+        /// </summary>
+        /// <param name="fileContent">The entire content of the document</param>
+        /// <returns>The textual content of the document</returns>
         public static String RemoveMetadataFromFileContent(string fileContent)
         {
             return fileContent.Substring(fileContent.IndexOf('<'));
         }
 
+        /// <summary>
+        /// Gets the document id from the metadata in the file content.
+        /// </summary>
+        /// <param name="fileContent">The entire content of the document</param>
+        /// <returns>The document id from the metadata</returns>
         public static int FetchDocumentIDFromFileContent(string fileContent)
         {
             int indexStart = fileContent.IndexOf("docid") + 5;

@@ -200,6 +200,10 @@ namespace Client
 
         #region LocalPersistence
 
+        /// <summary>
+        /// Creates a document file in the local file system.
+        /// </summary>
+        /// <param name="title">The title of the document</param>
         public void CreateNewDocumentFile(String title)
         {
             if (title != null && title.Length > 0)
@@ -212,6 +216,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Saves a document from the userinterface to the local persistence.
+        /// </summary>
+        /// <param name="document">The file as format interpretable by Rich Text Box</param>
         public void SaveDocumentToFile(FlowDocument document)
         {
             if (session.UserID != -1 && session.CurrentDocumentPath != null)
@@ -225,6 +233,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Creates a folder with the specified name at the location that the path points at.
+        /// </summary>
+        /// <param name="folderName">The name of the folder</param>
+        /// <param name="path">The location where the folder is created</param>
         public void CreateFolder(String folderName, String path)
         {
             localPersistence.CreateFolder(folderName, path);
@@ -275,6 +288,10 @@ namespace Client
 
         #region SyncMethods
 
+        /// <summary>
+        /// Synchronizes all documents. This includes downloading of files from the server and overwritting of eventual exisiting local saves that can cause conflicts.
+        /// Locally absent folders from documents downloaded from the server are created locally.
+        /// </summary>
         public void SyncAllDocuments()
         {
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
@@ -347,6 +364,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Gets the file path that a user's document is locally stored at.
+        /// </summary>
+        /// <param name="doc">Userdocument from the server</param>
+        /// <returns>The file path to the document from the local root directory</returns>
         private string FetchRelativeFilePath(ServiceReference.ServiceUserdocument doc)
         {
             StringBuilder sb = new StringBuilder();
@@ -400,6 +422,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Synchronizes a specific document to push changes to the server. If another user made changes meanwhile, a conflict arises and a difference view is displayed.
+        /// </summary>
+        /// <param name="document">The document content from the UI</param>
         public void SyncDocument(FlowDocument document)
         {
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
@@ -457,6 +483,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Pushes the merged document revision to the server to resolve the conflict.
+        /// </summary>
+        /// <param name="document">The document content from the UI</param>
         public void SaveMergedDocument(FlowDocument document)
         {
             Object[] oldMetadata = LocalPersistenceHandler.RetrieveMetadataFromFile(session.CurrentDocumentPath);
@@ -478,6 +508,11 @@ namespace Client
 
         #endregion
 
+        /// <summary>
+        /// Moves a file from one filepath to another filepath.
+        /// </summary>
+        /// <param name="fromPath">The filepath that points to the position of the file</param>
+        /// <param name="toPath">The file path that points to the location where the file shall be stored</param>
         public void MoveFileToFolder(string fromPath, string toPath)
         {
             if (fromPath != null && fromPath.Length > 0 && toPath != null && toPath.Length > 0)
@@ -494,6 +529,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Event handler for downloading of images for offline cache. The pictures are stored in the local file system and URL's added to the containing document.
+        /// </summary>
+        /// <param name="sender">The image downloaded</param>
+        /// <param name="ea">Event arguments. Not used.</param>
         public void ImageDownloadComplete(object sender, EventArgs ea)
         {
             BitmapImage image = (BitmapImage)sender;
@@ -567,6 +607,10 @@ namespace Client
             return returnArray;
         }
 
+        /// <summary>
+        /// Loads all documents and folders in the item collection to the tree view.
+        /// </summary>
+        /// <param name="items"></param>
         public void LoadFilesAndFolders(System.Windows.Controls.ItemCollection items)
         {
             TreeViewModel.GetInstance().LoadFilesAndFolders(items);
