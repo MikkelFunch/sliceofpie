@@ -102,6 +102,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Sets the session data and displays the correct dialog for the register operation.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args"></param>
         private void proxy_AddUserCompleted(Object sender, ServiceReference.AddUserCompletedEventArgs args)
         {
             //-1 == user exists
@@ -122,6 +127,11 @@ namespace Web_Solution
 
         #region login
 
+        /// <summary>
+        /// Logs a user in with an email and an unencrypted password.
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <param name="unencrytedPass">The password of the user</param>
         public void LoginUser(string email, string unencrytedPass)
         {
             if (email != null && email.Length > 0 && unencrytedPass != null && unencrytedPass.Length > 0)
@@ -141,6 +151,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Sets gui view and session data. Calls additional asynchronous calls to set update view and data.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The user credentials</param>
         private void proxy_GetUserByEmailAndPassCompleted(Object sender, ServiceReference.GetUserByEmailAndPassCompletedEventArgs args)
         {
             ServiceReference.ServiceUser user = args.Result;
@@ -164,6 +179,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Gets all the files and folders from a user, which are used to correctly update the view and data.
+        /// </summary>
+        /// <param name="sender">The sender ofthe event</param>
+        /// <param name="args">The user data</param>
         private void proxy_GetAllFilesAndFoldersByUserIdCompleted(Object sender, ServiceReference.GetAllFilesAndFoldersByUserIdCompletedEventArgs args)
         {
             System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<string>>> foldersAndFiles = args.Result;
@@ -188,6 +208,9 @@ namespace Web_Solution
 
         #region Logout
 
+        /// <summary>
+        /// Logs out the user, which is currently logged in.
+        /// </summary>
         public void LogoutUser()
         {
             session.UserID = -1;
@@ -202,6 +225,10 @@ namespace Web_Solution
 
         #endregion
 
+        /// <summary>
+        /// Shares a document with another user.
+        /// </summary>
+        /// <param name="email">The email of the user</param>
         public void ShareDocument(string email)
         {
             if (email != null && email.Length > 0 && session.CurrentDocumentID != -1 && email != session.Email)
@@ -212,6 +239,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Creates a userdocument for the invited user.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The email of the user</param>
         private void proxy_GetUserByEmailCompleted(Object sender, ServiceReference.GetUserByEmailCompletedEventArgs args)
         {
             ServiceReference.ServiceUser shareUser = args.Result;
@@ -233,6 +265,10 @@ namespace Web_Solution
 
         #region LocalPersistence
 
+        /// <summary>
+        /// Calls the asynchrounous calls to create a document. The method sets session data and creates metadata.
+        /// </summary>
+        /// <param name="title">The title of the document</param>
         public void CreateNewDocumentFile(String title)
         {
             if (title != null && title.Length > 0)
@@ -249,6 +285,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Sets session data, updates tree view and updates the open document view.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The id of the document</param>
         private void proxy_AddDocumentWithUserDocumentCompleted(object sender, ServiceReference.AddDocumentWithUserDocumentCompletedEventArgs args)
         {
             int documentId = args.Result;
@@ -260,6 +301,11 @@ namespace Web_Solution
             SetOpenDocument(documentId, session.CurrentDocumentTitle, session.RootFolderID);
         }
 
+        /// <summary>
+        /// Creates a folder by calling asynchrounous calls and setting session data.
+        /// </summary>
+        /// <param name="folderName">The name of the folder</param>
+        /// <param name="parentFolderId">The id of the containing folder</param>
         public void CreateFolder(String folderName, int parentFolderId)
         {
             if (parentFolderId == -1) parentFolderId = session.RootFolderID;
@@ -271,6 +317,11 @@ namespace Web_Solution
             session.NewlyCreatedFolderParentId = parentFolderId;
         }
 
+        /// <summary>
+        /// Updates the tree model to reflect the newly created document.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void proxy_AddFolderCompleted(object sender, ServiceReference.AddFolderCompletedEventArgs args)
         {
             TreeViewModel.GetInstance().InsertFolder(new string[] { args.Result.ToString(), session.NewlyCreatedFolderName, session.NewlyCreatedFolderParentId.ToString() }, gui.ExplorerTree.Items);
@@ -291,6 +342,11 @@ namespace Web_Solution
             gui.labelOpenDocument.Content = "Current document: " + documentTitle;
         }
 
+        /// <summary>
+        /// Receives the latest textual content from a document.
+        /// </summary>
+        /// <param name="sender">The sender of the content</param>
+        /// <param name="args">The textual content of the document</param>
         public void proxy_GetLatestPureDocumentContentCompleted(Object sender, ServiceReference.GetLatestPureDocumentContentCompletedEventArgs args)
         {
             string pureContent = args.Result;
@@ -302,69 +358,10 @@ namespace Web_Solution
 
         #region SyncMethods
 
-        #region Sync all
-
-        /*public void SyncAllDocuments()
-        {
-            if (session.UserID != -1)
-            {
-                ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-                proxy.GetAllUserDocumentsByUserIdAsync(session.UserID);
-                proxy.GetAllUserDocumentsByUserIdCompleted += new EventHandler<ServiceReference.GetAllUserDocumentsByUserIdCompletedEventArgs>(proxy_GetAllUserDocumentsByUserIdCompleted);
-                
-            }
-        }
-
-        private void proxy_GetAllUserDocumentsByUserIdCompleted(Object sender, ServiceReference.GetAllUserDocumentsByUserIdCompletedEventArgs args)
-        {
-            Web_Solution.ServiceReference.ServiceUserdocument[] documents = args.Result.ToArray();
-            if (documents.Length > 0)
-            {
-                foreach (ServiceReference.ServiceUserdocument currentDoc in documents)
-                {
-                    ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-                    proxy.GetDocumentByIdAsync(currentDoc.documentId);
-                    proxy.GetDocumentByIdCompleted += new EventHandler<ServiceReference.GetDocumentByIdCompletedEventArgs>(proxy_GetDocumentByIdCompleted);
-                }
-            }
-            else //No documents found by this userId
-            { //loop through all the users folders and add all files to the server
-                foreach (TreeViewItem item in gui.Items)
-                {
-                    if (item.Items.Count == 0)//fil
-                    {
-                        AddNewDocumentToServer(item.Header, ((object[])item.Tag)[0], gui.richTextBox.Xaml, folderpath/id);
-                    }
-                }
-            }
-        }
-
-        
-
-        private void proxy_GetDocumentByIdCompleted(Object sender, ServiceReference.GetDocumentByIdCompletedEventArgs args)
-        {
-            Web_Solution.ServiceReference.ServiceDocument document = args.Result;
-            TreeViewModel.GetInstance().AddItem(document.name, document.id, gui.Items, false);
-            
-            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.AddDocumentRevisionAsync(session.UserID, document.id, content); //lav en metode i serveren som selv finder content for den seneste revision der er det dokument id og indsætter det, ellers er vi nødt til at lave flere proxy kald og flere event handlers
-            UpdateExplorerView();
-        }
-
         /// <summary>
-        /// Add file to server
+        /// Syncs a document and calls the asynchronous calls, resolving the merge.
         /// </summary>
-        /// <param name="filePath">Path to the file which should be added to the server</param>
-        private void AddNewDocumentToServer(string documentTitle, int documentId, string textBoxXaml, int folderId)
-        {
-            string metadataString = Metadata.GenerateMetadataStringForNewFile();
-            string fileContent = metadataString + textBoxXaml;
-            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.AddDocumentWithUserDocument(documentTitle, session.UserID, filepath, fileContent);
-        }*/
-
-        #endregion
-
+        /// <param name="pureContent">The content of the document being synchronized</param>
         public void SyncDocument(string pureContent)
         {
             int documentId = session.CurrentDocumentID;
@@ -378,9 +375,14 @@ namespace Web_Solution
             proxy.SyncDocumentWebCompleted += new EventHandler<ServiceReference.SyncDocumentWebCompletedEventArgs>(proxy_SyncDocumentWebCompleted);
         }
 
+        /// <summary>
+        /// Receives a merge result and interpret whether it is a conflict. If a conflict exists the merge view is setup.
+        /// </summary>
+        /// <param name="sender">The merge result</param>
+        /// <param name="args">Event arguments. Not used</param>
         private void proxy_SyncDocumentWebCompleted(Object sender, ServiceReference.SyncDocumentWebCompletedEventArgs args)
         {
-            if (args.Result != null) //if there is no conflict
+            if (args.Result != null) //if there is a conflict
             {
                 string[][] responseArrays = new string[4][];
                 for (int i = 0; i < args.Result.Count; i++)
@@ -393,7 +395,7 @@ namespace Web_Solution
         }
 
         /// <summary>
-        /// 
+        /// Saves the content specified in the merge view to the server.
         /// </summary>
         /// <param name="pureContent">Pure content of the text in the document</param>
         public void SaveMergedDocument(string pureContent)
@@ -425,73 +427,6 @@ namespace Web_Solution
             TreeViewModel.GetInstance().InsertDocument(document, gui.ExplorerTree.Items);
             session.FolderID = toId;
         }
-
-        /*public void SetContentFromDocumentId(int id, string title)
-        {
-            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.GetLatestDocumentContentAsync(id);
-            proxy.GetLatestDocumentContentCompleted +=new EventHandler<ServiceReference.GetLatestDocumentContentCompletedEventArgs>(proxy_GetLatestDocumentContentCompleted);
-            session.CurrentDocumentTitle = title;
-        }
-
-        private void proxy_GetLatestDocumentContentCompleted(Object sender, ServiceReference.GetLatestDocumentContentCompletedEventArgs args)
-        {
-            string resultContent = args.Result;
-            if(resultContent != null)
-            {
-                SetOpenDocument(resultContent,session.CurrentDocumentTitle,?);
-            }
-        }*/
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="documentId"></param>
-        /// <returns>
-        /// [x]a new revision
-        /// [x][0]timestamp
-        /// [x][1]editor name
-        /// [x][2]filecontent with metadata
-        /// </returns>
-        /*public string[][] GetAllDocumentRevisionsWithContent(int documentId)
-        {
-            string[][] returnArray = null;
-            if (documentId > 0)
-            {
-                ServiceReference.ServiceDocumentrevision[] revisions = null;
-                using (ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                {
-                    revisions = proxy.GetAllDocumentRevisionsByDocumentId(documentId);
-                }
-
-                //remove duplicates
-                //here
-
-                returnArray = new string[revisions.Length][];
-                
-                using(ServiceReference.Service1Client proxy = new ServiceReference.Service1Client())
-                {
-                    for(int i = 0; i < revisions.Length; i++)
-                    {
-                        ServiceReference.ServiceDocumentrevision doc = revisions[i];
-                        ServiceReference.ServiceDocument originalDocument = proxy.GetDocumentById(doc.documentId);
-
-                        String creationTime = doc.creationTime.ToString().Replace(":", ".");
-                        String filename = originalDocument.name + "_revision_" + creationTime;
-                        String content = proxy.GetDocumentContent(originalDocument.path, filename);
-
-                        string[] item = new string[3];
-                        item[0] = doc.creationTime.ToString();
-                        item[1] = proxy.GetUserById(doc.editorId).email;
-                        item[2] = Metadata.RemoveMetadataFromFileContent(content);
-                        
-                        returnArray[i] = item;
-	                }
-                }
-            }
-
-            return returnArray;
-        }*/
 
         public string GetRelativePath(int folderId, ItemCollection Source)
         {

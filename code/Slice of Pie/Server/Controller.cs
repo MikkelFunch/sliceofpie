@@ -283,14 +283,8 @@ namespace Server
         /// Array[3] = the original document (server version)</returns>
         public String[][] SyncDocumentWeb(int editorId, int documentId, String filepath, String metadata, String title, String pureContent)
         {
-            String[] splitPureContent = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
-            FlowDocument document = new FlowDocument();
-            foreach (String s in splitPureContent)
-            {
-                Paragraph p = new Paragraph(new Run(s));
-                document.Blocks.Add(p);
-            }
-            String fileContent = metadata + System.Windows.Markup.XamlWriter.Save(document);
+            String xaml = GetXamlFromPureContent(pureContent);
+            String fileContent = metadata + xaml;
             return SyncDocument(editorId, documentId, filepath, fileContent, title, pureContent);
         }
 
@@ -425,8 +419,7 @@ namespace Server
         /// <param name="recieverId">the id of the user that is being shared the document</param>
         public void ShareDocumentWeb(int documentId, int ownerId, int recieverId)
         {
-            Documentrevision latestDocByOwner = PersistentStorage.GetInstance().GetLatestDocumentRevisionByUserId(ownerId, documentId);
-            String content = PersistentStorage.GetInstance().GetDocumentRevisionContent(latestDocByOwner);
+            String content = PersistentStorage.GetInstance().GetLatestDocumentContent(documentId);
             PersistentStorage.GetInstance().AddDocumentRevision(recieverId, documentId, content);
         }
 
@@ -439,9 +432,37 @@ namespace Server
         /// <param name="metadata">The metadata for the document</param>
         public void AddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata)
         {
-            String xaml = System.Windows.Markup.XamlWriter.Save(pureContent);
+            String xaml = GetXamlFromPureContent(pureContent);
             String fileContent = metadata + xaml;
             PersistentStorage.GetInstance().AddDocumentRevision(userId, documentId, fileContent);
+        }
+
+        /// <summary>
+        /// Convert a regular string to a xaml content
+        /// </summary>
+        /// <param name="pureContent">The pure content</param>
+        /// <returns>The xaml'ed content</returns>
+        private String GetXamlFromPureContent(String pureContent)
+        {
+            String[] splitPureContent = pureContent.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.None);
+            FlowDocument document = new FlowDocument();
+            foreach (String s in splitPureContent)
+            {
+                Paragraph p = new Paragraph(new Run(s));
+                document.Blocks.Add(p);
+            }
+            return System.Windows.Markup.XamlWriter.Save(document);
+        }
+
+        /// <summary>
+        /// Moves a document from one folder to another
+        /// </summary>
+        /// <param name="userId">The id of the user whos moving the document</param>
+        /// <param name="documentId">The id of the document the user is moving</param>
+        /// <param name="newFolderId">The id of the folder the user is moving the document to</param>
+        public void MoveDocumentWeb(int userId, int documentId, int newFolderId)
+        {
+            PersistentStorage.GetInstance().MoveDocumentWeb(userId, documentId, newFolderId);
         }
     }
 }

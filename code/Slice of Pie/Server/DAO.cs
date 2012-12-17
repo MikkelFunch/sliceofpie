@@ -190,8 +190,8 @@ namespace Server
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var user = from u in context.Users
-                             where u.email == email && u.password == pass
-                             select u;
+                           where u.email == email && u.password == pass
+                           select u;
 
                 if (user.Count<User>() > 0)
                 {
@@ -662,14 +662,32 @@ namespace Server
             using (PieFactoryEntities context = new PieFactoryEntities())
             {
                 var documentrevisions = from dr in context.Documentrevisions
-                                                     where dr.editorId == userId && dr.documentId == documentId
-                                                     orderby dr.creationTime descending
-                                                     select dr;
+                                        where dr.editorId == userId && dr.documentId == documentId
+                                        orderby dr.creationTime descending
+                                        select dr;
                 if (documentrevisions.Count<Documentrevision>() > 0)
                 {
                     return documentrevisions.ToList<Documentrevision>()[0];
                 }
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Moves a document from one folder to another
+        /// </summary>
+        /// <param name="userId">The id of the user whos moving the document</param>
+        /// <param name="documentId">The id of the document the user is moving</param>
+        /// <param name="newFolderId">The id of the folder the user is moving the document to</param>
+        public void MoveDocumentWeb(int userId, int documentId, int newFolderId)
+        {
+            using (PieFactoryEntities context = new PieFactoryEntities())
+            {
+                var userdocument = from ud in context.Userdocuments
+                                   where ud.userId == userId && ud.documentId == documentId
+                                   select ud;
+                userdocument.First<Userdocument>().folderId = newFolderId;
+                context.SaveChanges();
             }
         }
     }

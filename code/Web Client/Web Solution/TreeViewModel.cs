@@ -11,7 +11,13 @@ namespace Web_Solution
 {
     class TreeViewModel
     {
+        //Singleton instance of tree view model.
         private static TreeViewModel instance;
+
+        /// <summary>
+        /// Accessor method to get the single instance of tree view.
+        /// </summary>
+        /// <returns>The single instance of tree view</returns>
         public static TreeViewModel GetInstance()
         {
             if (instance == null)
@@ -24,10 +30,10 @@ namespace Web_Solution
         private object nullItem = null; //in order to lazy load files and folders - Makes folders expandable
 
         /// <summary>
-        /// id,name,parent
+        /// Creates the tree view with the specified files and folders.
         /// </summary>
-        /// <param name="items"></param>
-        /// <param name="foldersAndFiles"></param>
+        /// <param name="items">The UI componenets the tree view shall consist of</param>
+        /// <param name="foldersAndFiles">The files and folders to be displayed in the tree view</param>
         public void LoadFilesAndFolders(ItemCollection items, string[][][] foldersAndFiles)
         {
             items.Clear();
@@ -45,10 +51,10 @@ namespace Web_Solution
         }
 
         /// <summary>
-        /// 0:id, 1:name, 2:parentfolderid
+        /// Inserts a folder into the specified UI components in the tree view.
         /// </summary>
-        /// <param name="folders"></param>
-        /// <param name="items"></param>
+        /// <param name="folder">The folder to be inserted</param>
+        /// <param name="items">The items that the tree view consists of</param>
         public void InsertFolder(string[] folder, ItemCollection items)
         {
             TreeViewItem folderItem = new TreeViewItem();
@@ -80,10 +86,10 @@ namespace Web_Solution
         }
 
         /// <summary>
-        /// 0:document id,1:folderid,2:name
+        /// Inserts a document into the specified UI components in the tree view.
         /// </summary>
-        /// <param name="document"></param>
-        /// <param name="items"></param>
+        /// <param name="document">The document to be inserted</param>
+        /// <param name="items">The items that the tree view consists of</param>
         public void InsertDocument(string[] document, ItemCollection items)
         {
             TreeViewItem documentItem = new TreeViewItem();
@@ -120,6 +126,11 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Event handler for mouse event on document selection. Specifies the document to be opened.
+        /// </summary>
+        /// <param name="sender">The tree view item getting selected</param>
+        /// <param name="e">Event arguments</param>
         public void documentItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             bool doubleClick = MouseButtonHelper.IsDoubleClick(sender, e);
@@ -131,6 +142,12 @@ namespace Web_Solution
             }
         }
 
+        /// <summary>
+        /// Gets the path from the root folder to a specific folder.
+        /// </summary>
+        /// <param name="folderId">The id of the folder to retrieve the path from</param>
+        /// <param name="items">The UI components the tree view consists of</param>
+        /// <returns>The relative path from the root folder to the specified folder</returns>
         public string GetRelativePath(int folderId, ItemCollection items)
         {
             StringBuilder relativePath = new StringBuilder();
@@ -166,6 +183,11 @@ namespace Web_Solution
             return null;
         }
 
+        /// <summary>
+        /// Removes a document from the tree view.
+        /// </summary>
+        /// <param name="documentId">The id of the document to be removed</param>
+        /// <param name="items">The UI components the tree view consists of</param>
         public void RemoveDocument(int documentId, ItemCollection items)
         {
             foreach (TreeViewItem item in items)
@@ -184,6 +206,9 @@ namespace Web_Solution
         }
     }
 
+    /// <summary>
+    /// Imported class to detect double clicks.
+    /// </summary>
     public static class MouseButtonHelper
     {
         private const long k_DoubleClickSpeed = 500;

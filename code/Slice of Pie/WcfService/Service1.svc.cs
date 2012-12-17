@@ -295,5 +295,16 @@ namespace WcfService
         {
             Server.Controller.GetInstance().AddDocumentRevisionWeb(documentId, userId, pureContent, metadata);
         }
+
+        /// <summary>
+        /// Moves a document from one folder to another
+        /// </summary>
+        /// <param name="userId">The id of the user whos moving the document</param>
+        /// <param name="documentId">The id of the document the user is moving</param>
+        /// <param name="newFolderId">The id of the folder the user is moving the document to</param>
+        public void MoveDocumentWeb(int userId, int documentId, int newFolderId)
+        {
+            Server.Controller.GetInstance().MoveDocumentWeb(userId, documentId, newFolderId);
+        }
     }
 }

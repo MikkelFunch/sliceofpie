@@ -425,5 +425,16 @@ namespace Server
         {
             return dao.GetLatestDocumentRevisionByUserId(editorId, documentId);
         }
+
+        /// <summary>
+        /// Moves a document from one folder to another
+        /// </summary>
+        /// <param name="userId">The id of the user whos moving the document</param>
+        /// <param name="documentId">The id of the document the user is moving</param>
+        /// <param name="newFolderId">The id of the folder the user is moving the document to</param>
+        public void MoveDocumentWeb(int userId, int documentId, int newFolderId)
+        {
+            dao.MoveDocumentWeb(userId, documentId, newFolderId);
+        }
     }
 }
