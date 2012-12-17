@@ -25,12 +25,18 @@ namespace Web_Solution.GUI
             set;
         }
 
+        public TreeViewItem SelectedItem
+        {
+            get;
+            set;
+        }
+
         private void buttonCreate_Click(object sender, RoutedEventArgs e)
         {
             if (textboxTitle.Text.Length > 0)
             {
                 FolderTitle = textboxTitle.Text;
-                this.Close();
+                this.DialogResult = true;
             }
             else
             {
@@ -40,7 +46,7 @@ namespace Web_Solution.GUI
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            DialogResult = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

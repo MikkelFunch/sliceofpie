@@ -85,10 +85,15 @@ namespace Web_Solution
 
         private void RegisterItem_Click(object sender, RoutedEventArgs e)
         {
-            RegisterUserDialog userdialog = new RegisterUserDialog();
-            userdialog.Show();
+            RegisterUserDialog userDialog = new RegisterUserDialog();
+            userDialog.Closed += new EventHandler(userDialog_Closed);
+            userDialog.Show();
+        }
 
-            controller.RegisterUser(userdialog.Email,userdialog.PassUnencrypted1,userdialog.PassUnencrypted2);
+        private void userDialog_Closed(object sender, EventArgs args)
+        {
+            RegisterUserDialog userDialog = (RegisterUserDialog)sender;
+            controller.RegisterUser(userDialog.Email, userDialog.PassUnencrypted1, userDialog.PassUnencrypted2);
         }
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
@@ -170,22 +175,29 @@ namespace Web_Solution
         private void buttonNewFolder_Click(object sender, RoutedEventArgs e)
         {
             NewFolderDialog newfDia = new NewFolderDialog();
+            newfDia.Closed += new EventHandler(newfDia_Closed);
+            newfDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
             newfDia.Show();
+        }
 
+        private void newfDia_Closed(object sender, EventArgs args)
+        {
+            NewFolderDialog newfDia = (NewFolderDialog)sender;
             int parentFolderId = -1;
-            if (ExplorerTree.SelectedItem != null) //an item is  chosen
+            if (newfDia.SelectedItem != null) //an item is  chosen
             {
-                TreeViewItem item = (TreeViewItem)ExplorerTree.SelectedItem;
+                TreeViewItem item = (TreeViewItem)newfDia.SelectedItem;
 
                 //it is a folder, and not a file
                 if ((bool)((object[])item.Tag)[2] == true)
                 {
-                    parentFolderId = (int)((object[])item.Tag)[0];
+                    parentFolderId = int.Parse(((object[])item.Tag)[0].ToString());
                 }
             }
-            
-            controller.CreateFolder(newfDia.FolderTitle,parentFolderId);
+
+            controller.CreateFolder(newfDia.FolderTitle, parentFolderId);
         }
+
 
         private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
         {

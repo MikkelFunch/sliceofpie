@@ -197,7 +197,7 @@ namespace Web_Solution
             session.CurrentDocumentTitle = "";
             session.Email = "";
 
-            SetOpenDocument("", "", "");
+            //SetOpenDocument("", "", "");
             gui.SetLoginView(false);
             gui.ExplorerTree.Items.Clear();
             UpdateExplorerView();
@@ -207,7 +207,7 @@ namespace Web_Solution
 
         public void ShareDocument(string email)
         {
-            if (email != null && email.Length > 0 && session.CurrentDocumentID != -1)
+            if (email != null && email.Length > 0 && session.CurrentDocumentID != -1 && email != session.Email)
             {
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
                 proxy.GetUserByEmailAsync(email);
@@ -260,7 +260,7 @@ namespace Web_Solution
             string[] documentData = new string[] { documentId.ToString(), session.RootFolderID.ToString(), session.CurrentDocumentTitle };
 
             TreeViewModel.GetInstance().InsertDocument(documentData, gui.ExplorerTree.Items);
-            gui.richTextBox.Selection.Text = "";
+            SetOpenDocument(documentId, session.CurrentDocumentTitle, session.RootFolderID);
             UpdateExplorerView();
         }
 
@@ -271,12 +271,13 @@ namespace Web_Solution
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
             proxy.AddFolderAsync(folderName, parentFolderId);
             proxy.AddFolderCompleted += new EventHandler<ServiceReference.AddFolderCompletedEventArgs>(proxy_AddFolderCompleted);
+            session.NewlyCreatedFolderName = folderName;
+            session.NewlyCreatedFolderParentId = parentFolderId;
         }
 
         private void proxy_AddFolderCompleted(object sender, ServiceReference.AddFolderCompletedEventArgs args)
         {
             TreeViewModel.GetInstance().InsertFolder(new string[] { args.Result.ToString(), session.NewlyCreatedFolderName, session.NewlyCreatedFolderParentId.ToString() }, gui.ExplorerTree.Items);
-            UpdateExplorerView();
         }
 
         #endregion
@@ -298,6 +299,7 @@ namespace Web_Solution
             if (title.Length > 0)
             {
                 session.CurrentDocumentID = Metadata.FetchDocumentIDFromFileContent(fileContent);
+                gui.labelOpenDocument.Content = "Open document: " + title;
                 gui.richTextBox.Visibility = Visibility.Visible;
             }
             else
@@ -315,6 +317,7 @@ namespace Web_Solution
             session.CurrentDocumentID = documentId;
             session.CurrentDocumentTitle = documentTitle;
             session.FolderID = folderId;
+            gui.labelOpenDocument.Content = "Current document: " + documentTitle;
         }
 
         public void proxy_GetLatestPureDocumentContentCompleted(Object sender, ServiceReference.GetLatestPureDocumentContentCompletedEventArgs args)

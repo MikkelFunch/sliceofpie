@@ -44,12 +44,12 @@ namespace Web_Solution.GUI
             PassUnencrypted1 = passwordBox1.Password;
             PassUnencrypted2 = passwordBox2.Password;
 
-            this.Close();
+            this.DialogResult = true;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
     }
 }
