@@ -22,12 +22,12 @@ namespace Web_Solution.GUI
         private void buttonInsert_Click(object sender, RoutedEventArgs e)
         {
             URLString = textBoxURL.Text;
-            this.Close();
+            this.DialogResult = true;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
 
         public string URLString

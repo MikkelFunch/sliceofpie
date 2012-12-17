@@ -3,7 +3,7 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
            xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
            Width="303" Height="183" 
-           Title="MoveFileDialog">
+           Title="MoveFileDialog" Loaded="Window_Loaded">
     <Grid>
         <StackPanel>
             <TextBlock Text="Move document: " Height="28" Margin="2,0,0,0"/>
