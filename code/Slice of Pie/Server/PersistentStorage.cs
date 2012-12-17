@@ -436,5 +436,15 @@ namespace Server
         {
             dao.MoveDocumentWeb(userId, documentId, newFolderId);
         }
+
+        /// <summary>
+        /// Gets a documentrevision by its id
+        /// </summary>
+        /// <param name="documentRevisionId">The id of the document revision</param>
+        /// <returns>The documentrevision with the given id</returns>
+        public Documentrevision GetDocumentRevisionById(int documentRevisionId)
+        {
+            return dao.GetDocumentRevisionById(documentRevisionId);
+        }
     }
 }

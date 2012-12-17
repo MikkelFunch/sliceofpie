@@ -98,6 +98,9 @@ namespace WcfService
 
         [OperationContract]
         void MoveDocumentWeb(int userId, int documentId, int newFolderId);
+
+        [OperationContract]
+        String GetDocumentRevisionContentById(int documentRevisionId);
     }
 
     [DataContract]

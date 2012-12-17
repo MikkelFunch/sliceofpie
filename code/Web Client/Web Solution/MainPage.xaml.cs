@@ -18,6 +18,9 @@ namespace Web_Solution
     {
         Controller controller;
 
+        /// <summary>
+        /// Sets the initial view of the GUI
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
@@ -108,7 +111,7 @@ namespace Web_Solution
         }
 
         /// <summary>
-        /// 
+        /// Sets the merge view for a conflicting sync.
         /// </summary>
         /// <param name="response">0:new document, 1:insertions, 2:deletions, 3:old server document</param>
         public void SetupMergeView(String[][] response)
@@ -257,6 +260,10 @@ namespace Web_Solution
             revDia.Show();*/
         }
 
+        /// <summary>
+        /// Enables all the functionality available when logging on or disables all functionality if logging of.
+        /// </summary>
+        /// <param name="active">Whether functionality is to be disabled or enabled</param>
         public void SetLoginView(bool active)
         {
             if(active)
