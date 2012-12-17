@@ -533,6 +533,11 @@ namespace Web_Solution.ServiceReference {
         System.IAsyncResult BeginAddDocumentRevisionWeb(int documentId, int userId, string pureContent, string metadata, System.AsyncCallback callback, object asyncState);
         
         void EndAddDocumentRevisionWeb(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IService1/MoveDocumentWeb", ReplyAction="http://tempuri.org/IService1/MoveDocumentWebResponse")]
+        System.IAsyncResult BeginMoveDocumentWeb(int userId, int documentId, int newFolderId, System.AsyncCallback callback, object asyncState);
+        
+        void EndMoveDocumentWeb(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1072,6 +1077,12 @@ namespace Web_Solution.ServiceReference {
         
         private System.Threading.SendOrPostCallback onAddDocumentRevisionWebCompletedDelegate;
         
+        private BeginOperationDelegate onBeginMoveDocumentWebDelegate;
+        
+        private EndOperationDelegate onEndMoveDocumentWebDelegate;
+        
+        private System.Threading.SendOrPostCallback onMoveDocumentWebCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -1180,6 +1191,8 @@ namespace Web_Solution.ServiceReference {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> ShareDocumentWebCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> AddDocumentRevisionWebCompleted;
+        
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> MoveDocumentWebCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -2528,6 +2541,55 @@ namespace Web_Solution.ServiceReference {
                         metadata}, this.onEndAddDocumentRevisionWebDelegate, this.onAddDocumentRevisionWebCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Web_Solution.ServiceReference.IService1.BeginMoveDocumentWeb(int userId, int documentId, int newFolderId, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginMoveDocumentWeb(userId, documentId, newFolderId, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        void Web_Solution.ServiceReference.IService1.EndMoveDocumentWeb(System.IAsyncResult result) {
+            base.Channel.EndMoveDocumentWeb(result);
+        }
+        
+        private System.IAsyncResult OnBeginMoveDocumentWeb(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int userId = ((int)(inValues[0]));
+            int documentId = ((int)(inValues[1]));
+            int newFolderId = ((int)(inValues[2]));
+            return ((Web_Solution.ServiceReference.IService1)(this)).BeginMoveDocumentWeb(userId, documentId, newFolderId, callback, asyncState);
+        }
+        
+        private object[] OnEndMoveDocumentWeb(System.IAsyncResult result) {
+            ((Web_Solution.ServiceReference.IService1)(this)).EndMoveDocumentWeb(result);
+            return null;
+        }
+        
+        private void OnMoveDocumentWebCompleted(object state) {
+            if ((this.MoveDocumentWebCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.MoveDocumentWebCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void MoveDocumentWebAsync(int userId, int documentId, int newFolderId) {
+            this.MoveDocumentWebAsync(userId, documentId, newFolderId, null);
+        }
+        
+        public void MoveDocumentWebAsync(int userId, int documentId, int newFolderId, object userState) {
+            if ((this.onBeginMoveDocumentWebDelegate == null)) {
+                this.onBeginMoveDocumentWebDelegate = new BeginOperationDelegate(this.OnBeginMoveDocumentWeb);
+            }
+            if ((this.onEndMoveDocumentWebDelegate == null)) {
+                this.onEndMoveDocumentWebDelegate = new EndOperationDelegate(this.OnEndMoveDocumentWeb);
+            }
+            if ((this.onMoveDocumentWebCompletedDelegate == null)) {
+                this.onMoveDocumentWebCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnMoveDocumentWebCompleted);
+            }
+            base.InvokeAsync(this.onBeginMoveDocumentWebDelegate, new object[] {
+                        userId,
+                        documentId,
+                        newFolderId}, this.onEndMoveDocumentWebDelegate, this.onMoveDocumentWebCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -2989,6 +3051,20 @@ namespace Web_Solution.ServiceReference {
             public void EndAddDocumentRevisionWeb(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 base.EndInvoke("AddDocumentRevisionWeb", _args, result);
+            }
+            
+            public System.IAsyncResult BeginMoveDocumentWeb(int userId, int documentId, int newFolderId, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[3];
+                _args[0] = userId;
+                _args[1] = documentId;
+                _args[2] = newFolderId;
+                System.IAsyncResult _result = base.BeginInvoke("MoveDocumentWeb", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public void EndMoveDocumentWeb(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                base.EndInvoke("MoveDocumentWeb", _args, result);
             }
         }
     }

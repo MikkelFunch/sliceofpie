@@ -33,12 +33,16 @@ namespace Web_Solution.GUI
         {
             foreach (TreeViewItem item in Items)
             {
-                ComboBoxItem comboItem = new ComboBoxItem();
-                comboItem.Content = item.Header;
-                comboBoxFolders.Items.Add(comboItem);
-                if (item.Items.Count > 0)
+                if ((bool)((object[])item.Tag)[2] == true)
                 {
-                    populateComboBox(item.Items);
+                    ComboBoxItem comboItem = new ComboBoxItem();
+                    comboItem.Content = item.Header;
+                    comboItem.Tag = item.Tag;
+                    comboBoxFolders.Items.Add(comboItem);
+                    if (item.Items.Count > 0)
+                    {
+                        populateComboBox(item.Items);
+                    }
                 }
             }
         }
@@ -49,13 +53,13 @@ namespace Web_Solution.GUI
             set;
         }
 
-        public String FromPath
+        public int FromId
         {
             get;
             set;
         }
 
-        public String ToPath
+        public int ToId
         {
             get;
             set;
@@ -71,23 +75,23 @@ namespace Web_Solution.GUI
         {
             if (comboBoxFolders.SelectedItem != null)
             {
-                FromPath = SelectedItem.Tag.ToString();
+                FromId = int.Parse(((object[])SelectedItem.Tag)[0].ToString());
                 if (((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() == "Root folder")
                 {
-                    ToPath = Session.GetInstance().RootFolderPath + "\\" + SelectedItem.Header + ".txt";
+                    ToId = -1;
                 }
                 else
                 {
-                    ToPath = Session.GetInstance().RootFolderPath + "\\" + ((ComboBoxItem)comboBoxFolders.SelectedValue).Content.ToString() + "\\" + SelectedItem.Header + ".txt";
+                    ToId = int.Parse(((object[])((ComboBoxItem)comboBoxFolders.SelectedItem).Tag)[0].ToString());
                 }
 
-                this.Close();
+                this.DialogResult = true;
             }
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
     }
 }

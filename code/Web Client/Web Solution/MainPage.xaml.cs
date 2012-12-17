@@ -28,20 +28,23 @@ namespace Web_Solution
 
         private void buttonImage_Click(object sender, RoutedEventArgs e)
         {
-            string url = null;
-
             ImageURLDialog imgDia = new ImageURLDialog();
+            imgDia.Closed += new EventHandler(imgDia_Closed);
             imgDia.Show();
+        }
+
+        private void imgDia_Closed(object sender, EventArgs args)
+        {
+            ImageURLDialog imgDia = (ImageURLDialog)sender;
 
             //get inserted url
-            url = imgDia.URLString;
+            string url = imgDia.URLString;
 
             //check if it is a valid url
             if (url != null && (url.StartsWith("http://") || url.StartsWith("https://")))
             {
-                richTextBox.SelectAll();
-                String clearText = richTextBox.Selection.Text;
-                richTextBox.Selection.Text = richTextBox.Selection.Text.Insert(0, "[IMAGE:" + url + "]");
+                string urlString = "[IMAGE:" + url + "]";
+                richTextBox.Selection.Text += urlString;
             }
         }
 
@@ -85,10 +88,15 @@ namespace Web_Solution
 
         private void RegisterItem_Click(object sender, RoutedEventArgs e)
         {
-            RegisterUserDialog userdialog = new RegisterUserDialog();
-            userdialog.Show();
+            RegisterUserDialog userDialog = new RegisterUserDialog();
+            userDialog.Closed += new EventHandler(userDialog_Closed);
+            userDialog.Show();
+        }
 
-            controller.RegisterUser(userdialog.Email,userdialog.PassUnencrypted1,userdialog.PassUnencrypted2);
+        private void userDialog_Closed(object sender, EventArgs args)
+        {
+            RegisterUserDialog userDialog = (RegisterUserDialog)sender;
+            controller.RegisterUser(userDialog.Email, userDialog.PassUnencrypted1, userDialog.PassUnencrypted2);
         }
 
         private void buttonSync_Click(object sender, RoutedEventArgs e)
@@ -170,22 +178,29 @@ namespace Web_Solution
         private void buttonNewFolder_Click(object sender, RoutedEventArgs e)
         {
             NewFolderDialog newfDia = new NewFolderDialog();
+            newfDia.Closed += new EventHandler(newfDia_Closed);
+            newfDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
             newfDia.Show();
+        }
 
+        private void newfDia_Closed(object sender, EventArgs args)
+        {
+            NewFolderDialog newfDia = (NewFolderDialog)sender;
             int parentFolderId = -1;
-            if (ExplorerTree.SelectedItem != null) //an item is  chosen
+            if (newfDia.SelectedItem != null) //an item is  chosen
             {
-                TreeViewItem item = (TreeViewItem)ExplorerTree.SelectedItem;
+                TreeViewItem item = (TreeViewItem)newfDia.SelectedItem;
 
                 //it is a folder, and not a file
                 if ((bool)((object[])item.Tag)[2] == true)
                 {
-                    parentFolderId = (int)((object[])item.Tag)[0];
+                    parentFolderId = int.Parse(((object[])item.Tag)[0].ToString());
                 }
             }
-            
-            controller.CreateFolder(newfDia.FolderTitle,parentFolderId);
+
+            controller.CreateFolder(newfDia.FolderTitle, parentFolderId);
         }
+
 
         private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
         {
@@ -215,13 +230,20 @@ namespace Web_Solution
 
         private void buttonMoveDocument_Click(object sender, RoutedEventArgs e)
         {
-            if (ExplorerTree.SelectedItem != null && ((TreeViewItem)ExplorerTree.SelectedItem).Tag.ToString().EndsWith(".txt"))
+            if (ExplorerTree.SelectedItem != null && ((bool)((object[])((TreeViewItem)ExplorerTree.SelectedItem).Tag)[2]) == false)
             {
                 MoveFileDialog movDia = new MoveFileDialog();
                 movDia.SelectedItem = (TreeViewItem)ExplorerTree.SelectedItem;
+                movDia.Source = ExplorerTree.Items;
+                movDia.Closed += new EventHandler(movDia_Closed);
                 movDia.Show();
-                controller.MoveFileToFolder(movDia.FromPath, movDia.ToPath);
             }
+        }
+
+        private void movDia_Closed(object sender, EventArgs args)
+        {
+            MoveFileDialog movDia = (MoveFileDialog)sender;
+            controller.MoveFileToFolder(movDia.FromId, movDia.ToId, int.Parse(((object[])movDia.SelectedItem.Tag)[0].ToString()));
         }
 
         private void buttonHistory_Click(object sender, RoutedEventArgs e)

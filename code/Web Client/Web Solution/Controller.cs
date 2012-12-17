@@ -181,9 +181,6 @@ namespace Web_Solution
 
             TreeViewModel.GetInstance().LoadFilesAndFolders(gui.ExplorerTree.Items, foldersAndFilesArrays);
             gui.textBlockOnline.Text = "Online";
-            UpdateExplorerView();
-
-            System.Windows.MessageBox.Show("Logged in successfully");
         }
 
         #endregion
@@ -197,17 +194,16 @@ namespace Web_Solution
             session.CurrentDocumentTitle = "";
             session.Email = "";
 
-            SetOpenDocument("", "", "");
+            //SetOpenDocument("", "", "");
             gui.SetLoginView(false);
             gui.ExplorerTree.Items.Clear();
-            UpdateExplorerView();
         }
 
         #endregion
 
         public void ShareDocument(string email)
         {
-            if (email != null && email.Length > 0 && session.CurrentDocumentID != -1)
+            if (email != null && email.Length > 0 && session.CurrentDocumentID != -1 && email != session.Email)
             {
                 ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
                 proxy.GetUserByEmailAsync(email);
@@ -260,8 +256,7 @@ namespace Web_Solution
             string[] documentData = new string[] { documentId.ToString(), session.RootFolderID.ToString(), session.CurrentDocumentTitle };
 
             TreeViewModel.GetInstance().InsertDocument(documentData, gui.ExplorerTree.Items);
-            gui.richTextBox.Selection.Text = "";
-            UpdateExplorerView();
+            SetOpenDocument(documentId, session.CurrentDocumentTitle, session.RootFolderID);
         }
 
         public void CreateFolder(String folderName, int parentFolderId)
@@ -271,12 +266,13 @@ namespace Web_Solution
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
             proxy.AddFolderAsync(folderName, parentFolderId);
             proxy.AddFolderCompleted += new EventHandler<ServiceReference.AddFolderCompletedEventArgs>(proxy_AddFolderCompleted);
+            session.NewlyCreatedFolderName = folderName;
+            session.NewlyCreatedFolderParentId = parentFolderId;
         }
 
         private void proxy_AddFolderCompleted(object sender, ServiceReference.AddFolderCompletedEventArgs args)
         {
             TreeViewModel.GetInstance().InsertFolder(new string[] { args.Result.ToString(), session.NewlyCreatedFolderName, session.NewlyCreatedFolderParentId.ToString() }, gui.ExplorerTree.Items);
-            UpdateExplorerView();
         }
 
         #endregion
@@ -298,6 +294,7 @@ namespace Web_Solution
             if (title.Length > 0)
             {
                 session.CurrentDocumentID = Metadata.FetchDocumentIDFromFileContent(fileContent);
+                gui.labelOpenDocument.Content = "Open document: " + title;
                 gui.richTextBox.Visibility = Visibility.Visible;
             }
             else
@@ -315,6 +312,7 @@ namespace Web_Solution
             session.CurrentDocumentID = documentId;
             session.CurrentDocumentTitle = documentTitle;
             session.FolderID = folderId;
+            gui.labelOpenDocument.Content = "Current document: " + documentTitle;
         }
 
         public void proxy_GetLatestPureDocumentContentCompleted(Object sender, ServiceReference.GetLatestPureDocumentContentCompletedEventArgs args)
@@ -322,18 +320,6 @@ namespace Web_Solution
             string pureContent = args.Result;
             gui.richTextBox.SelectAll();
             gui.richTextBox.Selection.Text = pureContent;
-        }
-
-        /// <summary>
-        /// Update the explorerview
-        /// </summary>
-        public void UpdateExplorerView()
-        {
-            /*gui.ExplorerTree.Items.Clear();
-            foreach (TreeViewItem item in gui.Items)
-            {
-                gui.ExplorerTree.Items.Add(item);
-            }*/
         }
 
         #endregion
@@ -449,19 +435,14 @@ namespace Web_Solution
 
         #endregion
 
-        public void MoveFileToFolder(string fromPath, string toPath)
+        public void MoveFileToFolder(int fromId, int toId, int documentId)
         {
-            if (fromPath != null && fromPath.Length > 0 && toPath != null && toPath.Length > 0)
-            {
-                //make move method in treeview model
-                //In case you move the currently opened document
-                if (fromPath == session.CurrentDocumentPath)
-                {
-                    session.CurrentDocumentPath = toPath;
-                }
+            if (toId == -1) toId = session.RootFolderID;
 
-                UpdateExplorerView();
-            }
+            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+            proxy.MoveDocumentWebAsync(session.UserID, documentId, toId);
+
+            TreeViewModel.GetInstance().RemoveDocument(documentId, gui.ExplorerTree.Items);
         }
 
         /*public void SetContentFromDocumentId(int id, string title)
@@ -530,5 +511,10 @@ namespace Web_Solution
 
             return returnArray;
         }*/
+
+        public string GetRelativePath(int folderId, ItemCollection Source)
+        {
+            return TreeViewModel.GetInstance().GetRelativePath(folderId, Source);
+        }
     }
 }

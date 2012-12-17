@@ -91,10 +91,8 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Move Document" Name="buttonMoveDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonMoveDocument_Click" IsEnabled="False"/>
                 <Button Content="Share document" Name="buttonShareDocument" HorizontalAlignment="Right" Margin="0,0,0,0" Click="buttonShareDocument_Click" IsEnabled="False" />
-                <Button Content="Sync" Name="buttonSync" Click="buttonSync_Click" HorizontalAlignment="Right" Margin="0,0,0,0"  IsEnabled="False"/>
-                <Button Name="buttonImage" HorizontalAlignment="Right" Margin="0,0,0,0"  Click="buttonImage_Click" IsEnabled="True">
-                    <Image Source="Resources/img_icon.gif" />
-                </Button>
+                <Button Content="Sync document" Name="buttonSync" Click="buttonSync_Click" HorizontalAlignment="Right" Margin="0,0,0,0"  IsEnabled="False" Width="112" />
+                <Button Content="[IMG]" Name="buttonImage" HorizontalAlignment="Right" Margin="0,0,0,0"  Click="buttonImage_Click" IsEnabled="False" />
                 <Button Content="History" Name="buttonHistory" HorizontalAlignment="Right" Margin="0,0,0,0" IsEnabled="False" Click="buttonHistory_Click" />
             </StackPanel>
         </Grid>
