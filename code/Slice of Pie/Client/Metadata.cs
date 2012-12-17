@@ -10,21 +10,6 @@ namespace Client
     static class Metadata
     {
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns>
-        /// 0: int docid -> docid 11
-        /// 1: int userid -> userid 11
-        /// 2: DateTime timestamp -> timestamp 12-12-2012 12:18:19
-        /// 3: folderid -> fid 52
-        /// </returns>
-        /*public static object[] RetrieveMetadata()
-        {
-            return RetrieveMetadataFromFile(CurrentDocumentPath);
-        }*/
-
-        /// <summary>
         /// Generate metadata string from an object array containing metadata
         /// </summary>
         /// <param name="metadata">an object array containing metadata: [0](int)documentid,[1](int)userid,[2](DateTime)timestamp,[3](int)folderid</param>

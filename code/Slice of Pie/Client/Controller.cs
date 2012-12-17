@@ -89,7 +89,7 @@ namespace Client
             //boolean which will be returned
             int successful = -1;
 
-            //Check if something have been entered as email - WE DO NOT CHECK THAT IT IS AN EMAIL
+            //Check if something have been entered as email
             if (email != null && email.Length > 0)
             {
                 //Check that something has been entered as been entered as passwords and check that the two passwords are identical
@@ -261,7 +261,7 @@ namespace Client
         /// <param name="content"></param>
         /// <param name="title"></param>
         /// <param name="documentPath"></param>
-        public void SetOpenDocument(String content, String title, String documentPath) //lav en overloaded metode som tager et flowdocument, title og documentpath - eller bare title og documentpath - eller bare documentpath
+        public void SetOpenDocument(String content, String title, String documentPath)
         {
             //try catch in case of corrupted file
             FlowDocument doc = localPersistence.CreateFlowDocumentWithoutMetadata(content);

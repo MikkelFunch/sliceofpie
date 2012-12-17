@@ -23,6 +23,9 @@ namespace Client.GUI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// String representations of document revisions
+        /// </summary>
         public String[][] Revisions
         {
             get;

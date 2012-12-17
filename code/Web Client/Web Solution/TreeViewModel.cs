@@ -76,7 +76,9 @@ namespace Web_Solution
 
             foreach (TreeViewItem item in items)
             {
-                if (int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(folder[2]))
+                object[] tag = (object[])item.Tag;
+
+                if ((bool)tag[2] == true && int.Parse(((object[])item.Tag)[0].ToString()) == int.Parse(folder[2]))
                 {//add to specified folder
                     item.Items.Add(folderItem);
                     return;

@@ -68,7 +68,7 @@ namespace Web_Solution
             }
         }
 
-        private void LogoutItem_Click(object sender, RoutedEventArgs e)
+        private void buttonLogout_Click(object sender, RoutedEventArgs e)
         {
             controller.LogoutUser();
         }
@@ -259,10 +259,21 @@ namespace Web_Solution
             if(active)
             {
                 richTextBox.Visibility = Visibility.Visible;
+                buttonLogin.Content = "Log out";
+                buttonLogin.Click -= buttonLogin_Click;
+                buttonLogin.Click += buttonLogout_Click;
+                textBlockOnline.Text = "Online";
             }
             else
             {
                 richTextBox.Visibility = Visibility.Collapsed;
+                buttonLogin.Content = "Login";
+                buttonLogin.Click += buttonLogin_Click;
+                buttonLogin.Click -= buttonLogout_Click;
+                textBlockOnline.Text = "Offline";
+                controller.SetOpenDocument(-1, "", -1);
+                richTextBox.SelectAll();
+                richTextBox.Selection.Text = "";
             }
 
             buttonDelete.IsEnabled = active;
@@ -273,7 +284,6 @@ namespace Web_Solution
             buttonNewFolder.IsEnabled = active;
             buttonShareDocument.IsEnabled = active;
             buttonSync.IsEnabled = active;
-            //buttonSyncAll.IsEnabled = active;
         }
 
         private void buttonDelete_Click(object sender, RoutedEventArgs e)

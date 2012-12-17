@@ -10,21 +10,6 @@ namespace Web_Solution
     static class Metadata
     {
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns>
-        /// 0: int docid -> docid 11
-        /// 1: int userid -> userid 11
-        /// 2: DateTime timestamp -> timestamp 12-12-2012 12:18:19
-        /// 3: folderid -> fid 52
-        /// </returns>
-        /*public static object[] RetrieveMetadata()
-        {
-            return RetrieveMetadataFromFile(CurrentDocumentPath);
-        }*/
-
-        /// <summary>
         /// Generates a string containing metadata for a newly created file on the local system.
         /// The data will be default to:
         /// <para>documentid: 0 </para>

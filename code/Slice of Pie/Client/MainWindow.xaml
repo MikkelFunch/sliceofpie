@@ -76,9 +76,6 @@
                 <MenuItem Header="_Login" Name="menuItemLogin" Click="LoginItem_Click" />
                 <MenuItem Header="Register new _user" Click="RegisterItem_Click" />
             </MenuItem>
-            <MenuItem Header="_Edit " />
-            <MenuItem Header="_View " />
-            <MenuItem Header="_Help " />
         </Menu>
         
         <!-- Button menu -->

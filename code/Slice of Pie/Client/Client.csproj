@@ -84,7 +84,6 @@
     </Compile>
     <Compile Include="LocalPersistenceHandler.cs" />
     <Compile Include="Metadata.cs" />
-    <Compile Include="Model.cs" />
     <Compile Include="GUI\RegisterUserDialog.xaml.cs">
       <DependentUpon>RegisterUserDialog.xaml</DependentUpon>
     </Compile>
@@ -96,7 +95,6 @@
     </Compile>
     <Compile Include="Session.cs" />
     <Compile Include="TreeViewModel.cs" />
-    <Compile Include="WebPersistenceHandler.cs" />
     <Page Include="GUI\ImageURLDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

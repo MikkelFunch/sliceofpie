@@ -41,10 +41,9 @@ namespace Client
         }
 
         /// <summary>
-        /// IS THIS ONE NECESSARY? MAKE A SINGLE METHOD OUT OF THIS ONE AND SaveDocumentToFile(FlowDocument document, string metadata) MAYBE
-        /// Save a flowdocument to root folder
+        /// Save a flowdocument to a file.
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">Document to be saved</param>
         public void SaveDocumentToFile(FlowDocument document)
         {
             Object[] metadata = RetrieveMetadataFromFile(session.CurrentDocumentPath);
@@ -71,12 +70,6 @@ namespace Client
 
 
             SaveDocumentToFile(content.ToString(), session.CurrentDocumentPath);
-
-            //Create the file and write the content to it.
-            /*using (StreamWriter sw = new StreamWriter(File.OpenWrite(session.CurrentDocumentPath))) //when no document has been chosen/opened, path is not set
-            {
-                sw.Write(content.ToString());
-            }*/
         }
 
         public void SaveDocumentToFile(string content, string path)
@@ -108,8 +101,6 @@ namespace Client
             }
         }
 
-
-        /////////////////////////////////////////////////////////////////// HØRER DEN HER TIL I METADATA ELLER HER!?!??!?!
         /// <summary>
         /// Create a flowdocument directly from a files content
         /// </summary>
@@ -183,11 +174,21 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retreive the local metadata from the given file
+        /// </summary>
+        /// <param name="directoryPath">Path to the files directoy</param>
+        /// <param name="filename">The filename withouth .txt ending</param>
+        /// <returns>Object array containing document id, user id and timestamp</returns>
         public static Object[] RetrieveMetadataFromFile(String directoryPath, String filename)
         {
             return (RetrieveMetadataFromFile(directoryPath + "\\" + filename + ".txt"));
         }
 
+        /// <summary>
+        /// Delete file at given filepath
+        /// </summary>
+        /// <param name="filePath">Path to the file which should be deleted</param>
         public void DeleteFile(string filePath)
         {
             File.Delete(filePath);

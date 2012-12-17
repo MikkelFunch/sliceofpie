@@ -332,13 +332,22 @@ namespace Web_Solution
 
         public void SetOpenDocument(int documentId, string documentTitle, int folderId)
         {
-            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.GetLatestPureDocumentContentAsync(documentId);
-            proxy.GetLatestPureDocumentContentCompleted += new EventHandler<ServiceReference.GetLatestPureDocumentContentCompletedEventArgs>(proxy_GetLatestPureDocumentContentCompleted);
-            session.CurrentDocumentID = documentId;
-            session.CurrentDocumentTitle = documentTitle;
-            session.FolderID = folderId;
-            gui.labelOpenDocument.Content = "Current document: " + documentTitle;
+            if (documentId != -1)
+            {
+                ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+                proxy.GetLatestPureDocumentContentAsync(documentId);
+                proxy.GetLatestPureDocumentContentCompleted += new EventHandler<ServiceReference.GetLatestPureDocumentContentCompletedEventArgs>(proxy_GetLatestPureDocumentContentCompleted);
+                session.CurrentDocumentID = documentId;
+                session.CurrentDocumentTitle = documentTitle;
+                session.FolderID = folderId;
+                gui.labelOpenDocument.Content = "Current document: " + documentTitle;
+            }
+            else
+            {
+                session.CurrentDocumentID = -1;
+                session.CurrentDocumentTitle = "";
+                gui.labelOpenDocument.Content = "Current document: ";
+            }
         }
 
         /// <summary>
@@ -363,15 +372,18 @@ namespace Web_Solution
         /// <param name="pureContent">The content of the document being synchronized</param>
         public void SyncDocument(string pureContent)
         {
-            int documentId = session.CurrentDocumentID;
-            DateTime baseDocumentCreationTime = session.CurrentDocumentTimeStampMetadata;
+            if (session.CurrentDocumentID != -1)
+            {
+                int documentId = session.CurrentDocumentID;
+                DateTime baseDocumentCreationTime = session.CurrentDocumentTimeStampMetadata;
 
-            string metadata = Metadata.GenerateMetadataString(documentId, session.UserID, DateTime.UtcNow);
-            string filePath = TreeViewModel.GetInstance().GetRelativePath(session.FolderID, gui.ExplorerTree.Items);
+                string metadata = Metadata.GenerateMetadataString(documentId, session.UserID, DateTime.UtcNow);
+                string filePath = TreeViewModel.GetInstance().GetRelativePath(session.FolderID, gui.ExplorerTree.Items);
 
-            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
-            proxy.SyncDocumentWebAsync(session.UserID, documentId, filePath, metadata, session.CurrentDocumentTitle, pureContent);
-            proxy.SyncDocumentWebCompleted += new EventHandler<ServiceReference.SyncDocumentWebCompletedEventArgs>(proxy_SyncDocumentWebCompleted);
+                ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+                proxy.SyncDocumentWebAsync(session.UserID, documentId, filePath, metadata, session.CurrentDocumentTitle, pureContent);
+                proxy.SyncDocumentWebCompleted += new EventHandler<ServiceReference.SyncDocumentWebCompletedEventArgs>(proxy_SyncDocumentWebCompleted);
+            }
         }
 
         /// <summary>

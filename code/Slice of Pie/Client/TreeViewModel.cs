@@ -29,7 +29,7 @@ namespace Client
             String folderPath = "";
             //Get path to the current users files
             if (Session.GetInstance().UserID != -1)
-                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Session.GetInstance().Email;//Model.User.email;
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\" + Session.GetInstance().Email;
             else
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
             //Create a DirectoryInfo for that folder
@@ -77,7 +77,7 @@ namespace Client
         private void InsertDirectoriesIntoDirectory(ItemCollection collection, DirectoryInfo dir)
         {
             //For each directory in the given directory
-            foreach (DirectoryInfo dInfo in dir.GetDirectories()) //directory have been deleted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            foreach (DirectoryInfo dInfo in dir.GetDirectories())
             {
                 //Create a treeviewitem to represent the directory
                 TreeViewItem subItem = new TreeViewItem();
