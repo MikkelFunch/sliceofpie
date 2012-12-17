@@ -96,5 +96,11 @@ namespace Web_Solution
             get; 
             set; 
         }
+
+        public System.Windows.Controls.ItemCollection RevisionItems
+        {
+            get;
+            set;
+        }
     }
 }

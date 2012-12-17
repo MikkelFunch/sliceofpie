@@ -53,7 +53,6 @@ namespace Web_Solution
         {
             TreeViewItem folderItem = new TreeViewItem();
             folderItem.Header = folder[1];
-            folderItem.Opacity = 0.5;
             folderItem.Tag = new object[] { folder[0], folder[2], true};
 
             InsertFolderHelper(folder, items);
@@ -140,10 +139,11 @@ namespace Web_Solution
             {
                 TreeViewItem folderItem = GetFolderTag(folderId,items);
                 relativePath.Insert(0, "\\" + folderItem.Header);
-                folderId = (int)((object[])folderItem.Tag)[1];
+                folderId = int.Parse(((object[])folderItem.Tag)[1].ToString());
             }
 
-            relativePath.Append(Session.GetInstance().Email + "\\");
+            relativePath.Insert(0, Session.GetInstance().Email);
+            relativePath.Append("\\");
             return relativePath.ToString();
         }
 
@@ -171,7 +171,15 @@ namespace Web_Solution
             foreach (TreeViewItem item in items)
             {
                 object[] tag = (object[])item.Tag;
-                if()
+                if ((bool)tag[2] == false && int.Parse(tag[0].ToString()) == documentId)
+                {
+                    items.Remove(item);
+                    return;
+                }
+                else if ((bool)tag[2] == true)
+                {
+                    RemoveDocument(documentId, item.Items);
+                }
             }
         }
     }

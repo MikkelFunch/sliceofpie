@@ -33,6 +33,7 @@ namespace Web_Solution
         {
             session = Session.GetInstance();
             session.UserID = -1;
+            session.RevisionItems = new TreeView().Items;
         }
 
         /// <summary>
@@ -279,31 +280,6 @@ namespace Web_Solution
 
         #region ControllerMethods
 
-        /// <summary>
-        /// Set the currently opened document
-        /// </summary>
-        /// <param name="fileXamlContent"></param>
-        /// <param name="title"></param>
-        /// <param name="documentPath"></param>
-        public void SetOpenDocument(String fileContent, String title, String documentPath) //lav en overloaded metode som tager et flowdocument, title og documentpath - eller bare title og documentpath - eller bare documentpath
-        {
-            gui.richTextBox.Selection.Text = fileContent;
-            gui.labelOpenDocument.Content = "Current document: " + title;
-            session.CurrentDocumentTitle = title;
-            session.CurrentDocumentPath = documentPath;
-            if (title.Length > 0)
-            {
-                session.CurrentDocumentID = Metadata.FetchDocumentIDFromFileContent(fileContent);
-                gui.labelOpenDocument.Content = "Open document: " + title;
-                gui.richTextBox.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                session.CurrentDocumentID = 0;
-                gui.richTextBox.Visibility = Visibility.Collapsed;
-            }
-        }
-
         public void SetOpenDocument(int documentId, string documentTitle, int folderId)
         {
             ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
@@ -435,7 +411,7 @@ namespace Web_Solution
 
         #endregion
 
-        public void MoveFileToFolder(int fromId, int toId, int documentId)
+        public void MoveFileToFolder(int fromId, int toId, int documentId, TreeViewItem item)
         {
             if (toId == -1) toId = session.RootFolderID;
 
@@ -443,6 +419,11 @@ namespace Web_Solution
             proxy.MoveDocumentWebAsync(session.UserID, documentId, toId);
 
             TreeViewModel.GetInstance().RemoveDocument(documentId, gui.ExplorerTree.Items);
+            object[] tag = (object[])item.Tag;
+                //doc id, folder id, navn
+            string[] document = new string[] { tag[0].ToString(), toId.ToString(), item.Header.ToString() };
+            TreeViewModel.GetInstance().InsertDocument(document, gui.ExplorerTree.Items);
+            session.FolderID = toId;
         }
 
         /*public void SetContentFromDocumentId(int id, string title)
@@ -515,6 +496,28 @@ namespace Web_Solution
         public string GetRelativePath(int folderId, ItemCollection Source)
         {
             return TreeViewModel.GetInstance().GetRelativePath(folderId, Source);
+        }
+
+        public void PopulateHistory(ItemCollection itemCollection)
+        {
+            ServiceReference.Service1Client proxy = new ServiceReference.Service1Client();
+            proxy.GetAllDocumentRevisionsByDocumentIdAsync(session.CurrentDocumentID);
+            proxy.GetAllDocumentRevisionsByDocumentIdCompleted +=new EventHandler<ServiceReference.GetAllDocumentRevisionsByDocumentIdCompletedEventArgs>(proxy_GetAllDocumentRevisionsByDocumentIdCompleted);
+        }
+
+        private void proxy_GetAllDocumentRevisionsByDocumentIdCompleted(object sender, ServiceReference.GetAllDocumentRevisionsByDocumentIdCompletedEventArgs args)
+        {
+            ServiceReference.ServiceDocumentrevision[] revisions = args.Result.ToArray();
+
+            session.RevisionItems.Clear();
+            for (int i = 0; i < revisions.Length; i++)
+            {
+                TreeViewItem item = new TreeViewItem();
+                item.Header = revisions[i].creationTime;
+                item.Tag = revisions[i].id;
+
+                session.RevisionItems.Add(item);
+            }
         }
     }
 }

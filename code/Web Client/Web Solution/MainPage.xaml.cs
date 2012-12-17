@@ -107,11 +107,6 @@ namespace Web_Solution
             controller.SyncDocument(richTextBox.Selection.Text);
         }
 
-        /*private void buttonSyncAll_Click(object sender, RoutedEventArgs e)
-        {
-            controller.SyncAllDocuments();
-        }*/
-
         /// <summary>
         /// 
         /// </summary>
@@ -243,11 +238,16 @@ namespace Web_Solution
         private void movDia_Closed(object sender, EventArgs args)
         {
             MoveFileDialog movDia = (MoveFileDialog)sender;
-            controller.MoveFileToFolder(movDia.FromId, movDia.ToId, int.Parse(((object[])movDia.SelectedItem.Tag)[0].ToString()));
+            controller.MoveFileToFolder(movDia.FromId, movDia.ToId, int.Parse(((object[])movDia.SelectedItem.Tag)[0].ToString()),movDia.SelectedItem);
         }
 
         private void buttonHistory_Click(object sender, RoutedEventArgs e)
         {
+            RevisionHistoryDialog revDia = new RevisionHistoryDialog();
+            controller.PopulateHistory(revDia.Items);
+            revDia.Show();
+
+
             /*RevisionHistoryDialog revDia = new RevisionHistoryDialog();
 
             revDia.DocumentName = Session.GetInstance().CurrentDocumentTitle;
