@@ -37,54 +37,81 @@ namespace Web_Solution
             set;
         }
 
+        /// <summary>
+        /// ID of the document currently in focus.
+        /// </summary>
         public int CurrentDocumentID
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The path of the local document currently in focus.
+        /// </summary>
         public string CurrentDocumentPath
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The path to the root folder on the local file system.
+        /// </summary>
         public string RootFolderPath
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The path of the local document currently in focus.
+        /// </summary>
         public string CurrentDocumentTitle
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The title of the document currently in focus.
+        /// </summary>
         public string Email
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The time of creation for the current document
+        /// </summary>
         public DateTime CurrentDocumentTimeStampMetadata
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The id of the user's root folder
+        /// </summary>
         public int RootFolderID
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The name of the last created folder
+        /// </summary>
         public string NewlyCreatedFolderName
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The id of the containing folder of the last createst folder.
+        /// </summary>
         public int NewlyCreatedFolderParentId
         {
             get;
