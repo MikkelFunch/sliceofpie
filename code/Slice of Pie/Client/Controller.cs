@@ -16,16 +16,12 @@ namespace Client
 
         //Singleton instance of controller
         private static Controller instance;
-        //refrence to model
-        private Model model;
-        //refrence to gui
+        //reference to gui
         private MainWindow gui;
-        //refrence to session
+        //reference to session
         private Session session;
-        //refrence to localpersistence handler
+        //reference to localpersistence handler
         private LocalPersistenceHandler localPersistence;
-        //refrence to webpersistence handler
-        private WebPersistenceHandler webPersistenceHandler;
 
         #endregion
 
@@ -36,10 +32,8 @@ namespace Client
         /// </summary>
         private Controller()
         {
-            model = Model.GetInstance();
             session = Session.GetInstance();
             localPersistence = LocalPersistenceHandler.GetInstance();
-            webPersistenceHandler = WebPersistenceHandler.GetInstance();
 
             //Default when  not logged on
             session.RootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\sliceofpie\\";
