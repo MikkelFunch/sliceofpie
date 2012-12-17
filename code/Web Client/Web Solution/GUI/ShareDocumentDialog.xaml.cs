@@ -35,7 +35,7 @@ namespace Web_Solution.GUI
             if (textBoxEmail.Text.Length > 0)
             {
                 Email = textBoxEmail.Text;
-                this.Close();
+                this.DialogResult = true;
             }
             else
             {
@@ -45,7 +45,7 @@ namespace Web_Solution.GUI
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
     }
 }

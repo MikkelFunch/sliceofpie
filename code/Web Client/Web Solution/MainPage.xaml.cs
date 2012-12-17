@@ -137,7 +137,7 @@ namespace Web_Solution
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < content.Length; i++)
             {
-                sb.Append(content[i]);
+                sb.AppendLine(content[i]);
             }
             return sb.ToString();
         }
@@ -145,11 +145,12 @@ namespace Web_Solution
         private void buttonSaveMergedDocument_Click(object sender, RoutedEventArgs e)
         {
             //Get textselection from richtextbox
-            TextSelection textSelection = richTextBox.Selection;
+            richTextBoxMerged.SelectAll();
+            TextSelection textSelection = richTextBoxMerged.Selection;
             //retrieve the xaml
-            String xamlFromRichTextBox = textSelection.Xaml;
-            controller.SaveMergedDocument(xamlFromRichTextBox);
-            richTextBox.Selection.Xaml = xamlFromRichTextBox;
+            String pureContent = textSelection.Text;
+            controller.SaveMergedDocument(pureContent);
+            richTextBox.Selection.Text = pureContent;
 
             richTextBox.Width = double.NaN;
             richTextBoxMerged.Visibility = Visibility.Collapsed;
@@ -189,8 +190,13 @@ namespace Web_Solution
         private void buttonShareDocument_Click(object sender, RoutedEventArgs e)
         {
             ShareDocumentDialog shareDia = new ShareDocumentDialog();
+            shareDia.Closed += new EventHandler(shareDia_Closed);
             shareDia.Show();
+        }
 
+        private void shareDia_Closed(object sender, EventArgs args)
+        {
+            ShareDocumentDialog shareDia = (ShareDocumentDialog)sender;
             controller.ShareDocument(shareDia.Email);
         }
 
@@ -206,7 +212,6 @@ namespace Web_Solution
             NewDocumentDialog docDia = (NewDocumentDialog)sender;
             controller.CreateNewDocumentFile(docDia.DocumentTitle);
         }
-
 
         private void buttonMoveDocument_Click(object sender, RoutedEventArgs e)
         {
